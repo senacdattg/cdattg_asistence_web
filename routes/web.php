@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
+use App\http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/home', function () {
+    return view('home');
+});
 Route::get('/', function () {
-    return view('app');
+    return view('welcome');
 });
 
-cambio;
+// rutas del controlador register
+Route::controller(RegisterController::class)->group(function(){
+    Route::get('/registro', 'mostrarFormulario')->name('registro');
+    Route::post('/registrarme', 'create')->name('registrarme');
+});
+// rutas del controlador login
+Route::controller(LoginController::class)->group(function(){
+
+    Route::get('/login','mostrarLogin')->name('login');
+    // Route::get('/login','mostrarLogin')->name('welcome');
+});
+
