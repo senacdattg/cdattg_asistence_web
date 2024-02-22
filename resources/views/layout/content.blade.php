@@ -1,4 +1,3 @@
-
 <div class="content-wrapper">
 
 <section class="content-header">
@@ -32,5 +31,5 @@
 </div>
 </div>
 <div class="card-body">
-Start creating your amazing application!
+el index papa
 </div>
