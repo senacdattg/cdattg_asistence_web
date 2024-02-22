@@ -1,9 +1,6 @@
 @if (auth()->check())
-    <script>
-        window.location = "{{ route('home') }}";
-    </script>
+    {{ return redirect('home') }}"
+    {{  }}
 @else
-    <script>
-        window.location = "{{ route('login') }}";
-    </script>
+    {{ return redirect('login') }}
 @endif

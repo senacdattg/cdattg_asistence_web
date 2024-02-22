@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\http\Controllers\LoginController;
+use App\http\Controllers\LogoutController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +20,9 @@ use App\http\Controllers\LoginController;
 Route::get('/home', function () {
     return view('home');
 });
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
@@ -29,8 +31,9 @@ Route::controller(RegisterController::class)->group(function(){
 });
 // rutas del controlador login
 Route::controller(LoginController::class)->group(function(){
-
+    Route::get('/','verificarLogin')->name('verificarLogin');
     Route::get('/login','mostrarLogin')->name('login');
-    // Route::get('/login','mostrarLogin')->name('welcome');
+    Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
 });
 
+Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');

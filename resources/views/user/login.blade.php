@@ -17,11 +17,12 @@
                     </div>
                     <br>
                     <p class="login-box-msg" >¡Para comenzar inicie sesión!</p>
-                    <form action="../../index3.html" method="post">
+                    <form action="{{ route('iniciarSesion') }}" method="post">
+                        @csrf
                         {{-- correo institucional --}}
-                        <label for="Email">Correo Institucional</label>
+                        <label for="email">Correo Institucional</label>
                         <div class="input-group mb-3">
-                            <input type="email" class="form-control" name="Email" placeholder="Correo Institucional" value="{{ old('Email')}}" autofocus>
+                            <input type="email" class="form-control" name="email" placeholder="Correo Institucional" value="{{ old('email')}}" autofocus>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
@@ -70,10 +71,5 @@
         </div>
 
 
-        <script src="../../plugins/jquery/jquery.min.js"></script>
 
-        <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-        <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
-    </body>
 @endsection
