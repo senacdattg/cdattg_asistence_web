@@ -16,7 +16,7 @@
                             style="width: 150px; height: auto;">
                     </div>
                     <br>
-                    <p class="login-box-msg">Para comenzar inicie sesión</p>
+                    <p class="login-box-msg" >¡Para comenzar inicie sesión!</p>
                     <form action="../../index3.html" method="post">
                         {{-- correo institucional --}}
                         <label for="Email">Correo Institucional</label>
@@ -50,18 +50,18 @@
                             </div> --}}
 
                             <div class="col-6 ">
-                                <button type="submit" class="btn btn-primary btn-block">Iniciar sesión</button>
+                                <button type="submit" class="btn btn-success btn-block">Iniciar sesión <i class="fas fa-key"></i> </button>
                             </div>
 
                         </div>
                     </form>
 
-
+                    <hr>
                     <p class="mb-1">
                         <a href="forgot-password.html">Olvide mi contraseña</a>
                     </p>
                     <p class="mb-0">
-                        <a href="{{ route('registro') }}" class="text-center">Registrarme</a>
+                        <a href="{{ route('registro') }}" class="text-center">Registrarme </a>
                     </p>
                 </div>
 

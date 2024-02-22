@@ -18,7 +18,7 @@ use App\http\Controllers\LoginController;
 Route::get('/home', function () {
     return view('home');
 });
-Route::get('/welcome', function () {
+Route::get('/', function () {
     return view('welcome');
 });
 

@@ -23,6 +23,11 @@ class RegisterController extends Controller
     'email' => 'required|string|email|max:255|unique:users',
 ]);
 
+    // Convertir a mayúsculas los campos
+    $data['primer_nombre'] = strtoupper($data['primer_nombre']);
+    $data['segundo_nombre'] = strtoupper($data['segundo_nombre']);
+    $data['primer_apellido'] = strtoupper($data['primer_apellido']);
+    $data['segundo_apellido'] = strtoupper($data['segundo_apellido']);
     $data['password'] = bcrypt($data['documento']);
 
     $user = User::create($data);
