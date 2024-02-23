@@ -38,6 +38,7 @@ Route::controller(LoginController::class)->group(function(){
 Route::controller(ParametroController::class)->group(function(){
     Route::get('parametros','index')->name('parametros');
     Route::post('crearParametro', 'crearParametro')->name('crearParametro');
+    Route::get('/parametros/{parametro}', 'show')->name('verParametro');
 });
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');

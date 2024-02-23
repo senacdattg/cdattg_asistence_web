@@ -13,7 +13,9 @@
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item">
+                    <a href="{{ route('verificarLogin') }}" >Inicio</a>
+                            </li>
                             <li class="breadcrumb-item active">{{ request()->path() }}
                             </li>
                         </ol>
@@ -37,66 +39,74 @@
                 </div>
                 @include('temas_parametros.crear-parametro')
 
-                        <div class="card-body p-0">
-                            <table class="table table-striped projects">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 1%">
-                                            #
-                                        </th>
-                                        <th style="width: 20%">
-                                            name
-                                        </th>
-                                        <th style="width: 30%">
-                                            estado
-                                        </th>
+                <div class="card-body p-0">
+                    <table class="table table-striped projects">
+                        <thead>
+                            <tr>
+                                <th style="width: 1%">
+                                    #
+                                </th>
+                                <th style="width: 20%">
+                                    name
+                                </th>
+                                <th style="width: 30%">
+                                    estado
+                                </th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            #
-                                        </td>
-                                        <td>
-                                           nombre parameto
-                                        </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($parametros as $parametro)
+                                <tr>
+                                    <td>
+                                        {{ $parametro->id }}
+                                    </td>
+                                    <td>
+                                        {{ $parametro->name }}
+                                    </td>
 
-                                        <td class="project-state">
-                                            <span class="badge badge-success">Activo</span>
-                                            <span class="badge badge-danger">Inactivo</span>
-                                        </td>
-                                        <td class="project-actions text-right">
-                                            <a class="btn btn-success btn-sm" href="#">
-                                                <i class="fas fa-sync"></i>
+                                    <td class="project-state">
+                                        <span
+                                            class="badge badge-{{ $parametro->status === 'Activo' ? 'success' : 'danger' }}">
+                                            {{ $parametro->status }}
+                                        </span>
 
-                                                cambiar estado
-                                            </a>
-                                            <a class="btn btn-warning btn-sm" href="#">
-                                                <i class="fas fa-folder">
-                                                </i>
-                                                Ver
-                                            </a>
-                                            <a class="btn btn-info btn-sm" href="#">
-                                                <i class="fas fa-pencil-alt">
-                                                </i>
-                                                Editar
-                                            </a>
-                                            <a class="btn btn-danger btn-sm" href="#">
-                                                <i class="fas fa-trash">
-                                                </i>
-                                                Eliminar
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    </td>
+                                    <td class="project-actions text-right">
+                                        <a class="btn btn-success btn-sm" href="#">
+                                            <i class="fas fa-sync"></i>
 
-                                </tbody>
-                            </table>
-                        </div>
+                                            cambiar estado
+                                        </a>
+                                        <a class="btn btn-warning btn-sm"
+                                            href="{{ route('verParametro', ['parametro' => $parametro->id]) }}">
+                                            <i class="fas fa-folder">
+                                            </i>
+                                            Ver
+                                        </a>
+                                        <a class="btn btn-info btn-sm" href="#">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                            Editar
+                                        </a>
+                                        <a class="btn btn-danger btn-sm" href="#">
+                                            <i class="fas fa-trash">
+                                            </i>
+                                            Eliminar
+                                        </a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4">No hay parametros registrados</td>
+                                </tr>
+                            @endforelse
 
-                    </div>
-                @endsection
-            </div>
-        </div>
-    </section>
-</div>
+                        </tbody>
+                    </table>
+                </div>
+
+
+        @endsection
+
+

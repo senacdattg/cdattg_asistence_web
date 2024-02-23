@@ -41,4 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function parametrosCreated()
+    {
+        return $this->hasMany(Parametro::class, 'user_create_id');
+    }
 }

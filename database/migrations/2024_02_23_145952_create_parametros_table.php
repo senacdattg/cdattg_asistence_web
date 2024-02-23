@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');  // Añadir la columna 'name'
             $table->enum('status', ['Activo', 'Inactivo']);  // Añadir la columna 'status'
             $table->unsignedBigInteger('user_create_id');  // Añadir la columna 'user_create_id'
-            $table->unsignedBigInteger('edit_id');  // Añadir la columna 'edit_id'
+            $table->unsignedBigInteger('user_edit_id');  // Añadir la columna 'edit_id'
             // termina añadir columnas
             $table->timestamps();
         });

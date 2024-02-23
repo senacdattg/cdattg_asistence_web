@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\parametro;
 use App\Http\Requests\StoreparametroRequest;
 use App\Http\Requests\UpdateparametroRequest;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\UserController;
 
 class ParametroController extends Controller
 {
@@ -15,7 +16,8 @@ class ParametroController extends Controller
      */
     public function index()
     {
-        return view('temas_parametros.parametros');
+        $parametros = Parametro::all();
+        return view('temas_parametros.parametros', compact('parametros'));
     }
 
     /**
@@ -39,7 +41,8 @@ class ParametroController extends Controller
      */
     public function show(parametro $parametro)
     {
-        //
+
+        return view('temas_parametros.verParametro', compact('parametro'));
     }
 
     /**
@@ -68,14 +71,14 @@ class ParametroController extends Controller
     public function crearParametro(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:parametros',
             'status' => 'required|string|max:255',
             // ... otras validaciones
         ]);
 
         // Puedes obtener el ID del usuario actualmente autenticado
         $data['user_create_id'] = auth()->id();
-
+        $data['user_edit_id'] = auth()->id();
         // Crear el parámetro
         $parametro = Parametro::create($data);
 
@@ -83,4 +86,7 @@ class ParametroController extends Controller
 
         return redirect()->back()->with('success', '¡Parámetro creado exitosamente!');
     }
+    // app/Models/Parametro.php
+
+    
 }

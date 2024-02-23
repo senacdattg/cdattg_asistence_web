@@ -10,7 +10,7 @@ class parametro extends Model
     use HasFactory;
 
     // Campos que puedes llenar al crear o actualizar un registro
-    protected $fillable = ['name', 'status', 'user_create_id'];
+    protected $fillable = ['name', 'status', 'user_create_id', 'user_edit_id'];
 
     // Evento de creación para asignar valores predeterminados
     protected static function boot()
@@ -26,5 +26,13 @@ class parametro extends Model
             // Convertir el nombre a mayúsculas antes de guardar
             $parametro->name = strtoupper($parametro->name);
         });
+    }
+    public function userCreate()
+    {
+        return $this->belongsTo(User::class, 'user_create_id');
+    }
+    public function userUpdate()
+    {
+        return $this->belongsTo(User::class, 'user_edit_id');
     }
 }
