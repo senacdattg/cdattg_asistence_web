@@ -66,27 +66,27 @@ class ParametroController extends Controller
      */
     public function destroy(parametro $parametro)
     {
-        //
+        $parametro->delete();
+
+        return redirect()->route('parametros')->with('success', 'Parámetro eliminado exitosamente');
+
     }
     public function crearParametro(Request $request)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:parametros',
             'status' => 'required|string|max:255',
-            // ... otras validaciones
-        ]);
 
-        // Puedes obtener el ID del usuario actualmente autenticado
+        ]);
         $data['user_create_id'] = auth()->id();
         $data['user_edit_id'] = auth()->id();
         // Crear el parámetro
         $parametro = Parametro::create($data);
 
-        // ... realizar otras acciones o redirigir según sea necesario
 
         return redirect()->back()->with('success', '¡Parámetro creado exitosamente!');
     }
-    // app/Models/Parametro.php
 
-    
+
+
 }

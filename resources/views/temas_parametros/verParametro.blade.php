@@ -104,7 +104,7 @@
                             </i>
                             Editar
                         </a>
-                        <a class="btn btn-danger btn-sm" href="#">
+                        <a class="btn btn-danger btn-sm" href="{{ route('destroy', ['parametro' => $parametro->id]) }}">
                             <i class="fas fa-trash">
                             </i>
                             Eliminar
