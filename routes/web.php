@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
-
+use App\Http\Controllers\ParametroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +34,10 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/','verificarLogin')->name('verificarLogin');
     Route::get('/login','mostrarLogin')->name('login');
     Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
+});
+Route::controller(ParametroController::class)->group(function(){
+    Route::get('parametros','index')->name('parametros');
+    Route::post('crearParametro', 'crearParametro')->name('crearParametro');
 });
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');

@@ -32,9 +32,9 @@ Panel de control
 </a>
 <ul class="nav nav-treeview">
 <li class="nav-item">
-<a href="../../index.html" class="nav-link">
+<a href="{{ route('parametros') }}" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
-<p>Dashboard v1</p>
+<p>Parametros</p>
 </a>
 </li>
 <li class="nav-item">
