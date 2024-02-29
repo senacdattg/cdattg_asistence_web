@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
+use App\Models\EntradaSalida;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,13 @@ Route::get('/home', function () {
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// Rutas para persona
 Route::resource('persona', PersonaController::class);
 Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+
+
+// Rutas para entrada y salida
+Route::resource('entradaSalida', EntradaSalida::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
