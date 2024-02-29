@@ -59,7 +59,7 @@
                             <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ Auth::user()->primer_nombre }} {{ Auth::user()->primer_apellido }} -
-                                {{-- Aqui va el cargo --}}Instructor
+                                {{ Auth::user()->persona->cargo }}
                                 {{-- <small>Member since Nov. 2012</small> --}}
                             </p>
                         </li>
@@ -80,7 +80,7 @@
                         </li> --}}
 
                         <li class="user-footer">
-                            <a href="#" class="btn btn-default btn-flat">Perfil</a>
+                            <a href="{{ route('persona.show', ['persona' => Auth::user()->persona->id]) }}" class="btn btn-default btn-flat">Perfil</a>
                             <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Cerrar
                                 sesión</a>
                         </li>

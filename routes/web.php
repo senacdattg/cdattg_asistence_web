@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
-
+use App\Http\Controllers\PersonaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ Route::get('/home', function () {
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::resource('persona', PersonaController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Persona;
+
 use App\Http\Requests\StorePersonaRequest;
 use App\Http\Requests\UpdatePersonaRequest;
+use Carbon\Carbon;
 
 class PersonaController extends Controller
 {
@@ -37,7 +40,12 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        //
+        $persona = Persona::find(1);
+        $persona->edad = Carbon::parse($persona->fecha_de_nacimiento)->age;
+        $persona->fecha_de_nacimiento = Carbon::parse($persona->fecha_de_nacimiento)->format('d/m/Y');
+        
+
+        return view('personas.show', ['persona' => $persona]);
     }
 
     /**

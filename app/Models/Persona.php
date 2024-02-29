@@ -30,7 +30,8 @@ class Persona extends Model
         'cargo',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->hasOne(User::class, 'persona_id');
     }
 }
