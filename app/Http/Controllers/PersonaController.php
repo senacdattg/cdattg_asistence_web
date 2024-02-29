@@ -175,6 +175,26 @@ class PersonaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo.']);
         }
     }
+    public function cambiarEstadoUser(Request $request, string $id)
+    {
+        //  DB::enableQueryLog();
+        // @dd($user->id);
+        $user = User::where('persona_id', $id)->first();
+
+        // @dd($user);
+        // @dd($user->update(['status' => 0]));
+        try {
+            if ($user->status === 1) {
+                $user->update(['status' => 0]);
+            } else {
+                $user->update(['status' => 1]);
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+        return redirect()->back();
+        // dd(DB::getQueryLog());
+    }
 
     /**
      * Remove the specified resource from storage.

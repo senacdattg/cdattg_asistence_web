@@ -24,6 +24,7 @@ Route::get('/home', function () {
 //     return view('welcome');
 // });
 Route::resource('persona', PersonaController::class);
+Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

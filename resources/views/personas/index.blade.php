@@ -86,7 +86,7 @@
                                     </td>
                                     <td>
                                         <form id="cambiarEstadoForm" class=" d-inline"
-                                            {{-- action="{{ route('user.cambiarEstado', ['user' => $persona->user->id]) }}" --}}
+                                            action="{{ route('persona.cambiarEstadoUser', ['persona' => $persona->user->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT')
