@@ -54,6 +54,40 @@
                                 <p>Dashboard v3</p>
                             </a>
                         </li>
+
+
+                    </ul>
+                </li>
+                {{-- administrar instructores --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <p>
+                            Administrar instructores
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('persona.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Instructores</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('persona.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear Instructor</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../../index3.html" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Dashboard v3</p>
+                            </a>
+                        </li>
+
+
                     </ul>
                 </li>
 
