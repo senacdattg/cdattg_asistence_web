@@ -6,6 +6,7 @@ use App\Models\EntradaSalida;
 use App\Http\Requests\StoreEntradaSalidaRequest;
 use App\Http\Requests\UpdateEntradaSalidaRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EntradaSalidaController extends Controller
 {
@@ -14,7 +15,13 @@ class EntradaSalidaController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+
+        // Obtén todos los registros de entrada/salida del usuario actual
+        $registros = EntradaSalida::where('user_id', $user->id)->get();
+
+        // Pasa los registros a la vista
+        return view('entradaSalidas.index', compact('registros'));
     }
 
     /**

@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entrada_salidas', function (Blueprint $table) {
+        Schema::create('ficha_caracterizacions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('aprendiz')->nullable();
-            $table->dateTime('entrada')->nullable();
-            $table->dateTime('salida')->nullable();
+            $table->string('ficha_caracterizacion');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entrada_salidas');
+        Schema::dropIfExists('ficha_caracterizacions');
     }
 };

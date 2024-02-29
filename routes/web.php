@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\EntradaSalidaController;
+use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
 use App\Models\EntradaSalida;
+use App\Models\FichaCaracterizacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +33,9 @@ Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambi
 
 
 // Rutas para entrada y salida
-Route::resource('entradaSalida', EntradaSalida::class);
+Route::resource('entradaSalida', EntradaSalidaController::class);
+
+Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

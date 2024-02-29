@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-
+                        <h1>Blank Page</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -21,15 +21,9 @@
         <section class="content">
 
             <div class="card">
-
+               
                 <div class="card-body">
-                    <div class="jumbotron">
-                        <h1 class="display-4">Hola nuevamente, {{ Auth::user()->persona->cargo }}
-                            <strong>{{ Auth::user()->persona->primer_nombre }}</strong>!</h1>
-                        <p class="lead">Aqui podras tomar la asistencia de los aprendices en los días de formación</p>
-                        <hr class="my-4">
-                        <p>Recuerda que primero dedes de ingresar la ficha de caracterización y luego escanear tomar la asistencia a la hora de entrada y de salida</p>
-                        <a class="btn btn-primary btn-lg" href="{{ route('fichaCaracterizacion.create') }}" role="button">Comencemos</a>
-                    </div>
+                    Aqui va el registro de aprendices
+
                 </div>
             @endsection

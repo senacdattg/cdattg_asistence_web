@@ -80,13 +80,25 @@
                                 <p>Crear Instructor</p>
                             </a>
                         </li>
+
+
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <p>
+                            Asistencia
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="../../index3.html" class="nav-link">
+                            <a href="{{ route('fichaCaracterizacion.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Dashboard v3</p>
+                                <p>Asistencia</p>
                             </a>
                         </li>
-
 
                     </ul>
                 </li>
