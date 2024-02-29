@@ -119,7 +119,8 @@ class PersonaController extends Controller
      */
     public function update(UpdatePersonaRequest $request, Persona $persona)
     {
-        dd($request->all());
+        // @dd($persona->id);
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'tipo_documento' => 'required',
             'numero_documento' => 'required',
@@ -129,9 +130,9 @@ class PersonaController extends Controller
             'segundo_apellido' => 'nullable',
             'fecha_de_nacimiento' => 'required|date',
             'genero' => 'required',
-            'email' => 'required|email|unique:personas,email,' . $persona, // Agrega la regla unique con la excepción del registro actual
+            'email' => 'required|email' ,// Agrega la regla unique con la excepción del registro actual
             'cargo' => 'required',
-            'status' => 'required|boolean',
+            'status' => 'required|boolean'
         ]);
 
         if ($validator->fails()) {
@@ -143,7 +144,7 @@ class PersonaController extends Controller
 
         try {
             // Actualizar Persona
-            $persona = Persona::findOrFail($persona);
+            // $persona = Persona::findOrFail($persona);
             $persona->update([
                 'tipo_documento' => $request->input('tipo_documento'),
                 'numero_documento' => $request->input('numero_documento'),
@@ -153,10 +154,9 @@ class PersonaController extends Controller
                 'segundo_apellido' => $request->input('segundo_apellido'),
                 'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
                 'genero' => $request->input('genero'),
-                'email' => $request->input('email'),
+                'email' => $request->input('email') ,
                 'cargo' => $request->input('cargo'),
             ]);
-
             // Actualizar Usuario asociado a la Persona
             $user = User::where('persona_id', $persona->id)->first();
 
@@ -171,6 +171,7 @@ class PersonaController extends Controller
             return redirect()->route('persona.show', ['persona' => $persona->id])
                 ->with('success', 'Información actualizada exitosamente');
         } catch (\Exception $e) {
+            dd( $e);
             return redirect()->back()->withErrors(['error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo.']);
         }
     }
