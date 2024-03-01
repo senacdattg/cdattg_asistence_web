@@ -97,7 +97,7 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        $persona = Persona::find(1);
+        // $persona = Persona::find(1);
         $persona->edad = Carbon::parse($persona->fecha_de_nacimiento)->age;
         $persona->fecha_de_nacimiento = Carbon::parse($persona->fecha_de_nacimiento)->format('d/m/Y');
 
@@ -110,7 +110,7 @@ class PersonaController extends Controller
      */
     public function edit(Persona $persona)
     {
-        $persona = Persona::find(1);
+        // $persona = Persona::find(1);
         return view('personas.edit', ['persona' => $persona]);
     }
 

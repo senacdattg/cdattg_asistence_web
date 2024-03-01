@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Blank Page</h1>
+                        <h1>Registro de asistencia</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,6 @@
         <section class="content">
 
             <div class="card">
-
                 <div class="card-body">
                     <div class="card-body p-0">
                         <table class="table table-responsive">
@@ -31,38 +30,37 @@
                                         #
                                     </th>
                                     <th style="width: 20%">
-                                        Nombre y apellido
+                                        Aprendiz
                                     </th>
                                     <th style="width: 30%">
-                                        Numero de documento
+                                        entrada
                                     </th>
                                     <th style="width: 40%">
-                                        Correo electronico
-                                    </th>
-                                    <th style="width: 50%">
-                                        Estado
+                                        salida
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($personas as $persona)
+                                <?php $i = 0; ?>
+                                @forelse ($registros as $registro)
                                     <tr>
                                         <td>
-                                            {{ $persona->id }}
+                                            {{ $i++ }}
+                                            {{ $registro->id }}
                                         </td>
                                         <td>
-                                            {{ $persona->primer_nombre }} {{ $persona->primer_apellido }}
+                                           {{ $registro->aprendiz }}
                                         </td>
 
                                         <td>
-                                            {{ $persona->numero_documento }}
+                                            {{ $registro->entrada }}
                                         </td>
                                         <td>
-                                            {{ $persona->email }}
+                                            {{ $registro->salida }}
                                         </td>
                                         <td>
-                                            {{-- <span class="badge badge-{{ $persona->user->status === 1 ? 'success' : 'danger' }}">
-                                        @if ($persona->user->status === 1)
+                                            {{-- <span class="badge badge-{{ $registro->user->status === 1 ? 'success' : 'danger' }}">
+                                        @if ($registro->user->status === 1)
                                                 ACTIVO
                                             @else
                                                 INACTIVO
@@ -71,7 +69,7 @@
                                         </td>
                                         <td>
                                             {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('persona.cambiarEstadoUser', ['persona' => $persona->user->id]) }}"
+                                            action="{{ route('registro.cambiarEstadoUser', ['registro' => $registro->user->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT') --}}
@@ -81,20 +79,20 @@
                                         </td>
                                         <td>
                                             {{-- <a class="btn btn-warning btn-sm"
-                                            href="{{ route('persona.show', ['persona' => $persona->id]) }}"> --}}
+                                            href="{{ route('registro.show', ['registro' => $registro->id]) }}"> --}}
                                             <i class="fas fa-eye"></i>
 
                                             </a>
                                         </td>
                                         <td>
                                             {{-- <a class="btn btn-info btn-sm"
-                                            href="{{ route('persona.edit', ['persona' => $persona->id]) }}"> --}}
+                                            href="{{ route('registro.edit', ['registro' => $registro->id]) }}"> --}}
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                             </a>
                                         </td>
                                         <td>
-                                            {{-- <form action="{{ route('personas.destroy', ['persona' => $persona->id]) }}"
+                                            {{-- <form action="{{ route('registros.destroy', ['registro' => $registro->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE') --}}
@@ -106,8 +104,18 @@
                                         </button> --}}
                                             {{-- </form> --}}
                                         </td>
-
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="4">No hay personas registradas</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
                     </div>
-
                 </div>
-            @endsection
+            </div>
+        </section>
+    </div>
+
+@endsection

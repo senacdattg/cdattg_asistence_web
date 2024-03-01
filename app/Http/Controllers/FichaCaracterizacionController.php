@@ -34,7 +34,7 @@ class FichaCaracterizacionController extends Controller
         }
 
         // El usuario tiene una ficha, mostrar el formulario de creación de entrada/salida
-        return view('entradaSalidas.index');
+        return redirect()->route('entradaSalida.index');
     }
 
     /**

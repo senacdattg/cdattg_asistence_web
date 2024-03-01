@@ -39,4 +39,7 @@
                         </form>
                     </div>
                 </div>
-            @endsection
+            </div>
+        </section>
+    </div>
+@endsection
