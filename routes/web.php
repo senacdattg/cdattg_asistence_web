@@ -35,6 +35,8 @@ Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambi
 // Rutas para entrada y salida
 Route::resource('entradaSalida', EntradaSalidaController::class);
 
+
+// Rutas oara fucha de caracterizacion
 Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // rutas del controlador register
