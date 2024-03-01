@@ -58,6 +58,31 @@
 
                     </ul>
                 </li>
+                {{-- gestion de sedes --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Sedes
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('sede.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sedes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sede.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear sede</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
                 {{-- administrar instructores --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">

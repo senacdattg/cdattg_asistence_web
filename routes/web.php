@@ -7,6 +7,7 @@ use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\SedeController;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 
@@ -38,6 +39,9 @@ Route::resource('entradaSalida', EntradaSalidaController::class);
 
 // Rutas oara fucha de caracterizacion
 Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
+
+// Ruta para sedes
+Route::resource('sede', SedeController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

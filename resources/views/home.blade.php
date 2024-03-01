@@ -32,4 +32,8 @@
                         <a class="btn btn-primary btn-lg" href="{{ route('fichaCaracterizacion.create') }}" role="button">Comencemos</a>
                     </div>
                 </div>
-            @endsection
+            </div>
+        </section>
+    </div>
+
+@endsection

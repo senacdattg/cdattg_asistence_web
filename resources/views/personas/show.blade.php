@@ -40,81 +40,81 @@
                     </a>
                 </div>
                 {{-- <div class="container"> --}}
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
 
-                                <div class="card card-primary card-outline">
-                                    <div class="card-body box-profile">
-                                        <div class="text-center">
-                                            <img class="profile-user-img img-fluid img-circle"
-                                                src="{{ asset('dist/img/LogoSena.png') }}" alt="User profile picture">
-                                        </div>
-                                        <h3 class="profile-username text-center">{{ $persona->primer_nombre }}
-                                            {{ $persona->segundo_nombre }}
-                                            {{ $persona->primer_apellido }} {{ $persona->segundo_apellido }}</h3>
-                                        <p class="text-muted text-center">{{ $persona->cargo }}</p>
-                                        <h1>Informacion basica</h1>
-
-                                        <p class="text-muted text-center">Tipo de documento:
-                                            {{ $persona->tipo_documento }}</p>
-
-                                        <p class="text-muted text-center">Numero de documento:
-                                            {{ $persona->numero_documento}}</p>
-
-                                        <p class="text-muted text-center">Fecha de nacimiento:
-                                            {{ $persona->fecha_de_nacimiento }}</p>
-
-                                        <p class="text-muted text-center">Correo: {{ $persona->email }}</p>
-
-                                        <p class="text-muted text-center">Fecha de edad: {{ $persona->edad }}</p>
-
-                                        <p class="text-muted text-center">Genero: {{ $persona->genero }}</p>
-
-                                        <p class="text-muted text-center">estado: {{ $persona->user->status }}</p>
+                            <div class="card card-primary card-outline">
+                                <div class="card-body box-profile">
+                                    <div class="text-center">
+                                        <img class="profile-user-img img-fluid img-circle"
+                                            src="{{ asset('dist/img/LogoSena.png') }}" alt="User profile picture">
                                     </div>
+                                    <h3 class="profile-username text-center">{{ $persona->primer_nombre }}
+                                        {{ $persona->segundo_nombre }}
+                                        {{ $persona->primer_apellido }} {{ $persona->segundo_apellido }}</h3>
+                                    <p class="text-muted text-center">{{ $persona->cargo }}</p>
+                                    <h1>Informacion basica</h1>
 
-                                </div>
+                                    <p class="text-muted text-center">Tipo de documento:
+                                        {{ $persona->tipo_documento }}</p>
 
-                            </div>
+                                    <p class="text-muted text-center">Numero de documento:
+                                        {{ $persona->numero_documento }}</p>
 
-                            <div class="col-md-9">
-                                <div class="card">
-                                    <div class="card-header p-2">
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="card" style="width: 18rem;">
-                                                    <div class="card-body">
-                                                        <h1>Fichas</h1>
-                                                        <hr>
-                                                        <p>Se podria añadir las fichas aqui</p>
+                                    <p class="text-muted text-center">Fecha de nacimiento:
+                                        {{ $persona->fecha_de_nacimiento }}</p>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="card" style="width: 18rem;">
-                                                    <div class="card-body">
-                                                        <h1>Pendientes</h1>
-                                                        <hr>
-                                                        <p>Aqui la ista de csv pendientes</p>
+                                    <p class="text-muted text-center">Correo: {{ $persona->email }}</p>
 
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card">
-                                            bueno, hay que considerar, talvez los vehiculos del pre-registro
-                                        </div>
+                                    <p class="text-muted text-center">Fecha de edad: {{ $persona->edad }}</p>
 
+                                    <p class="text-muted text-center">Genero: {{ $persona->genero }}</p>
 
-
-                                    </div>
+                                    <p class="text-muted text-center">estado: {{ $persona->user->status }}</p>
                                 </div>
 
                             </div>
 
                         </div>
+
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h1>Fichas</h1>
+                                                    <hr>
+                                                    <p>Se podria añadir las fichas aqui</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="card" style="width: 18rem;">
+                                                <div class="card-body">
+                                                    <h1>Pendientes</h1>
+                                                    <hr>
+                                                    <p>Aqui la ista de csv pendientes</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        bueno, hay que considerar, talvez los vehiculos del pre-registro
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
 
                     {{-- </div> --}}
                 </div>
@@ -143,4 +143,7 @@
                     </form> --}}
 
                 </div>
-            @endsection
+            </div>
+        </section>
+    </div>
+@endsection
