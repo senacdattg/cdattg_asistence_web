@@ -2,9 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\EntradaSalidaController;
+use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
+use App\Models\EntradaSalida;
+use App\Models\FichaCaracterizacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +27,15 @@ Route::get('/home', function () {
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// Rutas para persona
 Route::resource('persona', PersonaController::class);
 Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+
+
+// Rutas para entrada y salida
+Route::resource('entradaSalida', EntradaSalidaController::class);
+
+Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

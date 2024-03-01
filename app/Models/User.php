@@ -43,4 +43,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Persona::class, 'persona_id');
     }
+
+    public function entradaSalida()
+    {
+        return $this->hasMany(EntradaSalida::class);
+    }
+    public function fichaCaracterizacion()
+    {
+        return $this->belongsTo(FichaCaracterizacion::class, 'user_id');
+    }
 }

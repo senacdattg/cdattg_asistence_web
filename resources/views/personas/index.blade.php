@@ -77,7 +77,7 @@
                                     </td>
                                     <td>
                                         <span class="badge badge-{{ $persona->user->status === 1 ? 'success' : 'danger' }}">
-                                        @if ($persona->user->status === 1)
+                                            @if ($persona->user->status === 1)
                                                 ACTIVO
                                             @else
                                                 INACTIVO
@@ -90,8 +90,8 @@
                                             method="POST">
                                             @csrf
                                             @method('PUT')
-                                        <button type="submit" class="btn btn-success btn-sm"><i
-                                                class="fas fa-sync"></i></button>
+                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                                    class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
                                     <td>
@@ -121,18 +121,17 @@
                                         </button> --}}
                                         {{-- </form> --}}
                                     </td>
+                                </tr>
 
+                            @empty
+                                <tr>
+                                    <td colspan="4">No hay personas registradas</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="4">No hay personas registradas</td>
-            </tr>
-            @endforelse
-            </tbody>
-            </table>
     </div>
 
     <div class="card-footer">
