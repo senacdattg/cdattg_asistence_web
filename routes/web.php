@@ -8,6 +8,7 @@ use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
+use App\Http\Controllers\PisoController;
 use App\Http\Controllers\SedeController;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
@@ -46,6 +47,9 @@ Route::resource('sede', SedeController::class);
 
 // Ruta para bloques
 Route::resource('bloque', BloqueController::class);
+
+// Ruta para los pisos
+Route::resource('piso', PisoController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
