@@ -18,9 +18,10 @@ class Ambiente extends Model
             $ambiente->descripcion = strtoupper($ambiente->descripcion);
         });
     }
+    
     public function piso()
     {
-        return $this->belongsTo(Piso::class);
+        return $this->belongsTo(Piso::class, 'piso_id');
     }
 
     public function userCreated()

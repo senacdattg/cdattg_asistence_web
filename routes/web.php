@@ -54,6 +54,9 @@ Route::resource('piso', PisoController::class);
 
 // Ruta para ambientes
 Route::resource('ambiente', AmbienteController::class);
+// ruta para ajax de piso- ambiente
+Route::get('/cargar-ambientes-piso/{pisoId}', 'TuControlador@cargarAmbientes')->name('cargar.ambientes.piso');
+
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){

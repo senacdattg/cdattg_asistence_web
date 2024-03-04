@@ -39,6 +39,7 @@
                                 <input type="text" class="form-control" value="{{ old('descripcion') }}"
                                     name="descripcion" placeholder="Descripion del piso" required autofocus>
                             </div>
+                            
                             <div class="col-md-6">
                                 <label for="piso_id">Seleccione el piso</label>
                                 <select name="piso_id" id="piso_id" class="form-control">
@@ -55,7 +56,7 @@
 
                         {{-- Botón de Registro --}}
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Crear Bloque</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Crear Ambiente</button>
                         </div>
                     </form>
 
@@ -63,4 +64,31 @@
             </div>
         </section>
     </div>
+@endsection
+@section('script')
+
+<script>
+    <script>
+    $(document).ready(function () {
+        $('#piso_id').on('change', function () {
+            var pisoId = $(this).val();
+
+            $.ajax({
+                url: '/cargar-ambientes-piso/' + pisoId,
+                type: 'GET',
+                success: function (data) {
+                    // Limpiar y llenar el select de ambientes
+                    $('#ambiente_id').empty();
+                    $.each(data, function (key, value) {
+                        $('#ambiente_id').append('<option value="' + key + '">' + value + '</option>');
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
+</script>
 @endsection

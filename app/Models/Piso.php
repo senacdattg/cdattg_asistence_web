@@ -23,9 +23,9 @@ class Piso extends Model
     {
         return $this->belongsTo(Bloque::class);
     }
-    public function ambiente()
+    public function ambientes()
     {
-        return $this->belongsTo(Ambiente::class);
+        return $this->hasMany(Ambiente::class, 'piso_id');
     }
 
     public function userCreated()

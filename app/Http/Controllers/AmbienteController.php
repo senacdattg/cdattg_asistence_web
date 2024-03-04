@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAmbienteRequest;
 use App\Models\Piso;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AmbienteController extends Controller
@@ -96,5 +97,11 @@ class AmbienteController extends Controller
     public function destroy(Ambiente $ambiente)
     {
         //
+    }
+    public function cargarAmbientes(Request $request, $pisoId)
+    {
+        $ambientes = Ambiente::where('piso_id', $pisoId)->pluck('descripcion', 'id');
+
+        return response()->json($ambientes);
     }
 }
