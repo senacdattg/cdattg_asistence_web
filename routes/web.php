@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
@@ -42,6 +43,9 @@ Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // Ruta para sedes
 Route::resource('sede', SedeController::class);
+
+// Ruta para bloques
+Route::resource('bloque', BloqueController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
