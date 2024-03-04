@@ -54,7 +54,7 @@ class PisoController extends Controller
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
             ]);
-            return redirect()->route('bloque.index')->with('success', '¡Registro Exitoso!');
+            return redirect()->route('piso.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);

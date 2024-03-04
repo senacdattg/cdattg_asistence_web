@@ -6,6 +6,9 @@ use App\Models\Ambiente;
 use App\Http\Requests\StoreAmbienteRequest;
 use App\Http\Requests\UpdateAmbienteRequest;
 use App\Models\Piso;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AmbienteController extends Controller
 {
@@ -32,7 +35,35 @@ class AmbienteController extends Controller
      */
     public function store(StoreAmbienteRequest $request)
     {
-        //
+        try {
+            $validator = Validator::make($request->all(), [
+                'descripcion' => 'required',
+                'piso_id' => 'required',
+            ]);
+            // @dd($validator);
+            if ($validator->fails()) {
+                @dd($validator);
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $ambiente = Ambiente::create([
+                'descripcion' => $request->input('descripcion'),
+                'piso_id' => $request->input('piso_id'),
+                'user_create_id' => Auth::user()->id,
+                'user_edit_id' => Auth::user()->id,
+            ]);
+            return redirect()->route('ambiente.index')->with('success', '¡Registro Exitoso!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
     }
 
     /**
