@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ambiente;
 use App\Http\Requests\StoreAmbienteRequest;
 use App\Http\Requests\UpdateAmbienteRequest;
+use App\Models\Piso;
 
 class AmbienteController extends Controller
 {
@@ -13,7 +14,8 @@ class AmbienteController extends Controller
      */
     public function index()
     {
-        //
+        $ambientes = Ambiente::paginate(10);
+        return view('ambiente.index', compact('ambientes'));
     }
 
     /**
@@ -21,7 +23,8 @@ class AmbienteController extends Controller
      */
     public function create()
     {
-        //
+        $pisos = Piso::all();
+        return view('ambiente.create', compact('pisos'));
     }
 
     /**

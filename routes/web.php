@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AmbienteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
@@ -50,6 +51,9 @@ Route::resource('bloque', BloqueController::class);
 
 // Ruta para los pisos
 Route::resource('piso', PisoController::class);
+
+// Ruta para ambientes
+Route::resource('ambiente', AmbienteController::class);
 
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
