@@ -11,6 +11,7 @@ use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\SedeController;
+use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 
@@ -45,9 +46,11 @@ Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // Ruta para sedes
 Route::resource('sede', SedeController::class);
+Route::get('/cargarSedes', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
 
 // Ruta para bloques
 Route::resource('bloque', BloqueController::class);
+Route::get('/cargarBloques{sede_id}', [BloqueController::class, 'cargarBloques'])->name('bloque.cargarBloques');
 
 // Ruta para los pisos
 Route::resource('piso', PisoController::class);

@@ -20,7 +20,10 @@ class BloqueController extends Controller
         $bloques = Bloque::paginate(10);
         return view('bloque.index', compact('bloques'));
     }
-
+    public function cargarBloques($sede_id){
+        $bloques = Bloque::where('sede_id', $sede_id)->get();
+        return response()->json(['success' => true, 'bloques' => $bloques]);
+    }
     /**
      * Show the form for creating a new resource.
      */

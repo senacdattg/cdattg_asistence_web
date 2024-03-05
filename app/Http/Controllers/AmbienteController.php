@@ -58,7 +58,7 @@ class AmbienteController extends Controller
             return redirect()->route('ambiente.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
+            // @dd($e);
             return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
         } catch (\Exception $e) {
             // Manejar otras excepciones

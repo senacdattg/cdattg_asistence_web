@@ -32,15 +32,27 @@
                     <form action="{{ route('ambiente.store') }}" method="post">
                         @csrf
 
+                        <div class="row">
+                            <div class="col-md-6 div-sede">
+                                <label for="sede_id">Seleccione la sede</label>
+                                <select name="sede_id" id="sede_id" class="form-control">
+                                        <option value="" disabled selected>Selecciona una sede</option>
+                                </select>
+                            </div>
+
+
+                            <div class="col-md-6 div-bloque">
+                                <label for="bloque_id">Seleccione el bloque</label>
+                                <select name="bloque_id" id="bloque_id" class="form-control">
+                                   <option value="" disabled selected>Selecciona un bloque</option>
+                                </select>
+                            </div>
+                        </div>
+
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="row">
-                            <div class="col-md-6">
-                                <label for="descripcion">Descripcion</label>
-                                <input type="text" class="form-control" value="{{ old('descripcion') }}"
-                                    name="descripcion" placeholder="Descripion del piso" required autofocus>
-                            </div>
-                            
-                            <div class="col-md-6">
+
+                            <div class="col-md-6 div-piso">
                                 <label for="piso_id">Seleccione el piso</label>
                                 <select name="piso_id" id="piso_id" class="form-control">
                                     @forelse ($pisos as $bloque)
@@ -51,6 +63,13 @@
                                 </select>
 
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="descripcion">Descripcion</label>
+                                <input type="text" class="form-control" value="{{ old('descripcion') }}"
+                                    name="descripcion" placeholder="Descripion del piso" required autofocus>
+                            </div>
+
                         </div>
 
 
@@ -66,29 +85,5 @@
     </div>
 @endsection
 @section('script')
-
-<script>
-    <script>
-    $(document).ready(function () {
-        $('#piso_id').on('change', function () {
-            var pisoId = $(this).val();
-
-            $.ajax({
-                url: '/cargar-ambientes-piso/' + pisoId,
-                type: 'GET',
-                success: function (data) {
-                    // Limpiar y llenar el select de ambientes
-                    $('#ambiente_id').empty();
-                    $.each(data, function (key, value) {
-                        $('#ambiente_id').append('<option value="' + key + '">' + value + '</option>');
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
-    });
-</script>
-</script>
+    <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
 @endsection

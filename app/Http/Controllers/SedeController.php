@@ -19,6 +19,11 @@ class SedeController extends Controller
         $sedes = Sede::paginate(10);
         return view('sede.index', compact('sedes'));
     }
+    public function cargarSedes()
+    {
+        $sedes = Sede::all();
+        return response()->json(['success' => true, 'sedes' => $sedes]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -46,7 +51,7 @@ class SedeController extends Controller
                     ->withInput();
             }
 
-            $sede= Sede::create([
+            $sede = Sede::create([
                 'descripcion' => $request->input('descripcion'),
                 'direccion' => $request->input('direccion'),
                 'ciudad' => $request->input('ciudad'),
