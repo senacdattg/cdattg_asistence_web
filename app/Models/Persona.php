@@ -30,6 +30,24 @@ class Persona extends Model
         'cargo',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($persona){
+            $persona->primer_nombre = strtoupper($persona->primer_nombre);
+            $persona->segundo_nombre = strtoupper($persona->segundo_nombre);
+            $persona->primer_apellido = strtoupper($persona->primer_apellido);
+            $persona->segundo_apellido = strtoupper($persona->segundo_apellido);
+            $persona->cargo = strtoupper($persona->cargo);
+
+
+
+
+        });
+    }
+
+
     public function user()
     {
         return $this->hasOne(User::class, 'persona_id');

@@ -58,6 +58,110 @@
 
                     </ul>
                 </li>
+                {{-- gestion de sedes --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Sedes
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('sede.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sedes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('sede.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear sede</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                {{-- Administrad bloques --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Bloques
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('bloque.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Bloques</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('bloque.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear bloque</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                {{-- Administrad bloques --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar pisos
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('piso.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>pisos</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('piso.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear piso</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                {{-- Administrad bloques --}}
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar ambientes
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('ambiente.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ambientes</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('ambiente.create') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear ambiente</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
                 {{-- administrar instructores --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">

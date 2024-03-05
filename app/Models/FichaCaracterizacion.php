@@ -9,7 +9,7 @@ class FichaCaracterizacion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'ficha_caracterizacion'];
+    protected $fillable = ['user_id', 'ficha_caracterizacion', 'ambiente_id'];
 
     public function user()
     {

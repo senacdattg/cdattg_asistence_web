@@ -52,4 +52,40 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(FichaCaracterizacion::class, 'user_id');
     }
+    // relacion de bloques y usuario
+    public function bloqueCreated()
+    {
+        return $this->hasMany(Bloque::class, 'user_create_id');
+    }
+    public function bloqueEdited()
+    {
+        return $this->hasMany(Bloque::class, 'user_edit_id');
+    }
+    // relacion e sedes y usuario
+    public function sedeCreated()
+    {
+        return $this->hasMany(Sede::class, 'user_create_id');
+    }
+    public function sedeEdited()
+    {
+        return $this->hasMany(Sede::class, 'user_edit_id');
+    }
+    // relacion  entre piso y usuario
+    public function pisoCreated()
+    {
+        return $this->hasMany(Piso::class, 'user_create_id');
+    }
+    public function pisoEdited()
+    {
+        return $this->hasMany(Piso::class, 'user_edit_id');
+    }
+    // relacion  entre ambiente y usuario
+    public function ambienteCreated()
+    {
+        return $this->hasMany(Ambiente::class, 'user_create_id');
+    }
+    public function ambienteEdited()
+    {
+        return $this->hasMany(Ambiente::class, 'user_edit_id');
+    }
 }
