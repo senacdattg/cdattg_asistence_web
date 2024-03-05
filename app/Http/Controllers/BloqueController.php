@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateBloqueRequest;
 use App\Models\Sede;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BloqueController extends Controller
@@ -21,8 +22,10 @@ class BloqueController extends Controller
         return view('bloque.index', compact('bloques'));
     }
     public function cargarBloques($sede_id){
+        // DB::enableQueryLog();
         $bloques = Bloque::where('sede_id', $sede_id)->get();
         return response()->json(['success' => true, 'bloques' => $bloques]);
+        // dd(DB::getQueryLog());
     }
     /**
      * Show the form for creating a new resource.

@@ -50,10 +50,11 @@ Route::get('/cargarSedes', [SedeController::class, 'cargarSedes'])->name('sede.c
 
 // Ruta para bloques
 Route::resource('bloque', BloqueController::class);
-Route::get('/cargarBloques{sede_id}', [BloqueController::class, 'cargarBloques'])->name('bloque.cargarBloques');
+Route::get('/cargarBloques/{sede_id}', [BloqueController::class, 'cargarBloques'])->name('bloque.cargarBloques');
 
 // Ruta para los pisos
 Route::resource('piso', PisoController::class);
+Route::get('/cargarPisos/{bloque_id}', [PisoController::class, 'cargarPisos'])->name('piso.cargarPisos');
 
 // Ruta para ambientes
 Route::resource('ambiente', AmbienteController::class);

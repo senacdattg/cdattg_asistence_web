@@ -35,15 +35,15 @@
                         <div class="row">
                             <div class="col-md-6 div-sede">
                                 <label for="sede_id">Seleccione la sede</label>
-                                <select name="sede_id" id="sede_id" class="form-control">
+                                <select name="sede_id" id="sede_id" class="form-control" required>
                                         <option value="" disabled selected>Selecciona una sede</option>
                                 </select>
                             </div>
 
-
+{{-- <a href="{{ route('bloque.cargarBloques', ['sede_id' => 1]) }}" class="btn btn-danger">cargar bloques</a> --}}
                             <div class="col-md-6 div-bloque">
                                 <label for="bloque_id">Seleccione el bloque</label>
-                                <select name="bloque_id" id="bloque_id" class="form-control">
+                                <select name="bloque_id" id="bloque_id" class="form-control" required>
                                    <option value="" disabled selected>Selecciona un bloque</option>
                                 </select>
                             </div>
@@ -54,12 +54,8 @@
 
                             <div class="col-md-6 div-piso">
                                 <label for="piso_id">Seleccione el piso</label>
-                                <select name="piso_id" id="piso_id" class="form-control">
-                                    @forelse ($pisos as $bloque)
-                                        <option value="{{ $bloque->id }}">{{ $bloque->descripcion }}</option>
-                                    @empty
-                                        <p>No hay pisos disponibles</p>
-                                    @endforelse
+                                <select name="piso_id" id="piso_id" class="form-control" required>
+                                  <option value="" disabled selected>Selecciona un piso</option>
                                 </select>
 
                             </div>

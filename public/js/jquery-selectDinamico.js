@@ -73,16 +73,61 @@ $(document).ready(function() {
         });
     }
 
+    // Función para cargar los pisos en función de la sede seleccionada
+    function cargarPisos(bloque_id) {
+        $.ajax({
+            url: '/cargarPisos/' + bloque_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Limpiar el select de bloques actual
+                    $('#piso_id').empty();
+
+                    // Agregar la opción predeterminada
+                    $('#piso_id').append($('<option>', {
+                        value: '',
+                        text: 'Selecciona un piso',
+                        disabled: true,
+                        selected: true
+                    }));
+
+                    // Recorrer los bloques y agregarlos al select
+                    $.each(response.pisos, function(index, piso) {
+                        $('#piso_id').append($('<option>', {
+                            value: piso.id,
+                            text: piso.descripcion
+                        }));
+                    });
+                } else {
+                    console.error(response.message);
+                }
+            },
+            error: function(error) {
+                console.error('Error en la llamada AJAX:', error);
+            }
+        });
+    }
+
 
 
     // Manejar el cambio en el select de sedes para cargar los bloques correspondientes
     $('#sede_id').on('change', function() {
         var sede_id = $(this).val();
-        alert('¡seleccionaste una opcion!');
+        alert('¡seleccionaste la !'  + sede_id);
+
 
         if (sede_id) {
             // Llamar a la función para cargar los bloques
             cargarBloques(sede_id);
+        }
+    });
+
+    $('#bloque_id').on('change', function(){
+        var bloque_id = $(this).val();
+
+        if(bloque_id){
+            cargarPisos(bloque_id);
         }
     });
 

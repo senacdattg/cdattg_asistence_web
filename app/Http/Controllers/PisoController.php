@@ -20,7 +20,13 @@ class PisoController extends Controller
         $pisos = Piso::paginate(10);
         return view('piso.index', compact('pisos'));
     }
-
+    public function cargarPisos($bloque_id)
+    {
+        // DB::enableQueryLog();
+        $pisos = Piso::where('bloque_id', $bloque_id)->get();
+        return response()->json(['success' => true, 'pisos' => $pisos]);
+        // dd(DB::getQueryLog());
+    }
     /**
      * Show the form for creating a new resource.
      */
