@@ -45,6 +45,7 @@ class FichaCaracterizacionController extends Controller
         try{
             $validator = Validator::make($request->all(),[
                 'ficha_caracterizacion' => 'required',
+                'ambiente_id' => 'required',
             ]);
             if($validator->fails()){
                 @dd($validator);
@@ -56,6 +57,7 @@ class FichaCaracterizacionController extends Controller
             $fichaCaracterizacion = FichaCaracterizacion::create([
                 'user_id' => Auth::user()->id,
                 'ficha_caracterizacion' => $request->input('ficha_caracterizacion'),
+                'ambiente_id' => $request->input('ambiente_id'),
             ]);
             return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {

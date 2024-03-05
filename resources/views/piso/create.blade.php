@@ -34,33 +34,42 @@
 
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="row">
+
+                            <div class="col-md-6 div-sede">
+                                <label for="sede_id">Seleccione la sede</label>
+                                <select name="sede_id" id="sede_id" class="form-control" required autofocus>
+                                    <option value="" disabled selected>Selecciona una sede</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 div-bloque">
+                                <label for="bloque_id">Seleccione el bloque</label>
+                                <select name="bloque_id" id="bloque_id" class="form-control" required>
+                                    <option value="" disabled selected>Selecciona un bloque</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-6">
                                 <label for="descripcion">Descripcion</label>
                                 <input type="text" class="form-control" value="{{ old('descripcion') }}"
-                                    name="descripcion" placeholder="Descripion del piso" required autofocus>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="bloque_id">Seleccione el bloque</label>
-                                <select name="bloque_id" id="bloque_id" class="form-control">
-                                    @forelse ($bloques as $bloque)
-                                        <option value="{{ $bloque->id }}">{{ $bloque->descripcion }}</option>
-                                    @empty
-                                        <p>No hay bloques disponibles</p>
-                                    @endforelse
-                                </select>
-
+                                    name="descripcion" placeholder="Descripion del piso" required >
                             </div>
                         </div>
-
-
-                        {{-- Botón de Registro --}}
-                        <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Crear Bloque</button>
-                        </div>
-                    </form>
-
                 </div>
+
+
+                {{-- Botón de Registro --}}
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <button type="submit" class="btn btn-primary btn-lg">Crear Bloque</button>
+                </div>
+                </form>
+
             </div>
-        </section>
+
+    </section>
     </div>
+@endsection
+@section('script')
+    <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
 @endsection

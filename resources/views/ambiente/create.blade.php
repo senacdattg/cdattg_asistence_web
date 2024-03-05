@@ -40,7 +40,6 @@
                                 </select>
                             </div>
 
-{{-- <a href="{{ route('bloque.cargarBloques', ['sede_id' => 1]) }}" class="btn btn-danger">cargar bloques</a> --}}
                             <div class="col-md-6 div-bloque">
                                 <label for="bloque_id">Seleccione el bloque</label>
                                 <select name="bloque_id" id="bloque_id" class="form-control" required>

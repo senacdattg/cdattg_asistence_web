@@ -38,9 +38,15 @@
                                     Nombre
                                 </th>
                                 <th style="width: 30%">
-                                    piso
+                                    Sede
+                                </th>
+                                <th style="width: 40%">
+                                    bloque
                                 </th>
                                 <th style="width: 50%">
+                                    piso
+                                </th>
+                                <th style="width: 60%">
                                     Estado
                                 </th>
                             </tr>
@@ -54,7 +60,12 @@
                                     <td>
                                         {{ $ambiente->descripcion }}
                                     </td>
-
+                                    <td>
+                                        {{ $ambiente->piso->bloque->sede->descripcion }}
+                                    </td>
+                                    <td>
+                                        {{ $ambiente->piso->bloque->descripcion }}
+                                    </td>
                                     <td>
                                         {{ $ambiente->piso->descripcion }}
                                     </td>
@@ -74,26 +85,26 @@
                                             method="POST">
                                             @csrf
                                             @method('PUT') --}}
-                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                            {{-- <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning btn-sm"
+                                        {{-- <a class="btn btn-warning btn-sm"
                                             href="{{ route('ambiente.show', ['ambiente' => $ambiente->id]) }}">
                                             <i class="fas fa-eye"></i>
 
-                                        </a>
+                                        </a> --}}
                                     </td>
                                     <td>
-                                        <a class="btn btn-info btn-sm"
+                                        {{-- <a class="btn btn-info btn-sm"
                                             href="{{ route('ambiente.edit', ['ambiente' => $ambiente->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                        </a>
+                                        </a> --}}
                                     </td>
                                     <td>
-                                        <form action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}" method="POST"
+                                        {{-- <form action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
@@ -103,7 +114,7 @@
 
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
+                                        </form> --}}
                                     </td>
                                 </tr>
 

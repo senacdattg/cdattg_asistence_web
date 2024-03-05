@@ -21,6 +21,13 @@ class AmbienteController extends Controller
         $ambientes = Ambiente::paginate(10);
         return view('ambiente.index', compact('ambientes'));
     }
+    public function cargarAmbientes($piso_id)
+    {
+        // DB::enableQueryLog();
+        $ambientes = Ambiente::where('piso_id', $piso_id)->get();
+        return response()->json(['success' => true, 'ambientes' => $ambientes]);
+        // dd(DB::getQueryLog());
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -98,10 +105,5 @@ class AmbienteController extends Controller
     {
         //
     }
-    public function cargarAmbientes(Request $request, $pisoId)
-    {
-        $ambientes = Ambiente::where('piso_id', $pisoId)->pluck('descripcion', 'id');
 
-        return response()->json($ambientes);
-    }
 }

@@ -109,6 +109,42 @@ $(document).ready(function() {
         });
     }
 
+    // Función para cargar los pisos en función de la sede seleccionada
+    function cargarAmbientes(piso_id) {
+        $.ajax({
+            url: '/cargarAmbientes/' + piso_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Limpiar el select de bloques actual
+                    $('#ambiente_id').empty();
+
+                    // Agregar la opción predeterminada
+                    $('#ambiente_id').append($('<option>', {
+                        value: '',
+                        text: 'Selecciona un ambiente',
+                        disabled: true,
+                        selected: true
+                    }));
+
+                    // Recorrer los bloques y agregarlos al select
+                    $.each(response.ambientes, function(index, ambiente) {
+                        $('#ambiente_id').append($('<option>', {
+                            value: ambiente.id,
+                            text: ambiente.descripcion
+                        }));
+                    });
+                } else {
+                    console.error(response.message);
+                }
+            },
+            error: function(error) {
+                console.error('Error en la llamada AJAX:', error);
+            }
+        });
+    }
+
 
 
     // Manejar el cambio en el select de sedes para cargar los bloques correspondientes
@@ -130,6 +166,14 @@ $(document).ready(function() {
             cargarPisos(bloque_id);
         }
     });
+
+    $('#piso_id').on('change', function(){
+        var piso_id = $(this).val();
+
+        if(piso_id){
+            cargarAmbientes(piso_id);
+        }
+    })
 
     // alert('¡jQuery está funcionando!');
 

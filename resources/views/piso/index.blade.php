@@ -38,6 +38,9 @@
                                     Nombre
                                 </th>
                                 <th style="width: 30%">
+                                    Sede
+                                </th>
+                                <th style="width: 40%">
                                     Bloque
                                 </th>
                                 <th style="width: 50%">
@@ -54,7 +57,9 @@
                                     <td>
                                         {{ $piso->descripcion }}
                                     </td>
-
+                                    <td>
+                                        {{ $piso->bloque->sede->descripcion }}
+                                    </td>
                                     <td>
                                         {{ $piso->bloque->descripcion }}
                                     </td>
@@ -68,13 +73,13 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
+                                    {{-- <td> --}}
                                         {{-- <form id="cambiarEstadoForm" class=" d-inline"
                                             action="{{ route('piso.cambiarEstadoUser', ['piso' => $piso->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('PUT') --}}
-                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                            {{-- <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
@@ -104,7 +109,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-                                    </td>
+                                    </td> --}}
                                 </tr>
 
                             @empty

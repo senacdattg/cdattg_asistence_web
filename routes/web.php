@@ -11,6 +11,7 @@ use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\SedeController;
+use App\Models\Ambiente;
 use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
@@ -58,8 +59,8 @@ Route::get('/cargarPisos/{bloque_id}', [PisoController::class, 'cargarPisos'])->
 
 // Ruta para ambientes
 Route::resource('ambiente', AmbienteController::class);
-// ruta para ajax de piso- ambiente
-Route::get('/cargar-ambientes-piso/{pisoId}', 'TuControlador@cargarAmbientes')->name('cargar.ambientes.piso');
+Route::get('/cargarAmbientes/{piso_id}', [AmbienteController::class, 'cargarAmbientes'])->name('ambiente.cargarAmbientes');
+
 
 
 // rutas del controlador register

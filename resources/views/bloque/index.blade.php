@@ -74,7 +74,7 @@
                                             method="POST">
                                             @csrf
                                             @method('PUT') --}}
-                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                            {{-- <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
@@ -104,7 +104,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-                                    </td>
+                                    </td> --}}
                                 </tr>
 
                             @empty
