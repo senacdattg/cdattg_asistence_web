@@ -6,7 +6,11 @@ use App\Models\EntradaSalida;
 use App\Http\Requests\StoreEntradaSalidaRequest;
 use App\Http\Requests\UpdateEntradaSalidaRequest;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EntradaSalidaController extends Controller
 {
@@ -37,9 +41,78 @@ class EntradaSalidaController extends Controller
      */
     public function store(StoreEntradaSalidaRequest $request)
     {
-        //
-    }
+        // @dd('holis');
+        try {
 
+            $validator = validator::make($request->all(), [
+                // 'user_id' => Auth::user()->id,
+                'aprendiz' => 'required|string',
+            ]);
+
+            if ($validator->fails()) {
+                @dd('holis');
+                @dd($validator);
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            // Crear Persona
+            $entradaSalida = EntradaSalida::create([
+                'user_id' => Auth::user()->id,
+                'aprendiz' => $request->input('aprendiz'),
+                'entrada' => Carbon::now(),
+            ]);
+
+
+            return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
+    public function updateSalida(Request $request){
+        try{
+            $validator = validator::make($request->all(), [
+                'aprendiz' => 'required|string',
+            ]);
+            if ($validator->fails()) {
+                @dd('holis');
+                @dd($validator);
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $entradaSalida = EntradaSalida::whereExists(function ($query) use ($request) {
+                $query->where('aprendiz', $request->input('aprendiz'))
+                    ->where('salida', null);
+            })->first();
+            if($entradaSalida){
+
+                $entradaSalida->update([
+                    'salida' => Carbon::now(),
+                ]);
+                return redirect()->route('entradaSalida.index')->with('success', 'Salida Exitosa');
+            }else{
+                return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
+            }
+
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
     /**
      * Display the specified resource.
      */

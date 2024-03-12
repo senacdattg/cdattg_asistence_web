@@ -17,7 +17,16 @@
                 </div>
             </div>
         </section>
-
+<div class="content">
+    <div class="row">
+        <div class="col">
+            @include('entradaSalidas.create')
+        </div>
+        <div class="col">
+            @include('entradaSalidas.edit')
+        </div>
+    </div>
+</div>
         <section class="content">
 
             <div class="card">
@@ -41,12 +50,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php $i = 0; ?>
+                                <?php $i = 1; ?>
                                 @forelse ($registros as $registro)
                                     <tr>
                                         <td>
                                             {{ $i++ }}
-                                            {{ $registro->id }}
+                                            {{-- {{ $registro->id }} --}}
                                         </td>
                                         <td>
                                            {{ $registro->aprendiz }}
