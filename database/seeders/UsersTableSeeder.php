@@ -18,12 +18,13 @@ class UsersTableSeeder extends Seeder
         $persona = Persona::where('email', 'admin@admin.com')->first();
 
         if ($persona) {
-            User::create([
+            $user = User::create([
                 'email' => $persona->email,
                 'password' => Hash::make('123456'),
-                'status' => 1, // Opcional, si tu modelo User tiene status
+                'status' => 1,
                 'persona_id' => $persona->id,
             ]);
+            $user->assignRole('SUPER ADMINISTRADOR');
         }
     }
 }

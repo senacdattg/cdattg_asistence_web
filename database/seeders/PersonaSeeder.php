@@ -16,14 +16,14 @@ class PersonaSeeder extends Seeder
         Persona::create([
             'tipo_documento' => 'sin documento',
             'numero_documento' => 987654321,
-            'primer_nombre' => 'super',
+            'primer_nombre' => 'JOSE',
             'segundo_nombre' => null,
-            'primer_apellido' => 'admin',
+            'primer_apellido' => 'LOPEZ',
             'segundo_apellido' => null,
             'fecha_de_nacimiento' => '2000-01-01',
             'genero' => 'sin definir',
             'email' => 'admin@admin.com',
-            'cargo' => 'super admin',
+            'cargo' => 'SUPER ADMINISTRADOR',
         ]);
     }
 }
