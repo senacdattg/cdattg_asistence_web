@@ -26,7 +26,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-
+                @if(auth()->user()->hasRole(['ADMINISTRADOR', 'SUPER ADMINISTRADOR']))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -188,6 +188,8 @@
 
                     </ul>
                 </li>
+                @endif
+                @if(auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-users"></i>
@@ -206,6 +208,7 @@
 
                     </ul>
                 </li>
+                @endif
 
         </nav>
 

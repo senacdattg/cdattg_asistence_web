@@ -79,6 +79,7 @@ class PersonaController extends Controller
                 'password' => Hash::make($request->input('numero_documento')),
                 'persona_id' => $persona->id,
             ]);
+            $user->assignRole('INSTRUCTOR');
 
             return redirect()->route('persona.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
