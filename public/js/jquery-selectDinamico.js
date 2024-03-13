@@ -150,7 +150,7 @@ $(document).ready(function() {
     // Manejar el cambio en el select de sedes para cargar los bloques correspondientes
     $('#sede_id').on('change', function() {
         var sede_id = $(this).val();
-        alert('¡seleccionaste la !'  + sede_id);
+        // alert('¡seleccionaste la !'  + sede_id);
 
 
         if (sede_id) {

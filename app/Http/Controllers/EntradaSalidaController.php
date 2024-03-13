@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\EntradaSalida;
 use App\Http\Requests\StoreEntradaSalidaRequest;
 use App\Http\Requests\UpdateEntradaSalidaRequest;
+use App\Models\FichaCaracterizacion;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class EntradaSalidaController extends Controller
@@ -113,9 +116,69 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
+    public function crearCarpetaUser(){
+        $user_id = Auth::id(); // Obtener el ID del usuario autenticado
+
+        $carpeta_csv = public_path('csv');
+        $carpeta_usuario = public_path('csv/' . $user_id);
+
+        if (!file_exists($carpeta_csv)) {
+            mkdir($carpeta_csv, 0777, true);
+        }
+
+        if (!file_exists($carpeta_usuario)) {
+            mkdir($carpeta_usuario, 0777, true);
+            // echo "Carpeta del usuario creada correctamente.";
+        } else {
+            // echo "La carpeta del usuario ya existe.";
+        }
+    }
+    public function generarCSV(){
+        date_default_timezone_set('America/Bogota');
+
+        $lista = EntradaSalida::where('user_id', Auth::user()->id)->get();
+
+        $fecha_actual = now()->format('Y-m-d_H-i-s');
+
+        $nombre_archivo = Auth::user()->fichaCaracterizacion->ficha_caracterizacion . $fecha_actual . '.csv';
+
+        // Inicializar el contenido del archivo CSV
+        $csv_content = '';
+
+        // Agregar las líneas al contenido del archivo
+        foreach ($lista as $linea) {
+            $csv_content .= implode('-', $linea->toArray()) . PHP_EOL;
+        }
+
+        // Preparar la respuesta para la descarga
+        $response = response()->stream(
+            function () use ($csv_content) {
+                echo $csv_content;
+            },
+            200,
+            [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename=' . $nombre_archivo,
+            ]
+        );
+
+        // Eliminar las entradas y fichaCaracterizacion relacionadas
+        $this->destroyEntradaSalida();
+        $this->destroyFichaCaractrizacion();
+
+        // Devolver una respuesta JSON después de la descarga
+        return $response;
+
+    }
     /**
      * Display the specified resource.
      */
+    public  function destroyEntradaSalida(){
+        EntradaSalida::where('user_id', Auth::user()->id)->delete();
+    }
+    public function destroyFichaCaractrizacion(){
+        FichaCaracterizacion::where('user_id', Auth::user()->id)->delete();
+    }
     public function show(EntradaSalida $entradaSalida)
     {
         //

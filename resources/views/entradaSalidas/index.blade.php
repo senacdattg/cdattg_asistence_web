@@ -17,16 +17,16 @@
                 </div>
             </div>
         </section>
-<div class="content">
-    <div class="row">
-        <div class="col">
-            @include('entradaSalidas.create')
+        <div class="content">
+            <div class="row">
+                <div class="col">
+                    @include('entradaSalidas.create')
+                </div>
+                <div class="col">
+                    @include('entradaSalidas.edit')
+                </div>
+            </div>
         </div>
-        <div class="col">
-            @include('entradaSalidas.edit')
-        </div>
-    </div>
-</div>
         <section class="content">
 
             <div class="card">
@@ -58,7 +58,7 @@
                                             {{-- {{ $registro->id }} --}}
                                         </td>
                                         <td>
-                                           {{ $registro->aprendiz }}
+                                            {{ $registro->aprendiz }}
                                         </td>
 
                                         <td>
@@ -114,7 +114,7 @@
                                             {{-- </form> --}}
                                         </td>
                                     </tr>
-                                    @empty
+                                @empty
                                     <tr>
                                         <td colspan="4">No hay personas registradas</td>
                                     </tr>
@@ -123,8 +123,33 @@
                         </table>
                     </div>
                 </div>
+                <div class="row align-self-center">
+                    <div class="col align-self-center">
+                        <a href="{{ route('entradaSalida.generarCSV') }}" id="btn-generarCSV"
+                            class="btn btn-warning btn-sm"><i class="fas fa-file-csv" style="font-size: 2em;"></i></a>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
+@endsection
+@section('script')
+  <script>
+    $(document).ready(function () {
+        var btnGenerarCSV = $('#btn-generarCSV');
 
+        btnGenerarCSV.click(function () {
+            // Simular un formulario oculto y realizar la descarga
+            var iframe = $('<iframe style="display: none;"></iframe>');
+            $('body').append(iframe);
+
+            iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
+
+            // Redirigir después de la descarga
+            setTimeout(function () {
+                window.location.href = '{{ route('fichaCaracterizacion.create') }}';
+            }, 1000); // 2000 milisegundos (2 segundos) de retraso
+        });
+    });
+  </script>
 @endsection

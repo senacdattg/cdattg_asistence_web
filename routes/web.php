@@ -41,6 +41,7 @@ Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambi
 // Rutas para entrada y salida
 Route::resource('entradaSalida', EntradaSalidaController::class);
 Route::post('updateSalida', [EntradaSalidaController::class, 'updateSalida'])->name('entradaSalida.updateSalida');
+Route::get('generarCSV', [EntradaSalidaController::class, 'generarCSV'])->name('entradaSalida.generarCSV');
 
 
 // Rutas oara fucha de caracterizacion
