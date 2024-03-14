@@ -9,10 +9,18 @@ class FichaCaracterizacion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'ficha_caracterizacion', 'ambiente_id'];
+    protected $fillable = ['ficha', 'nombre_curso','codigo_programa', 'horas_formacion', 'cupo', 'dias_de_formacion', 'municipio_id', 'instructor_asignado', 'ambiente_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function municipio()
+    {
+        return $this->belongsTo(Municipio::class);
+    }
+    public function ambiente()
+    {
+        return $this->belongsTo(Ambiente::class);
     }
 }

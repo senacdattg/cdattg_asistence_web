@@ -47,6 +47,9 @@ class FichaCaracterizacionController extends Controller
                 'ficha_caracterizacion' => 'required',
                 'ambiente_id' => 'required',
             ]);
+            // 'ficha', 'nombre_curso','codigo_programa', 'horas_formacion', 'cupo', 'dias_de_formacion', 'municipio_id', 'instructor_asignado', 'ambiente_id'
+            // estos son los nuevos campos que se debe de poner
+            // ajustar la vista tambien
             if($validator->fails()){
                 @dd($validator);
                 return redirect()->back()
