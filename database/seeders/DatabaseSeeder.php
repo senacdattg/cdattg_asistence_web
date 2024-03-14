@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
         PersonaSeeder::class,
         UsersTableSeeder::class,
+        PaisSeeder::class,
+        DepartamentoSeeder::class,
+        MunicipioSeeder::class,
         ]);
     }
 }
