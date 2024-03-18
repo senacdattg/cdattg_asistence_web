@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('pisos', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->string('piso');
             $table->foreignId('bloque_id')->constrained('bloques');
             $table->foreignId('user_create_id')->constrained('users');
             $table->foreignId('user_edit_id')->constrained('users');
             $table->boolean('status')->default(1);
             $table->timestamps();
 
-            $table->unique(['descripcion', 'bloque_id'], 'piso_uk');
+            $table->unique(['piso', 'bloque_id'], 'piso_uk');
         });
     }
 
