@@ -1,6 +1,41 @@
 $(document).ready(function() {
  // Llamar a la función para cargar las sedes al iniciar el documento
-    cargarSedes();
+    cargarDepartamentos();
+    // funcion para cargar los departamentos
+    function cargarDepartamentos() {
+        $.ajax({
+            url: '/cargardepartamentos',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Limpiar el select de sedes actual
+                    $('#departamento_id').empty();
+
+                    // Agregar la opción predeterminada
+                    $('#departamento_id').append($('<option>', {
+                        value: '',
+                        text: 'Selecciona un Departamento',
+                        disabled: true,
+                        selected: true
+                    }));
+
+                    // Recorrer las sedes y agregarlas al select
+                    $.each(response.departamentos, function(index, departamento) {
+                        $('#departamento_id').append($('<option>', {
+                            value: departamento.id,
+                            text: departamento.departamento,
+                        }));
+                    });
+                } else {
+                    console.error(response.message);
+                }
+            },
+            error: function(error) {
+                console.error('Error en la llamada AJAX:', error);
+            }
+        });
+    }
    // Función para cargar las sedes
     function cargarSedes() {
         $.ajax({
@@ -24,7 +59,7 @@ $(document).ready(function() {
                     $.each(response.sedes, function(index, sede) {
                         $('#sede_id').append($('<option>', {
                             value: sede.id,
-                            text: sede.descripcion
+                            text: sede.sede
                         }));
                     });
                 } else {
@@ -60,7 +95,7 @@ $(document).ready(function() {
                     $.each(response.bloques, function(index, bloque) {
                         $('#bloque_id').append($('<option>', {
                             value: bloque.id,
-                            text: bloque.descripcion
+                            text: bloque.bloque
                         }));
                     });
                 } else {
@@ -96,7 +131,7 @@ $(document).ready(function() {
                     $.each(response.pisos, function(index, piso) {
                         $('#piso_id').append($('<option>', {
                             value: piso.id,
-                            text: piso.descripcion
+                            text: piso.piso
                         }));
                     });
                 } else {
@@ -132,7 +167,7 @@ $(document).ready(function() {
                     $.each(response.ambientes, function(index, ambiente) {
                         $('#ambiente_id').append($('<option>', {
                             value: ambiente.id,
-                            text: ambiente.descripcion
+                            text: ambiente.title
                         }));
                     });
                 } else {

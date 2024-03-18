@@ -4,6 +4,7 @@ use App\Http\Controllers\AmbienteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
@@ -78,3 +79,7 @@ Route::controller(LoginController::class)->group(function(){
 });
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
+
+// rutas para departamentos
+
+Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');

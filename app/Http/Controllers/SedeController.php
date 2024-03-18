@@ -21,7 +21,7 @@ class SedeController extends Controller
     }
     public function cargarSedes()
     {
-        $sedes = Sede::all();
+        $sedes = Sede::where('status', 1)->get();
         return response()->json(['success' => true, 'sedes' => $sedes]);
     }
 

@@ -17,7 +17,8 @@ class FichaCaracterizacionController extends Controller
      */
     public function index()
     {
-        //
+        $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
+        return view('ficha.index', compact('fichas'));
     }
 
     /**
@@ -25,16 +26,9 @@ class FichaCaracterizacionController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-        $ficha = FichaCaracterizacion::where('user_id', $user->id)->first();
 
-        if (!$ficha) {
-            // El usuario no tiene una ficha, redirigirlo al formulario de creación de ficha
-            return view('ficha.create');
-        }
+        return view('ficha.create');
 
-        // El usuario tiene una ficha, mostrar el formulario de creación de entrada/salida
-        return redirect()->route('entradaSalida.index');
     }
 
     /**
