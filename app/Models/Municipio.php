@@ -30,4 +30,8 @@ class Municipio extends Model
     {
         return $this->hasMany(FichaCaracterizacion::class);
     }
+    public function sedes()
+    {
+        return $this->hasMany(Sede::class);
+    }
 }

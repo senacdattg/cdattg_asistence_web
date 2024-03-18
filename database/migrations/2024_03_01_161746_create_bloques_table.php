@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('bloques', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->string('bloque');
             $table->foreignId('sede_id')->constrained('sedes');
             $table->foreignId('user_create_id')->constrained('users');
             $table->foreignId('user_edit_id')->constrained('users');
             $table->boolean('status')->default(1);
             $table->timestamps();
 
-            $table->unique(['descripcion', 'sede_id'], 'bloque_uk');
+            $table->unique(['bloque', 'sede_id'], 'bloque_uk');
         });
     }
 

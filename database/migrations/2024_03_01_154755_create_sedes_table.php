@@ -13,15 +13,13 @@ return new class extends Migration
     {
         Schema::create('sedes', function (Blueprint $table) {
             $table->id();
-            $table->string('descripcion');
+            $table->string('sede');
             $table->string('direccion');
-            $table->string('ciudad');
             $table->foreignId('user_create_id')->constrained('users');
             $table->foreignId('user_edit_id')->constrained('users');
             $table->boolean('status')->default(1);
             $table->timestamps();
 
-            $table->unique(['descripcion', 'direccion', 'ciudad'], 'sede_uk');
         });
     }
 

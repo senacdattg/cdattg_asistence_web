@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Piso extends Model
 {
     use HasFactory;
-    protected $fillable = ['descripcion', 'bloque_id', 'user_create_id', 'user_edit_id', 'status'];
+    protected $fillable = ['piso', 'bloque_id', 'user_create_id', 'user_edit_id', 'status'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($piso) {
-            $piso->descripcion = strtoupper($piso->descripcion);
+            $piso->piso = strtoupper($piso->piso);
         });
     }
 

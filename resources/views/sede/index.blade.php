@@ -35,13 +35,13 @@
                                     #
                                 </th>
                                 <th style="width: 20%">
-                                    Nombre
+                                    Sede
                                 </th>
                                 <th style="width: 30%">
                                     Direccion
                                 </th>
                                 <th style="width: 40%">
-                                    Ciudad
+                                    Municipio
                                 </th>
                                 <th style="width: 50%">
                                     Estado
@@ -49,13 +49,16 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                $i = 1;
+                            ?>
                             @forelse ($sedes as $sede)
                                 <tr>
                                     <td>
-                                        {{ $sede->id }}
+                                        {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $sede->descripcion }}
+                                        {{ $sede->sede }}
                                     </td>
 
                                     <td>
@@ -63,7 +66,7 @@
                                     </td>
 
                                     <td>
-                                        {{ $sede->ciudad }}
+                                        {{ $sede->municipio->municipio }}
                                     </td>
 
                                     <td>

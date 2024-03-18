@@ -52,22 +52,25 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            $i = 1
+                            ?>
                             @forelse ($ambientes as $ambiente)
                                 <tr>
                                     <td>
-                                        {{ $ambiente->id }}
+                                        {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $ambiente->descripcion }}
+                                        {{ $ambiente->title }}
                                     </td>
                                     <td>
-                                        {{ $ambiente->piso->bloque->sede->descripcion }}
+                                        {{ $ambiente->piso->bloque->sede->sede }}
                                     </td>
                                     <td>
-                                        {{ $ambiente->piso->bloque->descripcion }}
+                                        {{ $ambiente->piso->bloque->bloque }}
                                     </td>
                                     <td>
-                                        {{ $ambiente->piso->descripcion }}
+                                        {{ $ambiente->piso->piso }}
                                     </td>
 
                                     <td>
