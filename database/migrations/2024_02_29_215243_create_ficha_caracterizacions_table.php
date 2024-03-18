@@ -13,9 +13,15 @@ return new class extends Migration
     {
         Schema::create('ficha_caracterizacions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('ficha_caracterizacion');
+            $table->string('ficha')->nullable();
+            $table->string('nombre_curso')->nullable();
+            $table->string('codigo_programa')->nullable();
+            $table->integer('horas_formacion')->nullable();
+            $table->integer('cupo')->nullable();
+            $table->string('dias_de_formacion')->nullable();
+            $table->foreignId('instructor_asignado')->constrained('users');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

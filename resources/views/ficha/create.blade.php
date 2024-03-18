@@ -26,13 +26,22 @@
                     <div class="form-group justify-content-center">
                         <form action="{{ route('fichaCaracterizacion.store') }}" method="post">
                             @csrf
+                            <div class="row">
+                                <div class="col-md-6 div-sede">
+                                    <label for="ficha" class="col-form-label">Introduzca el número de la ficha de
+                                        caracterizacion</label>
+                                    <input class="form-control" type="text" name="ficha" value="{{ old('ficha') }}"
+                                        placeholder="Numero de la ficha de caracteriacion">
+                                    <div class="alert alert-light" role="alert">
+                                        En caso de no tener Ficha de Caracterizacion asignada escriba <span>0</span>
+                                    </div>
+                                </div>
 
-                            <label for="ficha_caracterizacion" class="col-form-label">Introduzca el número de la ficha de
-                                caracterizacion</label>
-                            <input class="form-control" type="text" name="ficha_caracterizacion"
-                                value="{{ old('name') }}" placeholder="Numero de la ficha de caracteriacion">
-                            <div class="alert alert-light" role="alert">
-                                En caso de no tener Ficha de Caracterizacion asignada escriba <span>0</span>
+                                <div class="col-md-6 div-sede">
+                                    <label for="nombre_curso" class="col-form-label">Introduzca el nombre del programa</label>
+                                    <input class="form-control" type="text" name="nombre_curso" value="{{ old('nombre_curso') }}"
+                                        placeholder="Nombre del programa">
+                                </div>
                             </div>
                             {{-- escoger el ambiente --}}
                             <div class="row">

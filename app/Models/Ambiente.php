@@ -18,7 +18,7 @@ class Ambiente extends Model
             $ambiente->descripcion = strtoupper($ambiente->descripcion);
         });
     }
-    
+
     public function piso()
     {
         return $this->belongsTo(Piso::class, 'piso_id');
@@ -32,5 +32,9 @@ class Ambiente extends Model
     public function userEdited()
     {
         return $this->belongsTo(User::class, 'user_edit_id');
+    }
+    public function fichaCaracterizacion()
+    {
+        return $this->hasMany(FichaCaracterizacion::class);
     }
 }

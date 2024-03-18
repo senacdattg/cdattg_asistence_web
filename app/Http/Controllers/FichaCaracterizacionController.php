@@ -44,9 +44,16 @@ class FichaCaracterizacionController extends Controller
     {
         try{
             $validator = Validator::make($request->all(),[
-                'ficha_caracterizacion' => 'required',
+                'ficha' => 'nullable',
+                'nombre_curso' => 'nullable',
                 'ambiente_id' => 'required',
             ]);
+            if($request->input->ficha = "" && $request->input->nombre_curso = ""){
+                return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.']);
+            }
+            // 'ficha', 'nombre_curso','codigo_programa', 'horas_formacion', 'cupo', 'dias_de_formacion', 'municipio_id', 'instructor_asignado', 'ambiente_id'
+            // estos son los nuevos campos que se debe de poner
+            // ajustar la vista tambien
             if($validator->fails()){
                 @dd($validator);
                 return redirect()->back()
