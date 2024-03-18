@@ -46,17 +46,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                                $i = 1;
+                            ?>
                             @forelse ($bloques as $bloque)
                                 <tr>
                                     <td>
-                                        {{ $bloque->id }}
+                                        {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $bloque->descripcion }}
+                                        {{ $bloque->bloque }}
                                     </td>
 
                                     <td>
-                                        {{ $bloque->sede->descripcion }}
+                                        {{ $bloque->sede->sede }}
                                     </td>
 
                                     <td>

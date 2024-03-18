@@ -32,4 +32,8 @@ class Sede extends Model
     {
         return $this->hasMany(Bloque::class);
     }
+    public function municipio()
+    {
+        return $this->belongsTo(Municipio::class);
+    }
 }

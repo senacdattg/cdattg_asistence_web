@@ -49,19 +49,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <?php $i = 1 ?>
                             @forelse ($pisos as $piso)
                                 <tr>
                                     <td>
-                                        {{ $piso->id }}
+                                        {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $piso->descripcion }}
+                                        {{ $piso->piso }}
                                     </td>
                                     <td>
-                                        {{ $piso->bloque->sede->descripcion }}
+                                        {{ $piso->bloque->sede->sede }}
                                     </td>
                                     <td>
-                                        {{ $piso->bloque->descripcion }}
+                                        {{ $piso->bloque->bloque }}
                                     </td>
 
                                     <td>
