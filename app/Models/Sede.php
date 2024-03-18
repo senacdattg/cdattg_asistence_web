@@ -8,16 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Sede extends Model
 {
     use HasFactory;
-    protected $fillable = ['descripcion', 'direccion', 'ciudad', 'user_create_id', 'user_edit_id', 'status'];
+    protected $fillable = ['sede', 'direccion', 'user_create_id', 'user_edit_id', 'status', 'municipio_id'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($sede) {
-            $sede->descripcion = strtoupper($sede->descripcion);
-            $sede->direccion = strtoupper($sede->direccion);
-            $sede->ciudad = strtoupper($sede->ciudad);
+            $sede->sede = strtoupper($sede->sede);
         });
     }
 

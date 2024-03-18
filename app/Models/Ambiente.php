@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Ambiente extends Model
 {
     use HasFactory;
-    protected $fillable = ['descripcion', 'piso_id', 'user_create_id', 'user_edit_id', 'status'];
+    protected $fillable = ['title','piso_id', 'user_create_id', 'user_edit_id', 'status'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($ambiente) {
-            $ambiente->descripcion = strtoupper($ambiente->descripcion);
+            $ambiente->title = strtoupper($ambiente->title);
         });
     }
 

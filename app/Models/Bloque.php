@@ -10,14 +10,14 @@ class Bloque extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['descripcion', 'sede_id', 'user_create_id', 'user_edit_id', 'status'];
+    protected $fillable = ['bloque', 'sede_id', 'user_create_id', 'user_edit_id', 'status'];
 
     protected static function boot()
     {
         parent::boot();
 
         static::saving(function ($bloque){
-            $bloque->descripcion = strtoupper($bloque->descripcion);
+            $bloque->bloque = strtoupper($bloque->bloque);
         });
     }
 

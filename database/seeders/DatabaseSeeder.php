@@ -25,7 +25,10 @@ class DatabaseSeeder extends Seeder
         DepartamentoSeeder::class,
         MunicipioSeeder::class,
         SedeSeeder::class,
-        
+        BloqueSeeder::class,
+        PisoSeeder::class,
+        AmbienteSeeder::class,
+
         ]);
     }
 }
