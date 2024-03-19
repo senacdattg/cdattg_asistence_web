@@ -22,7 +22,6 @@ return new class extends Migration
             $table->date('fecha_de_nacimiento');
             $table->string('genero');
             $table->string('email')->unique(); // Asegura que el email sea único
-            $table->string('cargo');
             $table->timestamps();
 
             $table->unique(['tipo_documento', 'numero_documento', 'primer_nombre', 'primer_apellido', 'fecha_de_nacimiento'], 'personas_uk');
