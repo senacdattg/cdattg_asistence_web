@@ -27,7 +27,16 @@ class ParametroController extends Controller
     {
         //
     }
-
+    public function cambiarEstado(Parametro $parametro)
+    {
+        if ($parametro->status === 1) {
+            $parametro->update(['status' => 0]);
+        } else {
+            $parametro->update(['status' => 1]);
+        }
+        // return redirect()->back()->with('success', 'Estado cambiado exitosamente');
+        return redirect()->back();
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -61,7 +70,7 @@ class ParametroController extends Controller
      */
     public function edit(parametro $parametro)
     {
-        //
+        return view('parametros.edit', compact('parametro'));
     }
 
     /**
@@ -77,7 +86,7 @@ class ParametroController extends Controller
         // Actualizar los datos del modelo
         $parametro->update($data);
 
-        return redirect()->route('parametros.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
+        return redirect()->route('parametro.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
 
     }
 
@@ -88,7 +97,7 @@ class ParametroController extends Controller
     {
         $parametro->delete();
 
-        return redirect()->route('parametros')->with('success', 'Parámetro eliminado exitosamente');
+        return redirect()->route('parametro.index')->with('success', 'Parámetro eliminado exitosamente');
 
     }
     public function crearParametro(Request $request)

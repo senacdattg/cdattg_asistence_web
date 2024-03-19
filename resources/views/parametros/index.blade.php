@@ -66,35 +66,44 @@
                                     </td>
 
                                     <td class="project-state">
-                                        <span
-                                            class="badge badge-{{ $parametro->status === 'Activo' ? 'success' : 'danger' }}">
-                                            {{ $parametro->status }}
+                                        <span class="badge badge-{{ $parametro->status === 1 ? 'success' : 'danger' }}">
+                                            {{-- {{ $parametro->status }} --}}
+                                            @if ($parametro->status === 1)
+                                                ACTIVO
+                                            @else
+                                                INACTIVO
+                                            @endif
                                         </span>
 
                                     </td>
                                     <td class="project-actions text-right">
-                                        <a class="btn btn-success btn-sm" href="#">
-                                            <i class="fas fa-sync"></i>
-
-                                            cambiar estado
-                                        </a>
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                                        </form>
                                         <a class="btn btn-warning btn-sm"
-                                            href="{{ route('verParametro', ['parametro' => $parametro->id]) }}">
-                                            <i class="fas fa-folder">
-                                            </i>
-                                            Ver
+                                            href="{{ route('parametro.show', ['parametro' => $parametro->id]) }}">
+                                            <i class="fas fa-eye"></i>
+
                                         </a>
-                                        <a class="btn btn-info btn-sm" href="#">
+                                        <a class="btn btn-info btn-sm"
+                                            href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
-                                            Editar
                                         </a>
-                                        <a class="btn btn-danger btn-sm"
-                                            href="{{ route('destroy', ['parametro' => $parametro->id]) }}">
-                                            <i class="fas fa-trash">
-                                            </i>
-                                            Eliminar
-                                        </a>
+                                        <form action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             @empty
@@ -102,11 +111,15 @@
                                     <td colspan="4">No hay parametros registrados</td>
                                 </tr>
                             @endforelse
-
                         </tbody>
                     </table>
                 </div>
 
+                <div class="card-footer">
+                    <div class="float-right">
+                        {{ $parametros->links() }}
+                    </div>
+                </div>
             </div>
         </section>
     </div>

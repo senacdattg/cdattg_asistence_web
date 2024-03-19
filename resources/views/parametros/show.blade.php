@@ -32,8 +32,8 @@
                         </button>
                     </div> --}}
                 </div>
-                <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('parametros') }}">
+                 <div class="card-body">
+                    <a class="btn btn-warning btn-sm" href="{{ route('parametro.index') }}">
                         <i class="fas fa-arrow-left"></i>
                         </i>
                         Volver
@@ -49,7 +49,16 @@
                             </tr>
                             <tr>
                                 <th scope="row">Estado:</th>
-                                <td>{{ $parametro->status }}</td>
+                                <td>
+                                   <span class="badge badge-{{ $parametro->status === 1 ? 'success' : 'danger' }}">
+                                            {{-- {{ $parametro->status }} --}}
+                                            @if ($parametro->status === 1)
+                                                ACTIVO
+                                            @else
+                                                INACTIVO
+                                            @endif
+                                        </span>
+                                </td>
                             </tr>
                             <tr>
                                 <th>
@@ -57,8 +66,8 @@
                                 </th>
                                 <td>
                                     @if ($parametro->userCreate)
-                                        {{ $parametro->userCreate->primer_nombre }}
-                                        {{ $parametro->userCreate->primer_apellido }}
+                                        {{ $parametro->userCreate->persona->primer_nombre }}
+                                        {{ $parametro->userCreate->persona->primer_apellido }}
                                     @else
                                         Usuario no disponible
                                     @endif
@@ -71,8 +80,8 @@
                                 </th>
                                 <td>
                                     @if ($parametro->userUpdate)
-                                        {{ $parametro->userUpdate->primer_nombre }}
-                                        {{ $parametro->userUpdate->primer_apellido }}
+                                        {{ $parametro->userUpdate->persona->primer_nombre }}
+                                        {{ $parametro->userUpdate->persona->primer_apellido }}
                                     @else
                                         Usuario no disponible
                                     @endif
@@ -86,28 +95,35 @@
                                 <td>{{ $parametro->updated_at }}</td>
                             </tr>
                             <tr>
-                            </tbody>
+                        </tbody>
 
 
-                        </table>
-                    </div>
-                    {{-- Botones --}}
-                    <div class="mb-3 text-center">
+                    </table>
+                </div>
+                {{-- Botones --}}
+                <div class="mb-3 text-center">
 
-                        <a class="btn btn-success btn-sm" href="#">
-                            <i class="fas fa-sync"></i>
+                    <form id="cambiarEstadoForm" class=" d-inline"
+                        action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                    </form>
+                    <a class="btn btn-info btn-sm" href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
+                        <i class="fas fa-pencil-alt">
+                        </i>
+                    </a>
+                    <form action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}" method="POST"
+                        class="d-inline">
+                        @csrf
+                        @method('DELETE')
 
-                            cambiar estado
-                        </a>
-                        <a class="btn btn-info btn-sm" href="#">
-                            <i class="fas fa-pencil-alt">
-                            </i>
-                            Editar
-                        </a>
-                        <a class="btn btn-danger btn-sm" href="{{ route('destroy', ['parametro' => $parametro->id]) }}">
-                            <i class="fas fa-trash">
-                            </i>
-                            Eliminar
-                        </a>
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </form>
+
+                </div>
                     </div>
             @endsection

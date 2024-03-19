@@ -80,6 +80,8 @@ Route::controller(LoginController::class)->group(function(){
 });
 // rutas para parametros
 Route::resource('parametro', ParametroController::class);
+Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+
 
 // rutas para temas
 Route::resource('tema', TemaController::class);
