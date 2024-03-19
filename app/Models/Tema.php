@@ -32,6 +32,6 @@ class Tema extends Model
     }
     public function parametros()
     {
-        return $this->belongsToMany(Parametro::class, 'parametros_temas')->withPivot('status', 1);
+        return $this->belongsToMany(Parametro::class, 'parametros_temas')->withPivot('status');
     }
 }

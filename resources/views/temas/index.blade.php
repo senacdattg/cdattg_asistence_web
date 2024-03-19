@@ -41,22 +41,8 @@
 
                 <div class="card-body p-0">
                     <table class="table table-striped projects">
-                        <thead>
-                            <tr>
-                                <th style="width: 1%">
-                                    #
-                                </th>
-                                <th style="width: 20%">
-                                    name
-                                </th>
-                                <th style="width: 30%">
-                                    estado
-                                </th>
 
-                            </tr>
-                        </thead>
-                        <div class="card-body p-0">
-                            <table class="table table-striped projects">
+
                                 <thead>
                                     <tr>
                                         <th style="width: 1%">
@@ -75,10 +61,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php
+                                    $i = 1
+                                    ?>
                                     @forelse ($temas as $tema)
                                         <tr>
                                             <td>
-                                                {{ $tema->id }}
+                                                {{ $i++ }}
                                             </td>
                                             <td>
                                                 {{ $tema->name }}
@@ -104,7 +93,7 @@
                                             </td>
                                             <td class="project-actions text-right">
                                                 <form id="cambiarEstadoForm" class=" d-inline"
-                                                    action="{{ route('temas.cambiarEstado', ['tema' => $tema->id]) }}"
+                                                    action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('PUT')
@@ -112,16 +101,16 @@
                                                             class="fas fa-sync"></i></button>
                                                 </form>
                                                 <a class="btn btn-warning btn-sm"
-                                                    href="{{ route('temas.show', ['tema' => $tema->id]) }}">
+                                                    href="{{ route('tema.show', ['tema' => $tema->id]) }}">
                                                     <i class="fas fa-eye"></i>
 
                                                 </a>
                                                 <a class="btn btn-info btn-sm"
-                                                    href="{{ route('temas.edit', ['tema' => $tema->id]) }}">
+                                                    href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                 </a>
-                                                <form action="{{ route('temas.destroy', ['tema' => $tema->id]) }}"
+                                                <form action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')

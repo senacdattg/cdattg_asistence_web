@@ -85,5 +85,7 @@ Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class,
 
 // rutas para temas
 Route::resource('tema', TemaController::class);
+Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
+Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
