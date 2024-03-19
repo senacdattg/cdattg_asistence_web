@@ -14,9 +14,8 @@ class InstructorSeeder extends Seeder
     public function run(): void
     {
         Instructor::create([
-            'id' => 2,
-            'persona_id' => 1,
-            'profesion' => NULL,
+            'id' => 1,
+            'persona_id' => 2,
         ]);
 
     }

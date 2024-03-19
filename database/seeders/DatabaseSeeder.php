@@ -30,6 +30,8 @@ class DatabaseSeeder extends Seeder
         AmbienteSeeder::class,
         ParametroSeeder::class,
         TemaSeeder::class,
+        updatePersona::class,
+        InstructorSeeder::class,
 
         ]);
     }

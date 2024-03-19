@@ -32,7 +32,7 @@ class PersonaSeeder extends Seeder
             'primer_nombre' => 'INSTRUCTOR',
             'segundo_nombre' => NULL,
             'primer_apellido' => 'PRUEBA',
-            'segundo-apellido' => NULL,
+            'segundo_apellido' => NULL,
             'fecha_de_nacimiento' => '2000-01-01',
             'genero' => NULL,
             'email' => 'instructor@instructor.com',
