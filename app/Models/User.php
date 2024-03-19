@@ -39,6 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+<<<<<<< HEAD
 
     public function persona()
     {
@@ -88,5 +89,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function ambienteEdited()
     {
         return $this->hasMany(Ambiente::class, 'user_edit_id');
+=======
+    public function parametrosCreated()
+    {
+        return $this->hasMany(Parametro::class, 'user_create_id');
+>>>>>>> feature/TemaParametros
     }
 }
