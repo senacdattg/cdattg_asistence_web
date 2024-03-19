@@ -26,7 +26,7 @@ class MunicipioController extends Controller
     public function cargarMunicipios($departamento_id)
     {
         // DB::enableQueryLog();
-        $municipios = Municipio::where('departamento-id', $departamento_id)
+        $municipios = Municipio::where('departamento_id', $departamento_id)
         ->where('status', 1)->get();
         return response()->json(['success' => true, 'municipios' => $municipios]);
         // dd(DB::getQueryLog());

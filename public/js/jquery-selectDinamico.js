@@ -36,10 +36,45 @@ $(document).ready(function() {
             }
         });
     }
-   // Función para cargar las sedes
-    function cargarSedes() {
+    // Función para cargar los municipios de acuerdo al departamento
+    function cargarMunicipios(departamento_id) {
         $.ajax({
-            url: '/cargarSedes',
+            url: '/cargarMunicipios/' + departamento_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Limpiar el select de bloques actual
+                    $('#municipio_id').empty();
+
+                    // Agregar la opción predeterminada
+                    $('#municipio_id').append($('<option>', {
+                        value: '',
+                        text: 'Selecciona un Municipio',
+                        disabled: true,
+                        selected: true
+                    }));
+
+                    // Recorrer los bloques y agregarlos al select
+                    $.each(response.municipios, function(index, municipio) {
+                        $('#municipio_id').append($('<option>', {
+                            value: municipio.id,
+                            text: municipio.municipio
+                        }));
+                    });
+                } else {
+                    console.error(response.message);
+                }
+            },
+            error: function(error) {
+                console.error('Error en la llamada AJAX:', error);
+            }
+        });
+    }
+   // Función para cargar las sedes
+    function cargarSedes(municipio_id) {
+        $.ajax({
+            url: '/cargarSedes/' + municipio_id,
             type: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -181,6 +216,26 @@ $(document).ready(function() {
     }
 
 
+    $('#departamento_id').on('change', function() {
+        var departamento_id = $(this).val();
+        // alert('¡seleccionaste la !'  + sede_id);
+
+
+        if (departamento_id) {
+            // Llamar a la función para cargar los bloques
+            cargarMunicipios(departamento_id);
+        }
+    });
+    $('#municipio_id').on('change', function() {
+        var municipio_id = $(this).val();
+        // alert('¡seleccionaste la !'  + sede_id);
+
+
+        if (municipio_id) {
+            // Llamar a la función para cargar los bloques
+            cargarSedes(municipio_id);
+        }
+    });
 
     // Manejar el cambio en el select de sedes para cargar los bloques correspondientes
     $('#sede_id').on('change', function() {

@@ -9,6 +9,7 @@ use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
+use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\SedeController;
@@ -83,3 +84,4 @@ Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout')
 // rutas para departamentos
 
 Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
+Route::get('/cargarMunicipios/{departamento_id]', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
