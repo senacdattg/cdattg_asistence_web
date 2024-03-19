@@ -16,8 +16,8 @@ class ParametroController extends Controller
      */
     public function index()
     {
-        $parametros = Parametro::all();
-        return view('temas_parametros.parametros', compact('parametros'));
+        $parametros = Parametro::paginate(10);
+        return view('temas_parametros.index', compact('parametros'));
     }
 
     /**

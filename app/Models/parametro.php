@@ -10,29 +10,31 @@ class parametro extends Model
     use HasFactory;
 
     // Campos que puedes llenar al crear o actualizar un registro
+
     protected $fillable = ['name', 'status', 'user_create_id', 'user_edit_id'];
 
-    // Evento de creación para asignar valores predeterminados
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($parametro) {
-            // Asignar el estado por defecto al crear un nuevo parámetro
-            $parametro->status = $parametro->status ?? 'Activo';
+            $parametro->status = $parametro->status ?? 'ACTIVO';
         });
-
         static::saving(function ($parametro) {
-            // Convertir el nombre a mayúsculas antes de guardar
             $parametro->name = strtoupper($parametro->name);
         });
     }
     public function userCreate()
     {
-        return $this->belongsTo(User::class, 'user_create_id');
+        return  $this->belongsTo(User::class, 'user_create_id');
     }
     public function userUpdate()
     {
-        return $this->belongsTo(User::class, 'user_edit_id');
+        return  $this->belongsTo(User::class, 'user_edit_id');
+    }
+
+    public function temas()
+    {
+        return $this->belongsToMany(Tema::class, 'parametros_temas')->withPivot('status');
     }
 }

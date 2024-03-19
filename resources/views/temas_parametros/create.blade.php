@@ -1,6 +1,6 @@
 {{-- <div class="card-body p-0"> --}}
 
-<form method="POST" action="{{ route('crearParametro') }}">
+<form method="POST" action="{{ route('parametro.store') }}">
     @csrf
     <div class="form-group p-3">
         <label for="name">Crear Parámetro:</label>

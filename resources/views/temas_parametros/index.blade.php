@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                    <a href="{{ route('verificarLogin') }}" >Inicio</a>
+                                <a href="{{ route('verificarLogin') }}">Inicio</a>
                             </li>
                             <li class="breadcrumb-item active">{{ request()->path() }}
                             </li>
@@ -37,7 +37,7 @@
                         </button>
                     </div> --}}
                 </div>
-                @include('temas_parametros.crear-parametro')
+                @include('temas_parametros.create')
 
                 <div class="card-body p-0">
                     <table class="table table-striped projects">
@@ -89,7 +89,8 @@
                                             </i>
                                             Editar
                                         </a>
-                                        <a class="btn btn-danger btn-sm" href="{{ route('destroy', ['parametro' => $parametro->id]) }}">
+                                        <a class="btn btn-danger btn-sm"
+                                            href="{{ route('destroy', ['parametro' => $parametro->id]) }}">
                                             <i class="fas fa-trash">
                                             </i>
                                             Eliminar
@@ -106,7 +107,7 @@
                     </table>
                 </div>
 
-
-        @endsection
-
-
+            </div>
+        </section>
+    </div>
+@endsection
