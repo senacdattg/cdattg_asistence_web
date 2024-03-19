@@ -16,6 +16,7 @@ use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\TemaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,10 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/login','mostrarLogin')->name('login');
     Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
 });
+// rutas para parametros
 Route::resource('parametro', ParametroController::class);
+
+// rutas para temas
+Route::resource('tema', TemaController::class);
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');

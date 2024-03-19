@@ -37,7 +37,7 @@
                         </button>
                     </div> --}}
                 </div>
-                @include('temas_parametros.create')
+                @include('parametros.create')
 
                 <div class="card-body p-0">
                     <table class="table table-striped projects">

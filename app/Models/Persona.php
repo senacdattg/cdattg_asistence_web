@@ -52,4 +52,18 @@ class Persona extends Model
     {
         return $this->hasOne(User::class, 'persona_id');
     }
+
+    public function tipoDocumento()
+    {
+        return $this->belongsTo(Parametro::class, 'tipo_documento');
+    }
+    public function tipoGenero()
+    {
+        return $this->belongsTo(Parametro::class, 'genero');
+    }
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
+    }
 }

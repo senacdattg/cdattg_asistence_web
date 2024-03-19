@@ -44,6 +44,12 @@
                                             <p>Parametros</p>
                                         </a>
                                     </li>
+                                    <li class="nav-item">
+                                        <a href="{{ route('tema.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Temas</p>
+                                        </a>
+                                    </li>
 
                                 </ul>
                             </li>

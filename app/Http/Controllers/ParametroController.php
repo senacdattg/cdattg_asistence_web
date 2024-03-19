@@ -17,7 +17,7 @@ class ParametroController extends Controller
     public function index()
     {
         $parametros = Parametro::paginate(10);
-        return view('temas_parametros.index', compact('parametros'));
+        return view('parametros.index', compact('parametros'));
     }
 
     /**
@@ -33,7 +33,18 @@ class ParametroController extends Controller
      */
     public function store(StoreparametroRequest $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255|unique:parametros',
+            'status' => 'required|string|max:255',
+
+        ]);
+        $data['user_create_id'] = auth()->id();
+        $data['user_edit_id'] = auth()->id();
+        // Crear el parámetro
+        $parametro = Parametro::create($data);
+
+
+        return redirect()->back()->with('success', '¡Parámetro creado exitosamente!');
     }
 
     /**
@@ -42,7 +53,7 @@ class ParametroController extends Controller
     public function show(parametro $parametro)
     {
 
-        return view('temas_parametros.verParametro', compact('parametro'));
+        return view('parametros.show', compact('parametro'));
     }
 
     /**
@@ -58,7 +69,16 @@ class ParametroController extends Controller
      */
     public function update(UpdateparametroRequest $request, parametro $parametro)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|boolean',
+        ]);
+
+        // Actualizar los datos del modelo
+        $parametro->update($data);
+
+        return redirect()->route('parametros.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
+
     }
 
     /**
@@ -73,18 +93,7 @@ class ParametroController extends Controller
     }
     public function crearParametro(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255|unique:parametros',
-            'status' => 'required|string|max:255',
 
-        ]);
-        $data['user_create_id'] = auth()->id();
-        $data['user_edit_id'] = auth()->id();
-        // Crear el parámetro
-        $parametro = Parametro::create($data);
-
-
-        return redirect()->back()->with('success', '¡Parámetro creado exitosamente!');
     }
 
 
