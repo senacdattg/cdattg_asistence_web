@@ -19,9 +19,10 @@ class SedeController extends Controller
         $sedes = Sede::paginate(10);
         return view('sede.index', compact('sedes'));
     }
-    public function cargarSedes()
+    public function cargarSedes($municipio_id)
     {
-        $sedes = Sede::where('status', 1)->get();
+        $sedes = Sede::where('municipio_id', $municipio_id)
+        ->where('status', 1)->get();
         return response()->json(['success' => true, 'sedes' => $sedes]);
     }
 

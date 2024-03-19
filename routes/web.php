@@ -51,7 +51,7 @@ Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // Ruta para sedes
 Route::resource('sede', SedeController::class);
-Route::get('/cargarSedes', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
+Route::get('/cargarSedes/{municipio_id}', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
 
 // Ruta para bloques
 Route::resource('bloque', BloqueController::class);
@@ -84,4 +84,4 @@ Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout')
 // rutas para departamentos
 
 Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
-Route::get('/cargarMunicipios/{departamento_id]', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
+Route::get('/cargarMunicipios/{departamento_id}', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
