@@ -89,4 +89,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Ambiente::class, 'user_edit_id');
     }
+    public function parametrosCreated()
+    {
+        return $this->hasMany(Parametro::class, 'user_create_id');
+    }
 }

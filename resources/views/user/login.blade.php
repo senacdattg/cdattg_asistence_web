@@ -20,7 +20,7 @@
                     <form action="{{ route('iniciarSesion') }}" method="post">
                         @csrf
                         {{-- correo institucional --}}
-                        <label for="email">Correo Institucional</label>
+                        <label for="email">Usuario</label>
                         <div class="input-group mb-3">
                             <input type="email" class="form-control" name="email" placeholder="Correo Institucional" value="{{ old('email')}}" autofocus>
                             <div class="input-group-append">
@@ -32,7 +32,7 @@
                         {{-- contraseña --}}
                         <label for="password">Contraseña</label>
                         <div class="input-group mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Contraseña" value="{{ old('password') }}">
+                            <input type="password" class="form-control" name="password" placeholder="Aquí va un número" value="{{ old('password') }}">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>

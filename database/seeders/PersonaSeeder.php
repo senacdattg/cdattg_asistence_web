@@ -14,16 +14,29 @@ class PersonaSeeder extends Seeder
     public function run(): void
     {
         Persona::create([
-            'tipo_documento' => 'sin documento',
+            'id' => 1,
+            'tipo_documento' => NULL,
             'numero_documento' => 987654321,
-            'primer_nombre' => 'JOSE',
-            'segundo_nombre' => null,
-            'primer_apellido' => 'LOPEZ',
-            'segundo_apellido' => null,
+            'primer_nombre' => 'PRIMER',
+            'segundo_nombre' => NULL,
+            'primer_apellido' => 'ADMIN',
+            'segundo_apellido' => NULL,
             'fecha_de_nacimiento' => '2000-01-01',
-            'genero' => 'sin definir',
+            'genero' => NULL,
             'email' => 'admin@admin.com',
-            'cargo' => 'SUPER ADMINISTRADOR',
+        ]);
+        Persona::create([
+            'id' => 2,
+            'tipo_documento' => NULL,
+            'numero_documento' => 123456789,
+            'primer_nombre' => 'INSTRUCTOR',
+            'segundo_nombre' => NULL,
+            'primer_apellido' => 'PRUEBA',
+            'segundo_apellido' => NULL,
+            'fecha_de_nacimiento' => '2000-01-01',
+            'genero' => NULL,
+            'email' => 'instructor@instructor.com',
+
         ]);
     }
 }
