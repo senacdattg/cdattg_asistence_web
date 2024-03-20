@@ -30,7 +30,7 @@
                     {{-- <h3 class="card-title">{{ request()->path() }}</h3> --}}
                     {{-- formulario de registro --}}
                     <h1>Crear Instructor</h1>
-                    <form action="{{ route('persona.store') }}" method="post">
+                    <form action="{{ route('instructor.store') }}" method="post">
                         @csrf
 
                         {{-- Tipo de Documento y Número de Documento --}}
@@ -38,10 +38,12 @@
                             <div class="col-md-6">
                                 <label for="tipo_documento">Tipo de Documento</label>
                                 <select class="form-control" name="tipo_documento" autofocus>
-                                    <option value="CEDULA DE CIUDADANIA">CEDULA DE CIUDADANIA</option>
-                                    <option value="PASAPORTE"> PASAPORTE</option>
-                                    <option value="CEDULA DE EXTRANJERIA">CEDULA DE EXTRANJERIA</option>
-                                    <option value="SIN DOCUMENTO">SIN DOCUMENTO</option>
+                                    <option value="" disabled selected>Seleccione un tipo de documento</option>
+                                    @forelse ($documentos->parametros as $parametro)
+                                        <option value="{{ $parametro->id }}">{{ $parametro->name }}</option>
+                                    @empty
+                                        <option value="" disabled>No existe</option>
+                                    @endforelse
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -84,9 +86,12 @@
                             <div class="col-md-6">
                                 <label for="genero">Género</label>
                                 <select class="form-control" name="genero">
-                                    <option value="MASCULINO">MASCULINO</option>
-                                    <option value="FEMENINO">FEMENINO</option>
-                                    <option value="SIN DEFINIR">SIN DEFINIR</option>
+                                    <option value="" disabled selected>Seleccione un genero</option>
+                                    @forelse ($generos->parametros as $parametro)
+                                        <option value="{{ $parametro->id }}">{{ $parametro->name }}</option>
+                                    @empty
+                                        <option value="" disabled>No existe</option>
+                                    @endforelse
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -103,14 +108,7 @@
                                 <input type="email" class="form-control" placeholder="Correo email"
                                     value="{{ old('email') }}" name="email">
                             </div>
-                            <div class="col-md-6">
-                                <label for="cargo">Cargo</label>
-                                <select class="form-control" name="cargo">
-                                    <option value="INGENIERO">INGENIERO</option>
-                                    <option value="INSTRUCTOR">INSTRUCTOR</option>
-                                    <option value="TECNICO">TECNICO</option>
-                                </select>
-                            </div>
+
                         </div>
 
                         {{-- Botón de Registro --}}
