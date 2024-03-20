@@ -42,9 +42,11 @@ class FichaCaracterizacionController extends Controller
                 'nombre_curso' => 'nullable',
                 'ambiente_id' => 'required',
             ]);
-            if($request->input->ficha = "" && $request->input->nombre_curso = ""){
+            if (!$request->filled('ficha') && !$request->filled('nombre_curso')) {
                 return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.']);
             }
+
+
             // 'ficha', 'nombre_curso','codigo_programa', 'horas_formacion', 'cupo', 'dias_de_formacion', 'municipio_id', 'instructor_asignado', 'ambiente_id'
             // estos son los nuevos campos que se debe de poner
             // ajustar la vista tambien
@@ -56,8 +58,9 @@ class FichaCaracterizacionController extends Controller
             }
 
             $fichaCaracterizacion = FichaCaracterizacion::create([
-                'user_id' => Auth::user()->id,
-                'ficha_caracterizacion' => $request->input('ficha_caracterizacion'),
+                'ficha' => $request->input('ficha'),
+                'nombre_curso' => $request->input('nombre_curso'),
+                'instructor_asignado' => Auth::user()->id,
                 'ambiente_id' => $request->input('ambiente_id'),
             ]);
             return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
