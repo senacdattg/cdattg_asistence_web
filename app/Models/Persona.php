@@ -50,7 +50,6 @@ class Persona extends Model
     {
         return $this->hasOne(User::class, 'persona_id');
     }
-
     public function tipoDocumento()
     {
         return $this->belongsTo(Parametro::class, 'tipo_documento');

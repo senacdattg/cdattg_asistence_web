@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
+use App\Http\Controllers\InstructorController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
 use App\Http\Controllers\PersonaController;
@@ -39,7 +40,8 @@ Route::get('/home', function () {
 Route::resource('persona', PersonaController::class);
 Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
 
-
+//Rutas para instructores
+Route::resource('instructor', InstructorController::class);
 // Rutas para entrada y salida
 Route::resource('entradaSalida', EntradaSalidaController::class);
 Route::post('updateSalida', [EntradaSalidaController::class, 'updateSalida'])->name('entradaSalida.updateSalida');

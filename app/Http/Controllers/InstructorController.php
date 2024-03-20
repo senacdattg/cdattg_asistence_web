@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Instructor;
 use App\Http\Requests\StoreInstructorRequest;
 use App\Http\Requests\UpdateInstructorRequest;
+use Carbon\Carbon;
 
 class InstructorController extends Controller
 {
@@ -13,7 +14,8 @@ class InstructorController extends Controller
      */
     public function index()
     {
-        //
+        $instructores = Instructor::paginate(10);
+        return view('Instructores.index', compact('instructores'));
     }
 
     /**
@@ -37,7 +39,9 @@ class InstructorController extends Controller
      */
     public function show(Instructor $instructor)
     {
-        //
+        $instructor->persona->edad = Carbon::parse($instructor->persona->fecha_de_nacimiento)->age;
+        $instructor->persona->fecha_de_nacimiento = Carbon::parse($instructor->persona->fecha_de_nacimiento)->format('d/m/Y');
+        return view('Instructores.show', compact('instructor'));
     }
 
     /**
