@@ -26,6 +26,23 @@
                     <div class="form-group justify-content-center">
                         <form action="{{ route('fichaCaracterizacion.store') }}" method="post">
                             @csrf
+                            {{-- escoger departamento y municipio --}}
+                            <div class="row">
+                               <div class="col-md-6 div-departamento">
+                                    <label for="departamento_id">Departamento</label>
+                                    <select name="departamento_id" id="departamento_id" class="form-control" required>
+                                        <option value="" disabled selected>Seleccione un departamento</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 div-municipio">
+                                    <label for="municipio_id">municipio</label>
+                                    <select name="municipio_id" id="municipio_id" class="form-control" required>
+                                        <option value="" disabled selected>Selecciona un municipio</option>
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- datos de la ficha --}}
                             <div class="row">
                                 <div class="col-md-6 div-sede">
                                     <label for="ficha" class="col-form-label">Introduzca el número de la ficha de

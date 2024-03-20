@@ -4,10 +4,13 @@ use App\Http\Controllers\AmbienteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
+use App\Http\Controllers\InstructorController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
+use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\PisoController;
 use App\Http\Controllers\SedeController;
@@ -16,6 +19,7 @@ use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\TemaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +42,8 @@ Route::get('/home', function () {
 Route::resource('persona', PersonaController::class);
 Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
 
-
+//Rutas para instructores
+Route::resource('instructor', InstructorController::class);
 // Rutas para entrada y salida
 Route::resource('entradaSalida', EntradaSalidaController::class);
 Route::post('updateSalida', [EntradaSalidaController::class, 'updateSalida'])->name('entradaSalida.updateSalida');
@@ -50,7 +55,7 @@ Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
 
 // Ruta para sedes
 Route::resource('sede', SedeController::class);
-Route::get('/cargarSedes', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
+Route::get('/cargarSedes/{municipio_id}', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
 
 // Ruta para bloques
 Route::resource('bloque', BloqueController::class);
@@ -77,11 +82,19 @@ Route::controller(LoginController::class)->group(function(){
     Route::get('/login','mostrarLogin')->name('login');
     Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
 });
-Route::controller(ParametroController::class)->group(function(){
-    Route::get('parametros','index')->name('parametros');
-    Route::post('crearParametro', 'crearParametro')->name('crearParametro');
-    Route::get('/parametros/{parametro}', 'show')->name('verParametro');
-    Route::get('/eliminarParametro/{parametro}', 'destroy')->name('destroy');
-});
+// rutas para parametros
+Route::resource('parametro', ParametroController::class);
+Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+
+
+// rutas para temas
+Route::resource('tema', TemaController::class);
+Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
+Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
 
 Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
+
+// rutas para departamentos
+
+Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
+Route::get('/cargarMunicipios/{departamento_id}', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');

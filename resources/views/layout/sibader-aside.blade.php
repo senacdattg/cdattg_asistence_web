@@ -39,12 +39,18 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
-                                        <a href="{{ route('parametros') }}" class="nav-link">
+                                        <a href="{{ route('parametro.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Parametros</p>
                                         </a>
                                     </li>
-                                    
+                                    <li class="nav-item">
+                                        <a href="{{ route('tema.index') }}" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Temas</p>
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </li>
 
@@ -163,13 +169,13 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('persona.index') }}" class="nav-link">
+                                <a href="{{ route('instructor.index') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Instructores</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('persona.create') }}" class="nav-link">
+                                <a href="{{ route('instructor.create') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Crear Instructor</p>
                                 </a>
@@ -179,22 +185,23 @@
                         </ul>
                     </li>
                 @endif
-                @if (auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-users"></i>
-                            <p>
-                                Asistencia
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('fichaCaracterizacion.create') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Asistencia</p>
-                                </a>
-                            </li>
+                @if(auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <p>
+                            Asistencia
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('fichaCaracterizacion.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asistencia</p>
+                            </a>
+                        </li>
+
 
                         </ul>
                     </li>

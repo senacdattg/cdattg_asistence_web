@@ -16,8 +16,8 @@ class ParametroController extends Controller
      */
     public function index()
     {
-        $parametros = Parametro::all();
-        return view('temas_parametros.parametros', compact('parametros'));
+        $parametros = Parametro::paginate(10);
+        return view('parametros.index', compact('parametros'));
     }
 
     /**
@@ -27,51 +27,20 @@ class ParametroController extends Controller
     {
         //
     }
-
+    public function cambiarEstado(Parametro $parametro)
+    {
+        if ($parametro->status === 1) {
+            $parametro->update(['status' => 0]);
+        } else {
+            $parametro->update(['status' => 1]);
+        }
+        // return redirect()->back()->with('success', 'Estado cambiado exitosamente');
+        return redirect()->back();
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreparametroRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(parametro $parametro)
-    {
-
-        return view('temas_parametros.verParametro', compact('parametro'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(parametro $parametro)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateparametroRequest $request, parametro $parametro)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(parametro $parametro)
-    {
-        $parametro->delete();
-
-        return redirect()->route('parametros')->with('success', 'Parámetro eliminado exitosamente');
-
-    }
-    public function crearParametro(Request $request)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:parametros',
@@ -85,6 +54,55 @@ class ParametroController extends Controller
 
 
         return redirect()->back()->with('success', '¡Parámetro creado exitosamente!');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(parametro $parametro)
+    {
+
+        return view('parametros.show', compact('parametro'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(parametro $parametro)
+    {
+        return view('parametros.edit', compact('parametro'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateparametroRequest $request, parametro $parametro)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'status' => 'required|boolean',
+        ]);
+
+        // Actualizar los datos del modelo
+        $parametro->update($data);
+
+        return redirect()->route('parametro.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(parametro $parametro)
+    {
+        $parametro->delete();
+
+        return redirect()->route('parametro.index')->with('success', 'Parámetro eliminado exitosamente');
+
+    }
+    public function crearParametro(Request $request)
+    {
+
     }
 
 

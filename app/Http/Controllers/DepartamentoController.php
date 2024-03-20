@@ -19,6 +19,13 @@ class DepartamentoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function cargarDepartamentos()
+    {
+        // DB::enableQueryLog();
+        $departamentos = Departamento::where('status', 1)->get() ;
+        return response()->json(['success' => true, 'departamentos' => $departamentos]);
+        // dd(DB::getQueryLog());
+    }
     public function create()
     {
         //

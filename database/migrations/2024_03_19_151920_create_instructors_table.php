@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('parametros', function (Blueprint $table) {
+        Schema::create('instructors', function (Blueprint $table) {
             $table->id();
-            // añadir columnas
-            $table->string('name')->unique();
-            $table->boolean('status')->default(1);
-            $table->foreignId('user_create_id')->constrained('users');
-            $table->foreignId('user_edit_id')->constrained('users');
-            // termina de añador columnas
+            $table->foreignId('persona_id')->constrained('personas')->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('parametros');
+        Schema::dropIfExists('instructors');
     }
 };

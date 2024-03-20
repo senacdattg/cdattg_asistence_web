@@ -27,7 +27,6 @@ class Persona extends Model
         'fecha_de_nacimiento',
         'genero',
         'email',
-        'cargo',
     ];
 
     protected static function boot()
@@ -39,7 +38,6 @@ class Persona extends Model
             $persona->segundo_nombre = strtoupper($persona->segundo_nombre);
             $persona->primer_apellido = strtoupper($persona->primer_apellido);
             $persona->segundo_apellido = strtoupper($persona->segundo_apellido);
-            $persona->cargo = strtoupper($persona->cargo);
 
 
 
@@ -51,5 +49,18 @@ class Persona extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'persona_id');
+    }
+    public function tipoDocumento()
+    {
+        return $this->belongsTo(Parametro::class, 'tipo_documento');
+    }
+    public function tipoGenero()
+    {
+        return $this->belongsTo(Parametro::class, 'genero');
+    }
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
     }
 }

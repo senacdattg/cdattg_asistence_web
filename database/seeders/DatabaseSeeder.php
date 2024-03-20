@@ -28,6 +28,10 @@ class DatabaseSeeder extends Seeder
         BloqueSeeder::class,
         PisoSeeder::class,
         AmbienteSeeder::class,
+        ParametroSeeder::class,
+        TemaSeeder::class,
+        updatePersona::class,
+        InstructorSeeder::class,
 
         ]);
     }
