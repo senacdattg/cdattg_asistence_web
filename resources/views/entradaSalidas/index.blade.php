@@ -20,7 +20,7 @@
         <div class="content">
             <div class="row">
                 <div class="col">
-                    @include('entradaSalidas.create')
+                    @include('entradaSalidas.create', ['ficha' => $ficha->id])
                 </div>
                 <div class="col">
                     @include('entradaSalidas.edit')
@@ -31,6 +31,32 @@
 
             <div class="card">
                 <div class="card-body">
+                    {{-- datos de la ficha y la fecha --}}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Fecha: {{ $fecha }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Ambiente: {{ $ficha->ambiente->title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Ficha: {{ $ficha->ficha }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Nombre del curso: {{ $ficha->nombre_curso }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- finaliza datos --}}
                     <div class="card-body p-0">
                         <table class="table table-responsive">
                             <thead>
@@ -68,50 +94,17 @@
                                             {{ $registro->salida }}
                                         </td>
                                         <td>
-                                            {{-- <span class="badge badge-{{ $registro->user->status === 1 ? 'success' : 'danger' }}">
-                                        @if ($registro->user->status === 1)
-                                                ACTIVO
-                                            @else
-                                                INACTIVO
-                                            @endif
-                                        </span> --}}
-                                        </td>
-                                        <td>
-                                            {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('registro.cambiarEstadoUser', ['registro' => $registro->user->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT') --}}
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            {{-- <a class="btn btn-warning btn-sm"
-                                            href="{{ route('registro.show', ['registro' => $registro->id]) }}"> --}}
-                                            <i class="fas fa-eye"></i>
-
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{-- <a class="btn btn-info btn-sm"
-                                            href="{{ route('registro.edit', ['registro' => $registro->id]) }}"> --}}
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{-- <form action="{{ route('registros.destroy', ['registro' => $registro->id]) }}"
+                                            <form action="{{ route('entradaSalida.destroy', ['entradaSalida' => $registro->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
-                                            @method('DELETE') --}}
+                                            @method('DELETE')
 
-                                            {{-- <button type="submit" class="btn btn-danger btn-sm"
+                                            <button type="submit" class="btn btn-danger btn-sm"
                                             onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
 
                                             <i class="fas fa-trash"></i>
-                                        </button> --}}
-                                            {{-- </form> --}}
+                                        </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty
@@ -134,22 +127,22 @@
     </div>
 @endsection
 @section('script')
-  <script>
-    $(document).ready(function () {
-        var btnGenerarCSV = $('#btn-generarCSV');
+    <script>
+        $(document).ready(function() {
+            var btnGenerarCSV = $('#btn-generarCSV');
 
-        btnGenerarCSV.click(function () {
-            // Simular un formulario oculto y realizar la descarga
-            var iframe = $('<iframe style="display: none;"></iframe>');
-            $('body').append(iframe);
+            btnGenerarCSV.click(function() {
+                // Simular un formulario oculto y realizar la descarga
+                var iframe = $('<iframe style="display: none;"></iframe>');
+                $('body').append(iframe);
 
-            iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
+                iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
 
-            // Redirigir después de la descarga
-            setTimeout(function () {
-                window.location.href = '{{ route('fichaCaracterizacion.create') }}';
-            }, 1000); // 2000 milisegundos (2 segundos) de retraso
+                // Redirigir después de la descarga
+                setTimeout(function() {
+                    window.location.href = '{{ route('fichaCaracterizacion.create') }}';
+                }, 1000); // 2000 milisegundos (2 segundos) de retraso
+            });
         });
-    });
-  </script>
+    </script>
 @endsection

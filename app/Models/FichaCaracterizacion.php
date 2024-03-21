@@ -29,4 +29,7 @@ class FichaCaracterizacion extends Model
     {
         return $this->belongsTo(Ambiente::class);
     }
+    public function entradaSalida(){
+        return $this->belongsTo(EntradaSalida::class);
+    }
 }

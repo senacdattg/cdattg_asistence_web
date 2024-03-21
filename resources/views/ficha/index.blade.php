@@ -93,7 +93,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ route('entradaSalida.index') }}" class="btn btn-success btn-sm">
+                                        <a href="{{ route('entradaSalida.registros', ['fichaCaracterizacion' => $ficha->id]) }}" class="btn btn-success btn-sm">
                                             <i class="fas fa-list-ul"></i>
                                         </a>
                                     </td>

@@ -20,17 +20,29 @@ class EntradaSalidaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $fichaCaracterizacion)
     {
-        $user = Auth::user();
-
+        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion);
         // Obtén todos los registros de entrada/salida del usuario actual
-        $registros = EntradaSalida::where('user_id', $user->id)->get();
+        $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+        ->where('fecha', Carbon::now()->toDateString())->get();
 
         // Pasa los registros a la vista
-        return view('entradaSalidas.index', compact('registros'));
+        return view('entradaSalidas.index', compact('registros', 'ficha'));
     }
+    public function registros($fichaCaracterizacion){
+        $fecha = Carbon::now()->toDateString();
+        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
+        // @dd($ficha);
+        // Obtén todos los registros de entrada/salida del usuario actual
+        $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('ficha_caracterizacion_id', $fichaCaracterizacion)->get();
 
+        // Pasa los registros a la vista
+        return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha'));
+
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -50,25 +62,30 @@ class EntradaSalidaController extends Controller
             $validator = validator::make($request->all(), [
                 // 'user_id' => Auth::user()->id,
                 'aprendiz' => 'required|string',
+                'ficha_caracterizacion_id' => 'required',
             ]);
+            // @dd($request->ficha_caracterizacion_id);
 
             if ($validator->fails()) {
                 @dd('holis');
                 @dd($validator);
                 return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                ->withErrors($validator)
+                ->withInput();
             }
+            // @dd('parela ahí');
 
             // Crear Persona
             $entradaSalida = EntradaSalida::create([
-                'user_id' => Auth::user()->id,
+                'fecha' => Carbon::now()->toDateString(),
+                'instructor_user_id' => Auth::user()->id,
                 'aprendiz' => $request->input('aprendiz'),
                 'entrada' => Carbon::now(),
+                'ficha_caracterizacion_id' => $request->input('ficha_caracterizacion_id'),
             ]);
 
 
-            return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
+            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $request->ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
@@ -101,7 +118,7 @@ class EntradaSalidaController extends Controller
                 $entradaSalida->update([
                     'salida' => Carbon::now(),
                 ]);
-                return redirect()->route('entradaSalida.index')->with('success', 'Salida Exitosa');
+                return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $entradaSalida->ficha_caracterizacion_id])->with('success', 'Salida Exitosa');
             }else{
                 return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
             }
@@ -205,11 +222,9 @@ class EntradaSalidaController extends Controller
      */
     public function destroy(EntradaSalida $entradaSalida)
     {
-        //
+        $entradaSalida->delete();
+        return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
 }
