@@ -37,16 +37,16 @@
                                 <th style="width: 1%">
                                     #
                                 </th>
-                                <th style="width: 20%">
+                                <th style="width: 10%">
                                     No. Ficha
                                 </th>
                                 <th style="width: 30%">
                                     Nombre del curso
                                 </th>
-                                <th style="width: 40%">
+                                <th style="width: 30%">
                                     ambiente
                                 </th>
-                                <th style="width: 50%">
+                                <th style="width: 30%">
                                     municipio
                                 </th>
 
@@ -70,33 +70,41 @@
                                     </td>
 
                                     <td>
-                                        {{-- {{ $ficha-> }} --}}
+                                        {{ $ficha->ambiente->title }}
                                     </td>
                                     <td>
-                                        {{-- <form id="cambiarEstadoForm" class=" d-inline"
+                                        {{ $ficha->ambiente->piso->bloque->sede->municipio->municipio }}
+                                    </td>
+                                    {{-- <td>
+                                        <form id="cambiarEstadoForm" class=" d-inline"
                                             action="{{ route('ficha.cambiarEstadoUser', ['ficha' => $ficha->id]) }}"
                                             method="POST">
                                             @csrf
-                                            @method('PUT') --}}
-                                        {{-- <button type="submit" class="btn btn-success btn-sm"><i
+                                            @method('PUT')
+                                        <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <a class="btn btn-warning btn-sm"
-                                            href="{{ route('ficha.show', ['ficha' => $ficha->id]) }}">
+                                            href="{{ route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $ficha->id]) }}">
                                             <i class="fas fa-eye"></i>
 
                                         </a>
                                     </td>
                                     <td>
+                                        <a href="{{ route('entradaSalida.index') }}" class="btn btn-success btn-sm">
+                                            <i class="fas fa-list-ul"></i>
+                                        </a>
+                                    </td>
+                                    {{-- <td>
                                         <a class="btn btn-info btn-sm"
                                             href="{{ route('ficha.edit', ['ficha' => $ficha->id]) }}">
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                    </td>
-                                    <td>
+                                    </td> --}}
+                                    {{-- <td>
                                         <form action="{{ route('ficha.destroy', ['ficha' => $ficha->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf

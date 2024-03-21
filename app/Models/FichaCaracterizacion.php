@@ -14,7 +14,6 @@ class FichaCaracterizacion extends Model
     'horas_formacion',
     'cupo',
     'dias_de_formacion',
-    'municipio_id',
     'instructor_asignado',
     'ambiente_id'];
 
