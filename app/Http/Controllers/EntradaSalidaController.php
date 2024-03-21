@@ -62,25 +62,30 @@ class EntradaSalidaController extends Controller
             $validator = validator::make($request->all(), [
                 // 'user_id' => Auth::user()->id,
                 'aprendiz' => 'required|string',
+                'ficha_caracterizacion_id' => 'required',
             ]);
+            // @dd($request->ficha_caracterizacion_id);
 
             if ($validator->fails()) {
                 @dd('holis');
                 @dd($validator);
                 return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
+                ->withErrors($validator)
+                ->withInput();
             }
+            // @dd('parela ahí');
 
             // Crear Persona
             $entradaSalida = EntradaSalida::create([
-                'user_id' => Auth::user()->id,
+                'fecha' => Carbon::now()->toDateString(),
+                'instructor_user_id' => Auth::user()->id,
                 'aprendiz' => $request->input('aprendiz'),
                 'entrada' => Carbon::now(),
+                'ficha_caracterizacion_id' => $request->input('ficha_caracterizacion_id'),
             ]);
 
 
-            return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
+            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $request->ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);

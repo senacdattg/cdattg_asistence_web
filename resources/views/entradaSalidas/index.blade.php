@@ -20,7 +20,7 @@
         <div class="content">
             <div class="row">
                 <div class="col">
-                    @include('entradaSalidas.create')
+                    @include('entradaSalidas.create', ['ficha' => $ficha->id])
                 </div>
                 <div class="col">
                     @include('entradaSalidas.edit')
