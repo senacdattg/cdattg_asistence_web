@@ -31,6 +31,32 @@
 
             <div class="card">
                 <div class="card-body">
+                    {{-- datos de la ficha y la fecha --}}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Fecha: {{ $fecha }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Ambiente: {{ $ficha->ambiente->title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Ficha: {{ $ficha->ficha }}</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="card card-body">
+                                <p class="card-text">Nombre del curso: {{ $ficha->nombre_curso }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- finaliza datos --}}
                     <div class="card-body p-0">
                         <table class="table table-responsive">
                             <thead>
@@ -134,22 +160,22 @@
     </div>
 @endsection
 @section('script')
-  <script>
-    $(document).ready(function () {
-        var btnGenerarCSV = $('#btn-generarCSV');
+    <script>
+        $(document).ready(function() {
+            var btnGenerarCSV = $('#btn-generarCSV');
 
-        btnGenerarCSV.click(function () {
-            // Simular un formulario oculto y realizar la descarga
-            var iframe = $('<iframe style="display: none;"></iframe>');
-            $('body').append(iframe);
+            btnGenerarCSV.click(function() {
+                // Simular un formulario oculto y realizar la descarga
+                var iframe = $('<iframe style="display: none;"></iframe>');
+                $('body').append(iframe);
 
-            iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
+                iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
 
-            // Redirigir después de la descarga
-            setTimeout(function () {
-                window.location.href = '{{ route('fichaCaracterizacion.create') }}';
-            }, 1000); // 2000 milisegundos (2 segundos) de retraso
+                // Redirigir después de la descarga
+                setTimeout(function() {
+                    window.location.href = '{{ route('fichaCaracterizacion.create') }}';
+                }, 1000); // 2000 milisegundos (2 segundos) de retraso
+            });
         });
-    });
-  </script>
+    </script>
 @endsection

@@ -20,17 +20,29 @@ class EntradaSalidaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $fichaCaracterizacion)
     {
-        $user = Auth::user();
-
+        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion);
         // Obtén todos los registros de entrada/salida del usuario actual
-        $registros = EntradaSalida::where('user_id', $user->id)->get();
+        $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+        ->where('fecha', Carbon::now()->toDateString())->get();
 
         // Pasa los registros a la vista
-        return view('entradaSalidas.index', compact('registros'));
+        return view('entradaSalidas.index', compact('registros', 'ficha'));
     }
+    public function registros($fichaCaracterizacion){
+        $fecha = Carbon::now()->toDateString();
+        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
+        // @dd($ficha);
+        // Obtén todos los registros de entrada/salida del usuario actual
+        $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('ficha_caracterizacion_id', $fichaCaracterizacion)->get();
 
+        // Pasa los registros a la vista
+        return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha'));
+
+    }
     /**
      * Show the form for creating a new resource.
      */

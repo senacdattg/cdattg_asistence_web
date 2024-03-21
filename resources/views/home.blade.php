@@ -32,7 +32,7 @@
                         <hr class="my-4">
                         <p>Recuerda que primero dedes de ingresar la ficha de caracterización y luego escanear tomar la asistencia a la hora de entrada y de salida</p>
                         @role('INSTRUCTOR')
-                        <a class="btn btn-primary btn-lg" href="{{ route('fichaCaracterizacion.create') }}" role="button">Comencemos</a>
+                        <a class="btn btn-primary btn-lg" href="{{ route('fichaCaracterizacion.index') }}" role="button">Comencemos</a>
                         @endrole
                     </div>
                 </div>

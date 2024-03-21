@@ -11,14 +11,19 @@ class EntradaSalida extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'fecha',
+        'instructor_user_id',
         'aprendiz',
         'entrada',
         'salida',
+        'ficha_caracterizacion_id',
     ];
 
-    public function user()
+    public function instructor()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'instructor_user_id');
+    }
+    public function fichaCaracterizacion(){
+        return $this->belongsTo(FichaCaracterizacion::class);
     }
 }

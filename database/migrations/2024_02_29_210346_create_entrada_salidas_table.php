@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('entrada_salidas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('aprendiz')->nullable();
-            $table->dateTime('entrada')->nullable();
-            $table->dateTime('salida')->nullable();
+            $table->date('fecha');
+            $table->foreignId('instructor_user_id')->constrained('users');
+            $table->string('aprendiz');
+            $table->time('entrada');
+            $table->time('salida')->nullable();
             $table->timestamps();
         });
     }
