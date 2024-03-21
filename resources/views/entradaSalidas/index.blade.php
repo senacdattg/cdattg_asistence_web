@@ -94,50 +94,17 @@
                                             {{ $registro->salida }}
                                         </td>
                                         <td>
-                                            {{-- <span class="badge badge-{{ $registro->user->status === 1 ? 'success' : 'danger' }}">
-                                        @if ($registro->user->status === 1)
-                                                ACTIVO
-                                            @else
-                                                INACTIVO
-                                            @endif
-                                        </span> --}}
-                                        </td>
-                                        <td>
-                                            {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('registro.cambiarEstadoUser', ['registro' => $registro->user->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT') --}}
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            {{-- <a class="btn btn-warning btn-sm"
-                                            href="{{ route('registro.show', ['registro' => $registro->id]) }}"> --}}
-                                            <i class="fas fa-eye"></i>
-
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{-- <a class="btn btn-info btn-sm"
-                                            href="{{ route('registro.edit', ['registro' => $registro->id]) }}"> --}}
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{-- <form action="{{ route('registros.destroy', ['registro' => $registro->id]) }}"
+                                            <form action="{{ route('entradaSalida.destroy', ['entradaSalida' => $registro->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
-                                            @method('DELETE') --}}
+                                            @method('DELETE')
 
-                                            {{-- <button type="submit" class="btn btn-danger btn-sm"
+                                            <button type="submit" class="btn btn-danger btn-sm"
                                             onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
 
                                             <i class="fas fa-trash"></i>
-                                        </button> --}}
-                                            {{-- </form> --}}
+                                        </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @empty

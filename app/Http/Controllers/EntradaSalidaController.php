@@ -118,7 +118,7 @@ class EntradaSalidaController extends Controller
                 $entradaSalida->update([
                     'salida' => Carbon::now(),
                 ]);
-                return redirect()->route('entradaSalida.index')->with('success', 'Salida Exitosa');
+                return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $entradaSalida->ficha_caracterizacion_id])->with('success', 'Salida Exitosa');
             }else{
                 return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
             }
@@ -222,11 +222,9 @@ class EntradaSalidaController extends Controller
      */
     public function destroy(EntradaSalida $entradaSalida)
     {
-        //
+        $entradaSalida->delete();
+        return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
 }
