@@ -48,7 +48,7 @@ class EntradaSalidaController extends Controller
      */
     public function create()
     {
-        //
+        return view('entradaSalidas.create');
     }
 
     /**
@@ -206,7 +206,7 @@ class EntradaSalidaController extends Controller
      */
     public function edit(EntradaSalida $entradaSalida)
     {
-        //
+        return view('entradaSalidas.edit');
     }
 
     /**
@@ -226,5 +226,17 @@ class EntradaSalidaController extends Controller
         return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
     }
 
+    public function cargarDatos(Request $request){
+        $data = $request->validate([
+            'evento' => 'required'
+        ]);
+        // @dd($request->evento);
 
+        if($request->evento == 1){
+            // @dd('se supone que aqui vamos bien' . $request->evento);
+            return view('entradaSalidas.create');
+        }else{
+            return view('entradaSalidas.edit');
+        }
+    }
 }
