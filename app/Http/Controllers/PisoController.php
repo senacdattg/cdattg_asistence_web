@@ -101,6 +101,8 @@ class PisoController extends Controller
      */
     public function destroy(Piso $piso)
     {
-        //
+        $piso->delete();
+
+        return redirect()->route('piso.index')->with('success', 'Piso eliminado exitosamente');
     }
 }

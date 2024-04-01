@@ -15,20 +15,4 @@
 </head>
 
 <body class="hold-transition register-page">
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
-    @if ($errors->has('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-
-            {{ $errors->first('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    @endif
+  
