@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
 
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css?v=3.2.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <body class="hold-transition sidebar-mini">
 

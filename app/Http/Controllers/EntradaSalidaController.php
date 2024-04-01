@@ -48,15 +48,43 @@ class EntradaSalidaController extends Controller
      */
     public function create()
     {
-        //
+        return view('entradaSalidas.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
+    public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz){
+
+        // @dd('holis');
+        try {
+
+
+
+            // Crear Persona
+            $entradaSalida = EntradaSalida::create([
+                'fecha' => Carbon::now()->toDateString(),
+                'instructor_user_id' => Auth::user()->id,
+                'aprendiz' => $aprendiz,
+                'entrada' => Carbon::now(),
+                'ficha_caracterizacion_id' => $ficha_caracterizacion_id,
+            ]);
+
+
+            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
     public function store(StoreEntradaSalidaRequest $request)
     {
-        // @dd('holis');
+        @dd('holis');
         try {
 
             $validator = validator::make($request->all(), [
@@ -123,6 +151,30 @@ class EntradaSalidaController extends Controller
                 return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
             }
 
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
+    public function updateEntradaSalida($aprendiz){
+        try {
+            $entradaSalida = EntradaSalida::where('aprendiz', $aprendiz)
+            ->where('salida', null)->first();
+            
+            if ($entradaSalida) {
+
+                $entradaSalida->update([
+                    'salida' => Carbon::now(),
+                ]);
+                return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $entradaSalida->ficha_caracterizacion_id])->with('success', 'Salida Exitosa');
+            } else {
+                return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
+            }
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
@@ -206,7 +258,7 @@ class EntradaSalidaController extends Controller
      */
     public function edit(EntradaSalida $entradaSalida)
     {
-        //
+        return view('entradaSalidas.edit');
     }
 
     /**
@@ -226,5 +278,19 @@ class EntradaSalidaController extends Controller
         return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
     }
 
-
+    public function cargarDatos(Request $request){
+        $data = $request->validate([
+            'evento' => 'required',
+            'ficha_caracteriacion_id',
+        ]);
+        // @dd($request->ficha_caracterizacion_id);
+        $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
+        $evento = $request->evento;
+        if($request->evento == 1){
+            // @dd('se supone que aqui vamos bien' . $request->evento);
+            return view('entradaSalidas.create', compact('ficha_caracterizacion_id', 'evento'));
+        }else{
+            return view('entradaSalidas.edit', compact('ficha_caracterizacion_id', 'evento') );
+        }
+    }
 }
