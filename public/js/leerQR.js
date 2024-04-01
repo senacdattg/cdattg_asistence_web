@@ -67,6 +67,9 @@ qrcode.callback = (respuesta) => {
         // Swal.fire("nos vamos a crear el registro")
         window.location.href = "crearEntradaSalida/" + ficha_caracerizacion_id + "/" + respuesta;
 
+    }else {
+
+        window.location.href = "editarEntradaSalida/" + respuesta;
     }
     // activarSonido();
     // encenderCamara();

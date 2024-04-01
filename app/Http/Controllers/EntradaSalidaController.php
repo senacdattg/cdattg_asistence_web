@@ -161,6 +161,30 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
+    public function updateEntradaSalida($aprendiz){
+        try {
+            $entradaSalida = EntradaSalida::where('aprendiz', $aprendiz)
+            ->where('salida', null)->first();
+            
+            if ($entradaSalida) {
+
+                $entradaSalida->update([
+                    'salida' => Carbon::now(),
+                ]);
+                return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $entradaSalida->ficha_caracterizacion_id])->with('success', 'Salida Exitosa');
+            } else {
+                return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
+            }
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
     public function crearCarpetaUser(){
         $user_id = Auth::id(); // Obtener el ID del usuario autenticado
 
@@ -266,7 +290,7 @@ class EntradaSalidaController extends Controller
             // @dd('se supone que aqui vamos bien' . $request->evento);
             return view('entradaSalidas.create', compact('ficha_caracterizacion_id', 'evento'));
         }else{
-            return view('entradaSalidas.edit');
+            return view('entradaSalidas.edit', compact('ficha_caracterizacion_id', 'evento') );
         }
     }
 }
