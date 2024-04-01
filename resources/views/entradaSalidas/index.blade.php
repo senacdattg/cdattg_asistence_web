@@ -110,13 +110,12 @@
                                             {{ $registro->salida }}
                                         </td>
                                         <td>
-                                            <form action="{{ route('entradaSalida.destroy', ['entradaSalida' => $registro->id]) }}"
+                                            <form class="formulario-eliminar btn" action="{{ route('entradaSalida.destroy', ['entradaSalida' => $registro->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
+                                            <button type="submit" class="btn btn-danger btn-sm">
 
                                             <i class="fas fa-trash"></i>
                                         </button>

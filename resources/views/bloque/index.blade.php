@@ -94,20 +94,19 @@
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                    </td>
+                                    </td> --}}
                                     <td>
-                                        <form action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}" method="POST"
+                                        <form class="formulario-eliminar btn" action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
+                                            <button type="submit" class="btn btn-danger btn-sm">
 
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-                                    </td> --}}
+                                    </td>
                                 </tr>
 
                             @empty

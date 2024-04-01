@@ -110,13 +110,12 @@
                                                     <i class="fas fa-pencil-alt">
                                                     </i>
                                                 </a>
-                                                <form action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
+                                                <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
                                                     method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
 
-                                                    <button type="submit" class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('¿Estás seguro de que deseas eliminar este tema?')">
+                                                    <button type="submit" class="btn btn-danger btn-sm">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>

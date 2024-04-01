@@ -102,6 +102,8 @@ class BloqueController extends Controller
      */
     public function destroy(Bloque $bloque)
     {
-        //
+        $bloque->delete();
+
+        return redirect()->route('bloque.index')->with('success', 'Bloque eliminado exitosamente');
     }
 }
