@@ -54,9 +54,37 @@ class EntradaSalidaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz){
+
+        // @dd('holis');
+        try {
+
+
+
+            // Crear Persona
+            $entradaSalida = EntradaSalida::create([
+                'fecha' => Carbon::now()->toDateString(),
+                'instructor_user_id' => Auth::user()->id,
+                'aprendiz' => $aprendiz,
+                'entrada' => Carbon::now(),
+                'ficha_caracterizacion_id' => $ficha_caracterizacion_id,
+            ]);
+
+
+            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
     public function store(StoreEntradaSalidaRequest $request)
     {
-        // @dd('holis');
+        @dd('holis');
         try {
 
             $validator = validator::make($request->all(), [
@@ -228,13 +256,15 @@ class EntradaSalidaController extends Controller
 
     public function cargarDatos(Request $request){
         $data = $request->validate([
-            'evento' => 'required'
+            'evento' => 'required',
+            'ficha_caracteriacion_id',
         ]);
-        // @dd($request->evento);
-
+        // @dd($request->ficha_caracterizacion_id);
+        $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
+        $evento = $request->evento;
         if($request->evento == 1){
             // @dd('se supone que aqui vamos bien' . $request->evento);
-            return view('entradaSalidas.create');
+            return view('entradaSalidas.create', compact('ficha_caracterizacion_id', 'evento'));
         }else{
             return view('entradaSalidas.edit');
         }

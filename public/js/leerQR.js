@@ -13,22 +13,6 @@ let scanning = false;
 
 //funcion para encender la camara
 const encenderCamara = () => {
-// alert();
-Swal.fire({
-  title: "Custom width, padding, color, background.",
-  width: 600,
-  padding: "3em",
-  color: "#716add",
-  background: "#fff url(/images/trees.png)",
-  backdrop: `
-    rgba(0,0,123,0.4)
-    url("/images/nyan-cat.gif")
-    left top
-    no-repeat
-  `
-});
-
-
   navigator.mediaDevices
     .getUserMedia({ video: { facingMode: "environment" } })
     .then(function (stream) {
@@ -69,19 +53,25 @@ const cerrarCamara = () => {
   btnScanQR.hidden = false;
 };
 
-const activarSonido = () => {
-  var audio = document.getElementById('audioScaner');
-  audio.play();
-}
 
 //callback cuando termina de leer el codigo QR
 qrcode.callback = (respuesta) => {
-  if (respuesta) {
-    // console.log(respuesta);
-    Swal.fire(respuesta)
-    activarSonido();
-    //encenderCamara();
+    if (respuesta) {
+        // console.log(respuesta);
+        // Swal.fire(respuesta + "holis")
+        var ficha_caracerizacion_id = document.getElementById("ficha_caracterizacion_id").value;
+        var evento = document.getElementById("evento").value;
+
+    Swal.fire(respuesta + ficha_caracerizacion_id)
+    if (evento == 1){
+        // Swal.fire("nos vamos a crear el registro")
+        window.location.href = "crearEntradaSalida/" + ficha_caracerizacion_id + "/" + respuesta;
+
+    }
+    // activarSonido();
+    // encenderCamara();
     cerrarCamara();
+    encenderCamara();
 
   }
 };

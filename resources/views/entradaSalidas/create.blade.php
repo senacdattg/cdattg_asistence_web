@@ -21,17 +21,9 @@
         <section class="content">
 
             <div class="card">
+                <input type="hidden" value="{{ $ficha_caracterizacion_id }}" name="ficha_caracerizacion_id" id="ficha_caracterizacion_id">
 
-
-
-                    <form action="{{ route('entradaSalida.store') }}" method="post">
-                        @csrf
-                        <label for="aprendiz">Leer QR Aprendiz</label>
-                        <input type="text" name="aprendiz">
-                        {{-- <input type="hidden" name="ficha_caracterizacion_id" value="{{ $ficha }}"> --}}
-
-                        <button type="submit" class="btn btn-success btn-sm">Leer</button>
-                    </form>
+                <input type="hidden" value="{{ $evento }}" name="evento" id="evento">
                     <div class="row justify-content-center mt-5">
                         <div class="col-sm-4 shadow p-3">
                             <h5 class="text-center">Escanear codigo QR</h5>
@@ -42,21 +34,17 @@
                                 </a>
                                 <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
                             </div>
-                            <div class="row mx-5 my-3">
-                                <button class="btn btn-success btn-sm rounded-3 mb-2" onclick="encenderCamara()">Encender
-                                    camara</button>
-                                <button class="btn btn-danger btn-sm rounded-3" onclick="cerrarCamara()">Detener
-                                    camara</button>
-                            </div>
+
                         </div>
                     </div>
-                    <audio id="audioScaner" src="assets/sonido.mp3"></audio>
                 </div>
 
         </section>
     </div>
 @endsection
 @section('script')
+
+
 <script src="{{ asset('js/qrCode.min.js') }}"></script>
 <script src="{{ asset('js/leerQR.js') }}"></script>
 @endsection

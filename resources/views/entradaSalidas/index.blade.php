@@ -39,6 +39,7 @@
                                 <option value="1">Entrada</option>
                                 <option value="0">Salida</option>
                             </select>
+                            <input type="hidden" value="{{ $ficha->id }}" name="ficha_caracterizacion_id">
                             <br>
                             <button type="submit" class="bnt btn-success btn-sm-2">
                                 <i class="fas fa-qrcode"></i>

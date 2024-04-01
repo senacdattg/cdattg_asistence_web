@@ -47,6 +47,7 @@ Route::resource('instructor', InstructorController::class);
 // Rutas para entrada y salida
 Route::resource('entradaSalida', EntradaSalidaController::class);
 Route::get('cargarDatos', [EntradaSalidaController::class, 'cargarDatos'])->name('entradaSalida.cargarDatos');
+Route::get('crearEntradaSalida/{ficha_caracterizacion_id}/{aprendiz}', [EntradaSalidaController::class, 'storeEntradaSalida'])->name('entradaSalida.crearEntradaSalida');
 Route::get('/registros/{fichaCaracterizacion}', [EntradaSalidaController::class, 'registros'])->name('entradaSalida.registros');
 Route::post('updateSalida', [EntradaSalidaController::class, 'updateSalida'])->name('entradaSalida.updateSalida');
 Route::get('generarCSV', [EntradaSalidaController::class, 'generarCSV'])->name('entradaSalida.generarCSV');
