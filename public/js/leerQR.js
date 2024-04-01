@@ -62,7 +62,7 @@ qrcode.callback = (respuesta) => {
         var ficha_caracerizacion_id = document.getElementById("ficha_caracterizacion_id").value;
         var evento = document.getElementById("evento").value;
 
-    Swal.fire(respuesta + ficha_caracerizacion_id)
+    // Swal.fire(respuesta + ficha_caracerizacion_id)
     if (evento == 1){
         // Swal.fire("nos vamos a crear el registro")
         window.location.href = "crearEntradaSalida/" + ficha_caracerizacion_id + "/" + respuesta;

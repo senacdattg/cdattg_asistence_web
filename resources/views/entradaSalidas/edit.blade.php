@@ -21,6 +21,13 @@
         <section class="content">
 
             <div class="card">
+                <div class="card-body">
+                    <a class="btn btn-warning btn-sm" href="javascript:history.back()">
+                        <i class="fas fa-arrow-left"></i>
+                        </i>
+                        Volver
+                    </a>
+                </div>
                 <input type="hidden" value="{{ $ficha_caracterizacion_id }}" name="ficha_caracerizacion_id" id="ficha_caracterizacion_id">
 
                 <input type="hidden" value="{{ $evento }}" name="evento" id="evento">
