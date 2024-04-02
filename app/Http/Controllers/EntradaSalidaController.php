@@ -165,7 +165,7 @@ class EntradaSalidaController extends Controller
         try {
             $entradaSalida = EntradaSalida::where('aprendiz', $aprendiz)
             ->where('salida', null)->first();
-            
+
             if ($entradaSalida) {
 
                 $entradaSalida->update([
@@ -202,21 +202,25 @@ class EntradaSalidaController extends Controller
             // echo "La carpeta del usuario ya existe.";
         }
     }
-    public function generarCSV(){
-        date_default_timezone_set('America/Bogota');
-
-        $lista = EntradaSalida::where('user_id', Auth::user()->id)->get();
-
+    public function generarCSV($ficha){
+        // @dd($ficha);
+        $lista = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+        ->where('fecha', Carbon::now()->toDateString())
+        ->where('ficha_caracterizacion_id', $ficha)->get();
+        // @dd($lista);
+        $fichaCaracterizacion = FichaCaracterizacion::find($ficha);
+        // @dd($fichaCaracterizacion);
         $fecha_actual = now()->format('Y-m-d_H-i-s');
 
-        $nombre_archivo = Auth::user()->fichaCaracterizacion->ficha_caracterizacion . $fecha_actual . '.csv';
+        $nombre_archivo = $fichaCaracterizacion->ficha . '-' . $fecha_actual . '.csv';
 
         // Inicializar el contenido del archivo CSV
-        $csv_content = '';
+        $csv_content = "Aprendiz,Ficha,Fecha,HoraEntrada,HoraSalida". PHP_EOL;
 
         // Agregar las líneas al contenido del archivo
         foreach ($lista as $linea) {
-            $csv_content .= implode('-', $linea->toArray()) . PHP_EOL;
+            // @dd($linea);
+            $csv_content .= $linea->aprendiz .',' .$fichaCaracterizacion->ficha .',' . $linea->fecha.',' . $linea->entrada.',' . $linea->salida . PHP_EOL;
         }
 
         // Preparar la respuesta para la descarga
@@ -232,8 +236,8 @@ class EntradaSalidaController extends Controller
         );
 
         // Eliminar las entradas y fichaCaracterizacion relacionadas
-        $this->destroyEntradaSalida();
-        $this->destroyFichaCaractrizacion();
+        // $this->destroyEntradaSalida();
+        // $this->destroyFichaCaractrizacion();
 
         // Devolver una respuesta JSON después de la descarga
         return $response;

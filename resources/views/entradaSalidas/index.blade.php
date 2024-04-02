@@ -133,7 +133,7 @@
                 </div>
                 <div class="row align-self-center">
                     <div class="col align-self-center">
-                        <a href="{{ route('entradaSalida.generarCSV') }}" id="btn-generarCSV"
+                        <a href="{{ route('entradaSalida.generarCSV', ['ficha' => $ficha->id]) }}" id="btn-generarCSV"
                             class="btn btn-warning btn-sm"><i class="fas fa-file-csv" style="font-size: 2em;"></i></a>
                     </div>
                 </div>
@@ -151,11 +151,11 @@
                 var iframe = $('<iframe style="display: none;"></iframe>');
                 $('body').append(iframe);
 
-                iframe.attr('src', '{{ route('entradaSalida.generarCSV') }}');
+                iframe.attr('src', '{{ route('entradaSalida.generarCSV', ['ficha' => $ficha]) }}');
 
                 // Redirigir después de la descarga
                 setTimeout(function() {
-                    window.location.href = '{{ route('fichaCaracterizacion.create') }}';
+                    window.location.href = '{{ route('fichaCaracterizacion.index') }}';
                 }, 1000); // 2000 milisegundos (2 segundos) de retraso
             });
         });
