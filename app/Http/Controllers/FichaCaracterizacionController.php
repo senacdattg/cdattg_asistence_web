@@ -63,7 +63,7 @@ class FichaCaracterizacionController extends Controller
                 'instructor_asignado' => Auth::user()->id,
                 'ambiente_id' => $request->input('ambiente_id'),
             ]);
-            return redirect()->route('entradaSalida.index')->with('success', '¡Registro Exitoso!');
+            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $fichaCaracterizacion->id])->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);

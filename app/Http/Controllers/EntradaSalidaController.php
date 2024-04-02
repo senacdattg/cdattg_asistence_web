@@ -23,7 +23,7 @@ class EntradaSalidaController extends Controller
     public function index(Request $fichaCaracterizacion)
     {
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion);
-        // Obtén todos los registros de entrada/salida del usuario actual
+        
         $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
         ->where('fecha', Carbon::now()->toDateString())->get();
 
