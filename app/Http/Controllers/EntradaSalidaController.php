@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
@@ -23,9 +24,10 @@ class EntradaSalidaController extends Controller
     public function index(Request $fichaCaracterizacion)
     {
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion);
-        
+
         $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
-        ->where('fecha', Carbon::now()->toDateString())->get();
+        ->where('fecha', Carbon::now()->toDateString())
+        ->where('listado', null)->get();
 
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha'));
@@ -37,7 +39,8 @@ class EntradaSalidaController extends Controller
         // Obtén todos los registros de entrada/salida del usuario actual
         $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
             ->where('fecha', Carbon::now()->toDateString())
-            ->where('ficha_caracterizacion_id', $fichaCaracterizacion)->get();
+            ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
+            ->where('listado', null)->get();
 
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha'));
@@ -235,9 +238,7 @@ class EntradaSalidaController extends Controller
             ]
         );
 
-        // Eliminar las entradas y fichaCaracterizacion relacionadas
-        // $this->destroyEntradaSalida();
-        // $this->destroyFichaCaractrizacion();
+        $this->marcarListado($ficha);
 
         // Devolver una respuesta JSON después de la descarga
         return $response;
@@ -246,8 +247,12 @@ class EntradaSalidaController extends Controller
     /**
      * Display the specified resource.
      */
-    public  function destroyEntradaSalida(){
-        EntradaSalida::where('user_id', Auth::user()->id)->delete();
+    public  function marcarListado($ficha){
+        DB::table('entrada_salidas')
+        ->where('instructor_user_id', Auth::user()->id)
+        ->where('fecha', Carbon::now()->toDateString())
+        ->where('ficha_caracterizacion_id', $ficha)
+        ->update(['listado' => 1]);
     }
     public function destroyFichaCaractrizacion(){
         FichaCaracterizacion::where('user_id', Auth::user()->id)->delete();
