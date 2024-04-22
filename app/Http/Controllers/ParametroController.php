@@ -19,7 +19,11 @@ class ParametroController extends Controller
         $parametros = Parametro::paginate(10);
         return view('parametros.index', compact('parametros'));
     }
+    public function apiIndex(){
+        $parametros = Parametro::all();
+        return response()->json($parametros);
 
+    }
     /**
      * Show the form for creating a new resource.
      */
