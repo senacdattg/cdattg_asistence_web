@@ -6,12 +6,22 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Registro de asistencia</h1>
+                        <h1>Asistencia @if ($ficha->ficha)
+                                {{ $ficha->ficha }}
+                            @else
+                                {{ $ficha->nombre_curso }}
+                            @endif
+                        </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Blank Page</li>
+                            <li class="breadcrumb-item"><a href="{{ route('home.index') }}">inicio</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('fichaCaracterizacion.index') }}">Fichas de caracterización</a></li>
+                            <li class="breadcrumb-item active">Asistencia @if ($ficha->ficha)
+                                {{ $ficha->ficha }}
+                            @else
+                                {{ $ficha->nombre_curso }}
+                            @endif</li>
                         </ol>
                     </div>
                 </div>

@@ -80,7 +80,7 @@ class FichaCaracterizacionController extends Controller
      */
     public function show(FichaCaracterizacion $fichaCaracterizacion)
     {
-        //
+        return view('ficha.show', compact('fichaCaracterizacion'));
     }
 
     /**

@@ -93,4 +93,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Parametro::class, 'user_create_id');
     }
+    public function instructores()
+    {
+        return $this->belongsTo(User::class, 'instructor_asignado');
+    }
 }

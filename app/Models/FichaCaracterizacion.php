@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\UserController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,5 +33,9 @@ class FichaCaracterizacion extends Model
     }
     public function entradaSalida(){
         return $this->belongsTo(EntradaSalida::class);
+    }
+    public function instructores()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -37,7 +37,9 @@
                             <h5 class="text-center">Escanear codigo QR</h5>
                             <div class="row text-center">
                                 <a id="btn-scan-qr" href="#">
-                                    <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg"
+                                    {{-- <img src="https://dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg"
+                                        class="img-fluid text-center" width="175"> --}}
+                                        <img src="{{ asset('dist/img/LogoSena.jpeg') }}"
                                         class="img-fluid text-center" width="175">
                                 </a>
                                 <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
