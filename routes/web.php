@@ -7,6 +7,7 @@ use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstructorController;
 use App\http\Controllers\LoginController;
 use App\http\Controllers\LogoutController;
@@ -32,9 +33,10 @@ use App\Http\Controllers\TemaController;
 |
 */
 
-Route::get('/home', function () {
-    return view('home');
-});
+// Route::get('/home', function () {
+//     return view('home');
+// });
+Route::resource('home', HomeController::class);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -81,9 +83,10 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('/registrarme', 'create')->name('registrarme');
 });
 // rutas del controlador login
+Route::resource('login', LoginController::class);
 Route::controller(LoginController::class)->group(function(){
     Route::get('/','verificarLogin')->name('verificarLogin');
-    Route::get('/login','mostrarLogin')->name('login');
+    // Route::get('/login','mostrarLogin')->name('login');
     Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
 });
 // rutas para parametros

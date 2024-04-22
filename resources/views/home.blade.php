@@ -13,7 +13,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('verificarLogin') }}" >Inicio</a></li>
 
 
-                            <li class="breadcrumb-item active">Blank Page</li>
+                            {{-- <li class="breadcrumb-item active">Blank Page</li> --}}
                         </ol>
                     </div>
                 </div>

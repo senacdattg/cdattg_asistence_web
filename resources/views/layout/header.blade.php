@@ -41,16 +41,15 @@
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                         <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
                             alt="User Image">
-                        <span class="d-none d-md-inline">{{ Auth::user()->primer_nombre }}
-                            {{ Auth::user()->primer_apellido }}</span>
+                        <span class="d-none d-md-inline">{{ Auth::user()->persona->primer_nombre }}
+                            {{ Auth::user()->persona->primer_apellido }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
                         <li class="user-header bg-primary">
                             <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                             <p>
-                                {{ Auth::user()->primer_nombre }} {{ Auth::user()->primer_apellido }} -
-                                {{ Auth::user()->persona->cargo }}
+                                {{ Auth::user()->persona->primer_nombre }} {{ Auth::user()->persona->primer_apellido }}
                                 {{-- <small>Member since Nov. 2012</small> --}}
                             </p>
                         </li>

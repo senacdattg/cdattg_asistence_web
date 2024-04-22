@@ -6,12 +6,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Ficha de caracterizacion</h1>
+                        <h1>Crear ficha de caracterización</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Blank Page</li>
+                            <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('fichaCaracterizacion.index') }}">Fichas de caracteriazción</a></li>
+                            <li class="breadcrumb-item active">Crear ficha de caracterización</li>
                         </ol>
                     </div>
                 </div>
@@ -99,8 +100,11 @@
                             </div>
                             {{-- boton asistencia --}}
                             <div class="row">
+
                                 <div class="div justify-content-center boton-asistencia">
-                                    <button type="submit" class="btn btn-success">Tomar Asistencia</button>
+                                        <div class="card-body">
+                                        <button type="submit" class="btn btn-success">Tomar Asistencia</button>
+                                    </div>
                                 </div>
                             </div>
                         </form>

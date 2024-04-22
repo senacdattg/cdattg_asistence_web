@@ -7,13 +7,17 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function index(){
+
+        return view('user.login');
+    }
     public function mostrarLogin()
     {
-        return view('user.login');
     }
     public function iniciarSesion(Request $request)
     {
@@ -24,10 +28,10 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // La autenticación fue exitosa
-            return redirect('/home')->with('success', '¡Sesión Iniciada!');; // Puedes redirigir a donde desees
+            return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!');; // Puedes redirigir a donde desees
         } else {
             // La autenticación falló
-            return back()->withErrors(['danger' => 'Correo o contraseña invalido']);
+            return back()->withInput()->withErrors(['error' => 'Correo o contraseña invalido']);
         }
     }
     public function verificarLogin()

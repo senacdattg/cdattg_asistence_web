@@ -6,17 +6,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
-                        </h1>
+                        <h1>Fichas de caracterización</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Fichas de caracterización
                             </li>
                         </ol>
                     </div>
@@ -24,11 +21,13 @@
             </div>
         </section>
 
-
         <section class="content">
-            <a href="{{ route('fichaCaracterizacion.create') }}" class="btn btn-success bnt-sm"><i class="fas fa-clipboard-list"></i></a>
             <div class="card">
 
+                <div class="card-body">
+                    <a href="{{ route('fichaCaracterizacion.create') }}" class="btn btn-success bnt-sm-2"><i class="fas fa-clipboard-list"></i></a>
+
+                </div>
 
                 <div class="card-body p-0">
                     <table class="table table-responsive">
