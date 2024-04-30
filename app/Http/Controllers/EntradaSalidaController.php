@@ -32,10 +32,23 @@ class EntradaSalidaController extends Controller
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha'));
     }
-    public function registros($fichaCaracterizacion){
+    public function apiIndex($fichaCaracterizacion){
+        // @dd($fichaCaracterizacion);
         $fecha = Carbon::now()->toDateString();
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
         // @dd($ficha);
+        // Obtén todos los registros de entrada/salida del usuario actual
+        // $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
+        //     ->where('fecha', Carbon::now()->toDateString())
+        //     ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
+        //     ->where('listado', null)->get();
+        $datos = [$ficha, $fecha];
+        return response()->json($datos);
+    }
+    public function registros($fichaCaracterizacion){
+        $fecha = Carbon::now()->toDateString();
+        // @dd($ficha);
+        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
         // Obtén todos los registros de entrada/salida del usuario actual
         $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
             ->where('fecha', Carbon::now()->toDateString())
@@ -57,6 +70,10 @@ class EntradaSalidaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    public function apiStoreEntradaSalida($ficha_caracterizacion_id, $aprendiz){
+        $datos = [$ficha_caracterizacion_id, $aprendiz];
+        return response()->json($datos);
+    }
     public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz){
 
         // @dd('holis');

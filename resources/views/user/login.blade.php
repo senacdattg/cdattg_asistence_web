@@ -16,7 +16,7 @@
                             style="width: 150px; height: auto;">
                     </div>
                     <br>
-                    <p class="login-box-msg" >¡Para comenzar inicie sesión!</p>
+                    <p class="login-box-msg" ><strong>¡Para comenzar inicie sesión!</strong></p>
                     <form action="{{ route('iniciarSesion') }}" method="post">
                         @csrf
                         {{-- correo institucional --}}
@@ -56,6 +56,7 @@
 
                         </div>
                     </form>
+<<<<<<< HEAD
 
                     {{-- <hr> --}}
                     {{-- <p class="mb-1">
@@ -64,6 +65,8 @@
                     <p class="mb-0">
                         <a href="{{ route('registro') }}" class="text-center">Registrarme </a>
                     </p> --}}
+=======
+>>>>>>> feature/prueba_api_flutter
                 </div>
 
             </div>
