@@ -20,7 +20,10 @@ class FichaCaracterizacionController extends Controller
         $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
         return view('ficha.index', compact('fichas'));
     }
-
+    public function apiIndex(){
+        $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
+        return response()->json($fichas);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -30,7 +33,9 @@ class FichaCaracterizacionController extends Controller
         return view('ficha.create');
 
     }
-
+    public function apiStore(){
+        return response()->json();
+    }
     /**
      * Store a newly created resource in storage.
      */
