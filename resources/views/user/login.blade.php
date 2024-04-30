@@ -56,17 +56,6 @@
 
                         </div>
                     </form>
-<<<<<<< HEAD
-
-                    {{-- <hr> --}}
-                    {{-- <p class="mb-1">
-                        <a href="forgot-password.html">Olvide mi contraseña</a>
-                    </p>
-                    <p class="mb-0">
-                        <a href="{{ route('registro') }}" class="text-center">Registrarme </a>
-                    </p> --}}
-=======
->>>>>>> feature/prueba_api_flutter
                 </div>
 
             </div>
