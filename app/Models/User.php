@@ -51,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function fichaCaracterizacion()
     {
-        return $this->hasOne(FichaCaracterizacion::class, 'user_id');
+        return $this->hasOne(FichaCaracterizacion::class, 'instructor_asignado');
     }
     // relacion de bloques y usuario
     public function bloqueCreated()

@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class FichaCaracterizacionController extends Controller
 {
@@ -20,9 +21,13 @@ class FichaCaracterizacionController extends Controller
         $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
         return view('ficha.index', compact('fichas'));
     }
-    public function apiIndex(){
+    public function apiIndex(Request $request)
+    {
+        // Obtener el ID del usuario de la solicitud
+        $userId = $request->input('user_id');
+        // Obtener las fichas de caracterización asociadas al usuario
+        $fichas = FichaCaracterizacion::where('instructor_asignado', $userId)->get();
 
-        $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
         return response()->json($fichas);
     }
     /**

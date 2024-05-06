@@ -35,6 +35,6 @@ class Ambiente extends Model
     }
     public function fichaCaracterizacion()
     {
-        return $this->hasMany(FichaCaracterizacion::class);
+        return $this->hasMany(FichaCaracterizacion::class, 'ambiente_id');
     }
 }

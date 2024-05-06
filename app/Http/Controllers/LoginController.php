@@ -7,9 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Persona;
 use Illuminate\Http\Request;
-use App\models\User;
-use Exception;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -53,15 +50,15 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            // $request->session()->regenerate();
             $user = Auth::user();
+            $token = $user->createToken('Token Name')->plainTextToken; // Generar el token
+
             $persona = Persona::find($user->persona_id);
 
-
-            return response()->json(['user' => $user, 'persona' => $persona]);
+            // Retornar la respuesta JSON incluyendo el token
+            return response()->json(['user' => $user, 'persona' => $persona, 'token' => $token], 200);
         }
-
-        return response()->json('error: credenciales incorrectas' );
+    return response()->json(['error' => 'Credenciales incorrectas'], 401);
         //  back()->withErrors([
         //     'email' => 'The provided credentials do not match our records.',
         // ])->onlyInput('email');
