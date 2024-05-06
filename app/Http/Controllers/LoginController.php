@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Auth;
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Persona;
 use Illuminate\Http\Request;
 use App\models\User;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -28,7 +30,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // La autenticación fue exitosa
-            return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!');; // Puedes redirigir a donde desees
+            return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!'); // Puedes redirigir a donde desees
         } else {
             // La autenticación falló
             return back()->withInput()->withErrors(['error' => 'Correo o contraseña invalido']);
@@ -42,5 +44,26 @@ class LoginController extends Controller
         } else {
             return redirect('login');
         }
+    }
+    public function authenticate(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            // $request->session()->regenerate();
+            $user = Auth::user();
+            $persona = Persona::find($user->persona_id);
+
+
+            return response()->json(['user' => $user, 'persona' => $persona]);
+        }
+
+        return response()->json('error: credenciales incorrectas' );
+        //  back()->withErrors([
+        //     'email' => 'The provided credentials do not match our records.',
+        // ])->onlyInput('email');
     }
 }

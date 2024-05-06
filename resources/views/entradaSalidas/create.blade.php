@@ -42,6 +42,7 @@
                                         <img src="{{ asset('dist/img/LogoSena.jpeg') }}"
                                         class="img-fluid text-center" width="175">
                                 </a>
+                                <input type="file" capture="camera">
                                 <canvas hidden="" id="qr-canvas" class="img-fluid"></canvas>
                             </div>
 

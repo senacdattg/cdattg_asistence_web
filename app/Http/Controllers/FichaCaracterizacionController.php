@@ -21,6 +21,7 @@ class FichaCaracterizacionController extends Controller
         return view('ficha.index', compact('fichas'));
     }
     public function apiIndex(){
+
         $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
         return response()->json($fichas);
     }
