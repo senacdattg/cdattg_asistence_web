@@ -32,10 +32,26 @@ class EntradaSalidaController extends Controller
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha'));
     }
-    public function apiIndex($fichaCaracterizacion){
+    public function apiIndex(Request $request){
+        $fichaCaracterizacion = $request->id_ficha_caracterizacion;
         // @dd($fichaCaracterizacion);
         $fecha = Carbon::now()->toDateString();
-        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
+        $fichaCaracterizacion = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
+        $ficha = [
+            "id" => $fichaCaracterizacion->id,
+            "ficha" => $fichaCaracterizacion->ficha,
+            "nombre_curso" => $fichaCaracterizacion->nombre_curso,
+            "instructor_asignado" => [
+                "id" => $fichaCaracterizacion->instructor_asignado,
+                "primer_nombre" => $fichaCaracterizacion->instructor->persona->primer_nombre,
+                "segundo_nombre" => $fichaCaracterizacion->instructor->persona->segundo_nombre,
+                "primer_apellido" => $fichaCaracterizacion->instructor->persona->primer_apellido,
+                "segundo_apellido" => $fichaCaracterizacion->instructor->persona->segundo_apellido,
+            ],
+            "created_at" => $fichaCaracterizacion->created_at,
+            "updated_at" => $fichaCaracterizacion->updated_at,
+            "ambiente" => $fichaCaracterizacion->ambiente->title,
+        ];
         // @dd($ficha);
         // Obtén todos los registros de entrada/salida del usuario actual
         // $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)

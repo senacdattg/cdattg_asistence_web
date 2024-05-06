@@ -24,9 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('parametroApi', [ParametroController::class, 'apiIndex'])->name('api.parametro.index');
 Route::get('fichaCaracterizacion/apiIndex', [FichaCaracterizacionController::class, 'apiIndex'])->name('api.fichaCaracterizacion.index');
+Route::get('fichaCaracterizacion/apiShow', [FichaCaracterizacionController::class, 'apiShow']);
 Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::class, 'apiStore']);
 // http://127.0.0.1:8000/api/fichaCaracterizacion/apiStore
-Route::get('entradaSalida/apiIndex/{fichaCaracterizacion}', [EntradaSalidaController::class, 'apiIndex']);
+Route::get('entradaSalida/apiIndex', [EntradaSalidaController::class, 'apiIndex']);
 // http://127.0.0.1:8000/api/entradaSalida/apiIndex/1
 Route::get('entradaSalida/apiStoreEntradaSalida/{ficha_caracterizacion_id}/{aprendiz}', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
 //

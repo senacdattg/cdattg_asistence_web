@@ -93,6 +93,30 @@ class FichaCaracterizacionController extends Controller
     {
         return view('ficha.show', compact('fichaCaracterizacion'));
     }
+    public function apiShow(Request $request){
+        $id_ficha = $request->id_ficha_caracterizacion;
+        $fichaCaracterizacion = FichaCaracterizacion::find($id_ficha);
+        if (!$fichaCaracterizacion) {
+            return response()->json(['error' => 'Ficha de caracterización no encontrada'], 404);
+        }
+        return response()->json([
+            "id" => $fichaCaracterizacion->id,
+            "ficha" => $fichaCaracterizacion->ficha,
+            "nombre_curso" => $fichaCaracterizacion->nombre_curso,
+            "instructor_asignado" => [
+                "id" => $fichaCaracterizacion->instructor_asignado,
+                "primer_nombre" => $fichaCaracterizacion->instructor->persona->primer_nombre,
+                "segundo_nombre" => $fichaCaracterizacion->instructor->persona->segundo_nombre,
+                "primer_apellido" => $fichaCaracterizacion->instructor->persona->primer_apellido,
+                "segundo_apellido" => $fichaCaracterizacion->instructor->persona->segundo_apellido,
+            ],
+            "created_at" => $fichaCaracterizacion->created_at,
+            "updated_at" => $fichaCaracterizacion->updated_at,
+            "ambiente" => $fichaCaracterizacion->ambiente->title,
+
+
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
