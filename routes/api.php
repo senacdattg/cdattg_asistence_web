@@ -29,8 +29,9 @@ Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::cl
 // http://127.0.0.1:8000/api/fichaCaracterizacion/apiStore
 Route::get('entradaSalida/apiIndex', [EntradaSalidaController::class, 'apiIndex']);
 // http://127.0.0.1:8000/api/entradaSalida/apiIndex/1
-Route::get('entradaSalida/apiStoreEntradaSalida/{ficha_caracterizacion_id}/{aprendiz}', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
-//
+Route::post('entradaSalida/apiStoreEntradaSalida', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
+Route::post('entradaSalida/apiUpdateEntradaSalida', [EntradaSalidaController::class, 'apiUpdateEntradaSalida']);
+
 
 route::post('authenticate', [LoginController::class, 'authenticate']);
 route::post('logout', [LogoutController::class, 'logout']);

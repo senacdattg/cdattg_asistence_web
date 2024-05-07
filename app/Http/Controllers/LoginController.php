@@ -53,8 +53,21 @@ class LoginController extends Controller
             $user = Auth::user();
             $token = $user->createToken('Token Name')->plainTextToken; // Generar el token
 
-            $persona = Persona::find($user->persona_id);
-
+            $personaD = Persona::find($user->persona_id);
+            $persona = [
+                "id" => $personaD->id,
+                "tipo_documento" => $personaD->tipoDocumento->name,
+                "numero_documento" => $personaD->numero_documento,
+                "primer_nombre" => $personaD->primer_nombre,
+                "segundo_nombre" => $personaD->segundo_nombre,
+                "primer_apellido" => $personaD->primer_apellido,
+                "segundo_apellido" => $personaD->segundo_apellido,
+                "fecha_de_nacimiento" => $personaD->fecha_de_nacimiento,
+                "genero" => $personaD->tipoGenero->name,
+                "email" => $personaD->email,
+                "created_at" => $personaD->created_at,
+                "updated_at" => $personaD->updated_at
+            ];
             // Retornar la respuesta JSON incluyendo el token
             return response()->json(['user' => $user, 'persona' => $persona, 'token' => $token], 200);
         }
