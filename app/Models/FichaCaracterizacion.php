@@ -34,8 +34,8 @@ class FichaCaracterizacion extends Model
     public function entradaSalida(){
         return $this->belongsTo(EntradaSalida::class);
     }
-    public function instructores()
+    public function instructor()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'instructor_asignado');
     }
 }

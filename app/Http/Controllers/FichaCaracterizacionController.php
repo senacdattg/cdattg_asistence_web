@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class FichaCaracterizacionController extends Controller
 {
@@ -20,8 +21,13 @@ class FichaCaracterizacionController extends Controller
         $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
         return view('ficha.index', compact('fichas'));
     }
-    public function apiIndex(){
-        $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
+    public function apiIndex(Request $request)
+    {
+        // Obtener el ID del usuario de la solicitud
+        $userId = $request->input('user_id');
+        // Obtener las fichas de caracterización asociadas al usuario
+        $fichas = FichaCaracterizacion::where('instructor_asignado', $userId)->get();
+
         return response()->json($fichas);
     }
     /**
@@ -86,6 +92,30 @@ class FichaCaracterizacionController extends Controller
     public function show(FichaCaracterizacion $fichaCaracterizacion)
     {
         return view('ficha.show', compact('fichaCaracterizacion'));
+    }
+    public function apiShow(Request $request){
+        $id_ficha = $request->id_ficha_caracterizacion;
+        $fichaCaracterizacion = FichaCaracterizacion::find($id_ficha);
+        if (!$fichaCaracterizacion) {
+            return response()->json(['error' => 'Ficha de caracterización no encontrada'], 404);
+        }
+        return response()->json([
+            "id" => $fichaCaracterizacion->id,
+            "ficha" => $fichaCaracterizacion->ficha,
+            "nombre_curso" => $fichaCaracterizacion->nombre_curso,
+            "instructor_asignado" => [
+                "id" => $fichaCaracterizacion->instructor_asignado,
+                "primer_nombre" => $fichaCaracterizacion->instructor->persona->primer_nombre,
+                "segundo_nombre" => $fichaCaracterizacion->instructor->persona->segundo_nombre,
+                "primer_apellido" => $fichaCaracterizacion->instructor->persona->primer_apellido,
+                "segundo_apellido" => $fichaCaracterizacion->instructor->persona->segundo_apellido,
+            ],
+            "created_at" => $fichaCaracterizacion->created_at,
+            "updated_at" => $fichaCaracterizacion->updated_at,
+            "ambiente" => $fichaCaracterizacion->ambiente->title,
+
+
+        ]);
     }
 
     /**

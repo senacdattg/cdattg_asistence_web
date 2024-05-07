@@ -26,26 +26,51 @@ class EntradaSalidaController extends Controller
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion);
 
         $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
-        ->where('fecha', Carbon::now()->toDateString())
-        ->where('listado', null)->get();
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('listado', null)->get();
 
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha'));
     }
-    public function apiIndex($fichaCaracterizacion){
+    public function apiIndex(Request $request)
+    {
+        $id_ficha_caracterizacion = $request->id_ficha_caracterizacion;
+        $id_instructor = $request->id_instructor;
         // @dd($fichaCaracterizacion);
         $fecha = Carbon::now()->toDateString();
-        $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
+        $fichaCaracterizacion = FichaCaracterizacion::where('id', $id_ficha_caracterizacion)->first();
+        $ficha = [
+            "id" => $fichaCaracterizacion->id,
+            "ficha" => $fichaCaracterizacion->ficha,
+            "nombre_curso" => $fichaCaracterizacion->nombre_curso,
+            // "instructor_asignado" => [
+            //     "id" => $fichaCaracterizacion->instructor_asignado,
+            //     "primer_nombre" => $fichaCaracterizacion->instructor->persona->primer_nombre,
+            //     "segundo_nombre" => $fichaCaracterizacion->instructor->persona->segundo_nombre,
+            //     "primer_apellido" => $fichaCaracterizacion->instructor->persona->primer_apellido,
+            //     "segundo_apellido" => $fichaCaracterizacion->instructor->persona->segundo_apellido,
+            // ],
+            // "created_at" => $fichaCaracterizacion->created_at,
+            // "updated_at" => $fichaCaracterizacion->updated_at,
+            "ambiente" => $fichaCaracterizacion->ambiente->title,
+        ];
         // @dd($ficha);
         // Obtén todos los registros de entrada/salida del usuario actual
-        // $registros = EntradaSalida::where('instructor_user_id', Auth::user()->id)
-        //     ->where('fecha', Carbon::now()->toDateString())
-        //     ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
-        //     ->where('listado', null)->get();
-        $datos = [$ficha, $fecha];
+        $registros = EntradaSalida::where('instructor_user_id', $id_instructor)
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('ficha_caracterizacion_id', $id_ficha_caracterizacion)
+            ->where('listado', null)
+            ->get();
+        // @dd($registros);
+        $datos = [
+            "ficha_caracterizacion" => $ficha,
+            "fecha" => $fecha,
+            "registros" => $registros
+        ];
         return response()->json($datos);
     }
-    public function registros($fichaCaracterizacion){
+    public function registros($fichaCaracterizacion)
+    {
         $fecha = Carbon::now()->toDateString();
         // @dd($ficha);
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
@@ -54,10 +79,9 @@ class EntradaSalidaController extends Controller
             ->where('fecha', Carbon::now()->toDateString())
             ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
             ->where('listado', null)->get();
-
+        // @dd($registros);
         // Pasa los registros a la vista
         return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha'));
-
     }
     /**
      * Show the form for creating a new resource.
@@ -70,18 +94,49 @@ class EntradaSalidaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function apiStoreEntradaSalida($ficha_caracterizacion_id, $aprendiz){
-        $datos = [$ficha_caracterizacion_id, $aprendiz];
-        return response()->json($datos);
+    public function apiStoreEntradaSalida(Request $request)
+    {
+        $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
+        $aprendiz = $request->aprendiz;
+        $instructor_user_id = $request->instructor_user_id;
+        $entradaSalida = EntradaSalida::create([
+            'fecha' => Carbon::now()->toDateString(),
+            'instructor_user_id' => $instructor_user_id,
+            'aprendiz' => $aprendiz,
+            'entrada' => Carbon::now(),
+            'ficha_caracterizacion_id' => $ficha_caracterizacion_id,
+        ]);
+        if ($entradaSalida) {
+
+            return response()->json(["message" => "Entrada Salida creada con éxito"], 200);
+        } else {
+            return response()->json(["error" => "Error al crear la entrada salida"], 500);
+        }
     }
-    public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz){
+    public function apiUpdateEntradaSalida(Request $request)
+    {
+        $aprendiz = $request->aprendiz;
+        $entradaSalida = EntradaSalida::where('aprendiz', $aprendiz)
+            ->where('salida', null)
+            ->where('listado', null)
+            ->first();
+
+        if ($entradaSalida) {
+
+            $entradaSalida->update([
+                'salida' => Carbon::now(),
+            ]);
+            return response()->json(["message" => "Entrada salida Actualizada con éxito"], 200);
+        } else {
+            return response()->json(["error" => "Error al crear la entrada salida"], 500);
+        }
+    }
+    public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz)
+    {
 
         // @dd('holis');
         try {
-
-
-
-            // Crear Persona
+            // crear aprendiz
             $entradaSalida = EntradaSalida::create([
                 'fecha' => Carbon::now()->toDateString(),
                 'instructor_user_id' => Auth::user()->id,
@@ -115,11 +170,11 @@ class EntradaSalidaController extends Controller
             // @dd($request->ficha_caracterizacion_id);
 
             if ($validator->fails()) {
-                @dd('holis');
+                // @dd('holis');
                 @dd($validator);
                 return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+                    ->withErrors($validator)
+                    ->withInput();
             }
             // @dd('parela ahí');
 
@@ -144,8 +199,9 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
-    public function updateSalida(Request $request){
-        try{
+    public function updateSalida(Request $request)
+    {
+        try {
             $validator = validator::make($request->all(), [
                 'aprendiz' => 'required|string',
             ]);
@@ -161,16 +217,15 @@ class EntradaSalidaController extends Controller
                 $query->where('aprendiz', $request->input('aprendiz'))
                     ->where('salida', null);
             })->first();
-            if($entradaSalida){
+            if ($entradaSalida) {
 
                 $entradaSalida->update([
                     'salida' => Carbon::now(),
                 ]);
                 return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $entradaSalida->ficha_caracterizacion_id])->with('success', 'Salida Exitosa');
-            }else{
+            } else {
                 return redirect()->back()->withErrors(['error' => 'No ha tomado asistencia a este aprendiz.']);
             }
-
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
@@ -181,10 +236,11 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
-    public function updateEntradaSalida($aprendiz){
+    public function updateEntradaSalida($aprendiz)
+    {
         try {
             $entradaSalida = EntradaSalida::where('aprendiz', $aprendiz)
-            ->where('salida', null)->first();
+                ->where('salida', null)->first();
 
             if ($entradaSalida) {
 
@@ -205,7 +261,8 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
-    public function crearCarpetaUser(){
+    public function crearCarpetaUser()
+    {
         $user_id = Auth::id(); // Obtener el ID del usuario autenticado
 
         $carpeta_csv = public_path('csv');
@@ -222,11 +279,12 @@ class EntradaSalidaController extends Controller
             // echo "La carpeta del usuario ya existe.";
         }
     }
-    public function generarCSV($ficha){
+    public function generarCSV($ficha)
+    {
         // @dd($ficha);
         $lista = EntradaSalida::where('instructor_user_id', Auth::user()->id)
-        ->where('fecha', Carbon::now()->toDateString())
-        ->where('ficha_caracterizacion_id', $ficha)->get();
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('ficha_caracterizacion_id', $ficha)->get();
         // @dd($lista);
         $fichaCaracterizacion = FichaCaracterizacion::find($ficha);
         // @dd($fichaCaracterizacion);
@@ -235,12 +293,12 @@ class EntradaSalidaController extends Controller
         $nombre_archivo = $fichaCaracterizacion->ficha . '-' . $fecha_actual . '.csv';
 
         // Inicializar el contenido del archivo CSV
-        $csv_content = "Aprendiz,Ficha,Fecha,HoraEntrada,HoraSalida". PHP_EOL;
+        $csv_content = "Aprendiz,Ficha,Fecha,HoraEntrada,HoraSalida" . PHP_EOL;
 
         // Agregar las líneas al contenido del archivo
         foreach ($lista as $linea) {
             // @dd($linea);
-            $csv_content .= $linea->aprendiz .',' .$fichaCaracterizacion->ficha .',' . $linea->fecha.',' . $linea->entrada.',' . $linea->salida . PHP_EOL;
+            $csv_content .= $linea->aprendiz . ',' . $fichaCaracterizacion->ficha . ',' . $linea->fecha . ',' . $linea->entrada . ',' . $linea->salida . PHP_EOL;
         }
 
         // Preparar la respuesta para la descarga
@@ -259,19 +317,20 @@ class EntradaSalidaController extends Controller
 
         // Devolver una respuesta JSON después de la descarga
         return $response;
-
     }
     /**
      * Display the specified resource.
      */
-    public  function marcarListado($ficha){
+    public  function marcarListado($ficha)
+    {
         DB::table('entrada_salidas')
-        ->where('instructor_user_id', Auth::user()->id)
-        ->where('fecha', Carbon::now()->toDateString())
-        ->where('ficha_caracterizacion_id', $ficha)
-        ->update(['listado' => 1]);
+            ->where('instructor_user_id', Auth::user()->id)
+            ->where('fecha', Carbon::now()->toDateString())
+            ->where('ficha_caracterizacion_id', $ficha)
+            ->update(['listado' => 1]);
     }
-    public function destroyFichaCaractrizacion(){
+    public function destroyFichaCaractrizacion()
+    {
         FichaCaracterizacion::where('user_id', Auth::user()->id)->delete();
     }
     public function show(EntradaSalida $entradaSalida)
@@ -304,7 +363,8 @@ class EntradaSalidaController extends Controller
         return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
     }
 
-    public function cargarDatos(Request $request){
+    public function cargarDatos(Request $request)
+    {
         $data = $request->validate([
             'evento' => 'required',
             'ficha_caracteriacion_id',
@@ -312,11 +372,11 @@ class EntradaSalidaController extends Controller
         // @dd($request->ficha_caracterizacion_id);
         $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
         $evento = $request->evento;
-        if($request->evento == 1){
+        if ($request->evento == 1) {
             // @dd('se supone que aqui vamos bien' . $request->evento);
             return view('entradaSalidas.create', compact('ficha_caracterizacion_id', 'evento'));
-        }else{
-            return view('entradaSalidas.edit', compact('ficha_caracterizacion_id', 'evento') );
+        } else {
+            return view('entradaSalidas.edit', compact('ficha_caracterizacion_id', 'evento'));
         }
     }
 }

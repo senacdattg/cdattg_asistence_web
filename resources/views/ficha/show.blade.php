@@ -78,7 +78,8 @@
                                             <strong>Instructor asignado:</strong>
                                         </th>
                                         <td>
-                                            {{ $fichaCaracterizacion->instructores }}
+                                            {{ $fichaCaracterizacion->instructor->persona->primer_nombre }}
+                                            {{ $fichaCaracterizacion->instructor->persona->primer_apellido }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -86,7 +87,7 @@
                                             <Strong>Ambiente</Strong>
                                         </th>
                                         <td>
-                                            Ambiente
+                                            {{ $fichaCaracterizacion->ambiente->title }}
                                         </td>
                                     </tr>
                                 </table>
