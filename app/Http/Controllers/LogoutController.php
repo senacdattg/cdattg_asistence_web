@@ -15,6 +15,6 @@ class LogoutController extends Controller
     }
     public function logout(){
         Auth::logout();
-        return response()->json(['message' => 'Sesión cerrada correctamente']);
+        return response()->json(['message' => 'Sesión cerrada correctamente'], 200);
     }
 }

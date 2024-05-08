@@ -24,11 +24,11 @@ class FichaCaracterizacionController extends Controller
     public function apiIndex(Request $request)
     {
         // Obtener el ID del usuario de la solicitud
-        $userId = $request->input('user_id');
+        $userId = $request->user_id;
         // Obtener las fichas de caracterización asociadas al usuario
         $fichas = FichaCaracterizacion::where('instructor_asignado', $userId)->get();
 
-        return response()->json($fichas);
+        return response()->json(['fichas' => $fichas],200);
     }
     /**
      * Show the form for creating a new resource.
