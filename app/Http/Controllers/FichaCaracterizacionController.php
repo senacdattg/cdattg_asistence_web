@@ -27,8 +27,37 @@ class FichaCaracterizacionController extends Controller
         $userId = $request->user_id;
         // Obtener las fichas de caracterización asociadas al usuario
         $fichas = FichaCaracterizacion::where('instructor_asignado', $userId)->get();
+        $fichasArray = [];
 
-        return response()->json(['fichas' => $fichas],200);
+        // Iterar sobre las fichas obtenidas de la consulta
+        foreach ($fichas as $ficha) {
+            // Crear un array para cada ficha con los atributos deseados
+            $fichaArray = [
+                "id" => $ficha->id,
+                "ficha" => $ficha->ficha,
+                "nombre_curso" => $ficha->nombre_curso,
+                "codigo_programa" => $ficha->codigo_programa,
+                "horas_formacion" => $ficha->horas_formacion,
+                "cupo" => $ficha->cupo,
+                "dias_de_formacion" => $ficha->dias_de_formacion,
+                "Instructor" => [
+                    "id" => $ficha->instructor_asignado,
+                    "primer_nombre" => $ficha->instructor->persona->primer_nombre,
+                    "segundo_nombre" => $ficha->instructor->persona->segundo_nombre,
+                    "primer_apellido" => $ficha->instructor->persona->primer_apellido,
+                    "segundo_apellido" => $ficha->instructor->persona->segundo_apellido,
+                ],
+                "created_at" => $ficha->created_at->toIso8601String(),
+                "updated_at" => $ficha->updated_at->toIso8601String(),
+                "deleted_at" => $ficha->deleted_at,
+                "ambiente" => $ficha->ambiente->title,
+                "municipio" => $ficha->ambiente->piso->bloque->sede->municipio->municipio,
+            ];
+
+            // Agregar el array de la ficha al array de fichas
+            $fichasArray[] = $fichaArray;
+        }
+        return response()->json(['fichas' => $fichasArray],200);
     }
     /**
      * Show the form for creating a new resource.
