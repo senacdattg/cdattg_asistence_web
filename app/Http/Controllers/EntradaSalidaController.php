@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EntradaSalida;
 use App\Http\Requests\StoreEntradaSalidaRequest;
 use App\Http\Requests\UpdateEntradaSalidaRequest;
+use App\Models\Ambiente;
 use App\Models\FichaCaracterizacion;
 use App\Models\User;
 use Carbon\Carbon;
@@ -69,8 +70,13 @@ class EntradaSalidaController extends Controller
         ];
         return response()->json($datos);
     }
-    public function registros($fichaCaracterizacion)
+    public function registros(Request $request)
     {
+        $fichaCaracterizacion = $request->ficha_id;
+        $ambiente_id = $request->ambiente_id;
+
+        $ambiente = Ambiente::where('id', $ambiente_id)->first();
+        $descripcion = $request->descripcion;
         $fecha = Carbon::now()->toDateString();
         // @dd($ficha);
         $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
@@ -81,7 +87,7 @@ class EntradaSalidaController extends Controller
             ->where('listado', null)->get();
         // @dd($registros);
         // Pasa los registros a la vista
-        return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha'));
+        return view('entradaSalidas.index', compact('registros', 'ficha', 'fecha', 'ambiente', 'descripcion'));
     }
     /**
      * Show the form for creating a new resource.
@@ -131,7 +137,7 @@ class EntradaSalidaController extends Controller
             return response()->json(["error" => "Error al crear la entrada salida"], 500);
         }
     }
-    public function storeEntradaSalida($ficha_caracterizacion_id, $aprendiz)
+    public function storeEntradaSalida($ficha_id, $aprendiz, $ambiente_id, $descripcion)
     {
 
         // @dd('holis');
@@ -142,11 +148,11 @@ class EntradaSalidaController extends Controller
                 'instructor_user_id' => Auth::user()->id,
                 'aprendiz' => $aprendiz,
                 'entrada' => Carbon::now(),
-                'ficha_caracterizacion_id' => $ficha_caracterizacion_id,
+                'ficha_caracterizacion_id' => $ficha_id,
             ]);
 
 
-            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
+            return redirect()->route('entradaSalida.registros', compact('ficha_id','ambiente_id', 'descripcion'))->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
@@ -188,7 +194,7 @@ class EntradaSalidaController extends Controller
             ]);
 
 
-            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $request->ficha_caracterizacion_id])->with('success', '¡Registro Exitoso!');
+            return redirect()->route('entradaSalida.registros', compact(''))->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
@@ -367,16 +373,18 @@ class EntradaSalidaController extends Controller
     {
         $data = $request->validate([
             'evento' => 'required',
-            'ficha_caracteriacion_id',
+            'ficha_id',
         ]);
         // @dd($request->ficha_caracterizacion_id);
-        $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
+        $ficha_id = $request->ficha_id;
         $evento = $request->evento;
+        $ambiente_id = $request->ambiente_id;
+        $descripcion = $request->descripcion;
         if ($request->evento == 1) {
             // @dd('se supone que aqui vamos bien' . $request->evento);
-            return view('entradaSalidas.create', compact('ficha_caracterizacion_id', 'evento'));
+                return view('entradaSalidas.create', compact('ficha_id', 'evento', 'ambiente_id', 'descripcion'));
         } else {
-            return view('entradaSalidas.edit', compact('ficha_caracterizacion_id', 'evento'));
+            return view('entradaSalidas.edit', compact('ficha_id','evento', 'ambiente_id', 'descripcion'));
         }
     }
 }

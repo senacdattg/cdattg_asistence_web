@@ -49,7 +49,9 @@
                                 <option value="1">Entrada</option>
                                 <option value="0">Salida</option>
                             </select>
-                            <input type="hidden" value="{{ $ficha->id }}" name="ficha_caracterizacion_id">
+                            <input type="hidden" name="ambiente_id" value="{{ $ambiente->id }}">
+                            <input type="hidden" name="descripcion" value="{{ $descripcion }}">
+                            <input type="hidden" value="{{ $ficha->id }}" name="ficha_id">
                             <br>
                             <button type="submit" class="bnt btn-success btn-sm-2">
                                 <i class="fas fa-qrcode"></i>
@@ -66,11 +68,11 @@
                         </div>
                         <div class="col-sm-6 col-xs-12">
                             <div class="card card-body">
-                                <p class="card-text">Ambiente: {{ $ficha->ambiente->title }}</p>
+                                <p class="card-text">Ambiente: {{ $ambiente->title }}</p>
                             </div>
                         </div>
                     </div>
-                     <div class="row">
+                    <div class="row">
                         <div class="col-sm-6 col-xs-12">
                             <div class="card card-body">
                                 <p class="card-text">Ficha: {{ $ficha->ficha }}</p>
@@ -79,6 +81,13 @@
                         <div class="col-sm-6 col-xs-12">
                             <div class="card card-body">
                                 <p class="card-text">Nombre del curso: {{ $ficha->nombre_curso }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="card card-body">
+                                <p class="card-text">Descripción: {{ $descripcion }}</p>
                             </div>
                         </div>
                     </div>

@@ -28,9 +28,15 @@
                         Volver
                     </a>
                 </div>
-                <input type="hidden" value="{{ $ficha_caracterizacion_id }}" name="ficha_caracerizacion_id" id="ficha_caracterizacion_id">
 
+                <input type="hidden" value="{{ $ficha_id }}" name="ficha_id"
+                    id="ficha_id">
+                <input type="hidden" value="{{ $ambiente_id }}" name="ambiente_id"
+                    id="ambiente_id">
+                <input type="hidden" value="{{ $descripcion }}" name="descripcion"
+                    id="descripcion">
                 <input type="hidden" value="{{ $evento }}" name="evento" id="evento">
+                
                     <div class="row justify-content-center mt-5">
                         <div class="col-sm-4 shadow p-3">
                             <h5 class="text-center">Escanear codigo QR</h5>
