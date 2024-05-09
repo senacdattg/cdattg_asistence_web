@@ -23,7 +23,14 @@ class DepartamentoController extends Controller
     {
         // DB::enableQueryLog();
         $departamentos = Departamento::where('status', 1)->get() ;
-        return response()->json(['success' => true, 'departamentos' => $departamentos]);
+        return response()->json(['success' => true, 'departamentos' => $departamentos], 200);
+        // dd(DB::getQueryLog());
+    }
+    public function apiCargarDepartamentos()
+    {
+        // DB::enableQueryLog();
+        $departamentos = Departamento::where('status', 1)->get();
+        return response()->json(['departamentos' => $departamentos], 200);
         // dd(DB::getQueryLog());
     }
     public function create()

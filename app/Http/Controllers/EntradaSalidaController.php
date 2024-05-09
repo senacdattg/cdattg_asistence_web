@@ -35,40 +35,27 @@ class EntradaSalidaController extends Controller
     }
     public function apiIndex(Request $request)
     {
-        $id_ficha_caracterizacion = $request->id_ficha_caracterizacion;
-        $id_instructor = $request->id_instructor;
-        // @dd($fichaCaracterizacion);
-        $fecha = Carbon::now()->toDateString();
-        $fichaCaracterizacion = FichaCaracterizacion::where('id', $id_ficha_caracterizacion)->first();
-        $ficha = [
-            "id" => $fichaCaracterizacion->id,
-            "ficha" => $fichaCaracterizacion->ficha,
-            "nombre_curso" => $fichaCaracterizacion->nombre_curso,
-            // "instructor_asignado" => [
-            //     "id" => $fichaCaracterizacion->instructor_asignado,
-            //     "primer_nombre" => $fichaCaracterizacion->instructor->persona->primer_nombre,
-            //     "segundo_nombre" => $fichaCaracterizacion->instructor->persona->segundo_nombre,
-            //     "primer_apellido" => $fichaCaracterizacion->instructor->persona->primer_apellido,
-            //     "segundo_apellido" => $fichaCaracterizacion->instructor->persona->segundo_apellido,
-            // ],
-            // "created_at" => $fichaCaracterizacion->created_at,
-            // "updated_at" => $fichaCaracterizacion->updated_at,
-            "ambiente" => $fichaCaracterizacion->ambiente->title,
-        ];
+        $fichaCaracterizacion = $request->ficha_id;
+        $instructor = $request->instructor_id;
+        // $ambiente_id = $request->ambiente_id;
+
+        // $ambiente = Ambiente::where('id', $ambiente_id)->first();
+        // $descripcion = $request->descripcion;
+        // $fecha = Carbon::now()->toDateString();
         // @dd($ficha);
+        // $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
         // Obtén todos los registros de entrada/salida del usuario actual
-        $registros = EntradaSalida::where('instructor_user_id', $id_instructor)
+        $registros = EntradaSalida::where('instructor_user_id', $instructor)
             ->where('fecha', Carbon::now()->toDateString())
-            ->where('ficha_caracterizacion_id', $id_ficha_caracterizacion)
-            ->where('listado', null)
-            ->get();
+            ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
+            ->where('listado', null)->get();
         // @dd($registros);
-        $datos = [
-            "ficha_caracterizacion" => $ficha,
-            "fecha" => $fecha,
-            "registros" => $registros
-        ];
-        return response()->json($datos);
+        // $datos = [
+        //     // "ficha_caracterizacion" => $ficha,
+        //     // "fecha" => $fecha,
+        //     "registros" => $registros
+        // ];
+        return response()->json(['registros' => $registros], 200);
     }
     public function registros(Request $request)
     {

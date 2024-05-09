@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
 use App\Http\Controllers\LoginController;
@@ -31,6 +32,9 @@ Route::get('entradaSalida/apiIndex', [EntradaSalidaController::class, 'apiIndex'
 // http://127.0.0.1:8000/api/entradaSalida/apiIndex/1
 Route::post('entradaSalida/apiStoreEntradaSalida', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
 Route::post('entradaSalida/apiUpdateEntradaSalida', [EntradaSalidaController::class, 'apiUpdateEntradaSalida']);
+
+// select dinamico
+Route::get('apiCargarDepartamentos', [DepartamentoController::class, 'apiCargarDepartamentos']);
 
 
 route::post('authenticate', [LoginController::class, 'authenticate']);
