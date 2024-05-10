@@ -33,15 +33,15 @@ class MunicipioController extends Controller
         return response()->json(['success' => true, 'municipios' => $municipios]);
         // dd(DB::getQueryLog());
     }
-    public function apiCargarMunicipios()
+    public function apiCargarMunicipios(Request $request)
     {
 
-        return response()->json(["message" => True]);
-        // $departamento_id = $request->departamento_id;
-        // // DB::enableQueryLog();
-        // $municipios = Municipio::where('departamento_id', $departamento_id)
-        //     ->where('status', 1)->get();
-        // return response()->json(['municipios' => $municipios], 200);
+        // return response()->json(["message" => True]);
+        $departamento_id = $request->departamento_id;
+        // DB::enableQueryLog();
+        $municipios = Municipio::where('departamento_id', $departamento_id)
+            ->where('status', 1)->get();
+        return response()->json(['municipios' => $municipios], 200);
         // dd(DB::getQueryLog());
     }
     /**

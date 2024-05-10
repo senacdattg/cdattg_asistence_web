@@ -40,7 +40,7 @@ Route::post('entradaSalida/apiUpdateEntradaSalida', [EntradaSalidaController::cl
 
 // select dinamico
 Route::get('apiCargarDepartamentos', [DepartamentoController::class, 'apiCargarDepartamentos']);
-Route::get('apiCargarmunicipios', [MunicipioController::class, 'apiCargarMunicipios']);
+Route::get('apiCargarMunicipios', [MunicipioController::class, 'apiCargarMunicipios']);
 Route::get('apiCargarSedes', [SedeController::class, 'apiCargarSedes']);
 Route::get('apiCargarBloques', [BloqueController::class, 'apiCargarBloques']);
 Route::get('apiCargarPisos', [PisoController::class, 'apiCargarPisos']);
