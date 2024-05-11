@@ -6,6 +6,7 @@ use App\Models\Sede;
 use App\Http\Requests\StoreSedeRequest;
 use App\Http\Requests\UpdateSedeRequest;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,6 +24,13 @@ class SedeController extends Controller
     {
         $sedes = Sede::where('municipio_id', $municipio_id)
         ->where('status', 1)->get();
+        return response()->json(['success' => true, 'sedes' => $sedes]);
+    }
+    public function apiCargarSedes(Request $request)
+    {
+        $municipio_id = $request->municipio_id;
+        $sedes = Sede::where('municipio_id', $municipio_id)
+            ->where('status', 1)->get();
         return response()->json(['success' => true, 'sedes' => $sedes]);
     }
 

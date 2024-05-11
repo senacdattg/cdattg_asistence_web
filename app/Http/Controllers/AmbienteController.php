@@ -7,8 +7,8 @@ use App\Http\Requests\StoreAmbienteRequest;
 use App\Http\Requests\UpdateAmbienteRequest;
 use App\Models\Piso;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AmbienteController extends Controller
@@ -23,6 +23,14 @@ class AmbienteController extends Controller
     }
     public function cargarAmbientes($piso_id)
     {
+        // DB::enableQueryLog();
+        $ambientes = Ambiente::where('piso_id', $piso_id)->get();
+        return response()->json(['success' => true, 'ambientes' => $ambientes]);
+        // dd(DB::getQueryLog());
+    }
+    public function apiCargarAmbientes(Request $request)
+    {
+        $piso_id = $request->piso_id;
         // DB::enableQueryLog();
         $ambientes = Ambiente::where('piso_id', $piso_id)->get();
         return response()->json(['success' => true, 'ambientes' => $ambientes]);

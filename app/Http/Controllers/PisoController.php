@@ -7,6 +7,7 @@ use App\Http\Requests\StorePisoRequest;
 use App\Http\Requests\UpdatePisoRequest;
 use App\Models\Bloque;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,6 +23,14 @@ class PisoController extends Controller
     }
     public function cargarPisos($bloque_id)
     {
+        // DB::enableQueryLog();
+        $pisos = Piso::where('bloque_id', $bloque_id)->get();
+        return response()->json(['success' => true, 'pisos' => $pisos]);
+        // dd(DB::getQueryLog());
+    }
+    public function apiCargarPisos(Request $request)
+    {
+        $bloque_id = $request->bloque_id;
         // DB::enableQueryLog();
         $pisos = Piso::where('bloque_id', $bloque_id)->get();
         return response()->json(['success' => true, 'pisos' => $pisos]);
