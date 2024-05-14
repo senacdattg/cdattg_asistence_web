@@ -30,7 +30,7 @@ class DepartamentoController extends Controller
     {
         // DB::enableQueryLog();
         $departamentos = Departamento::where('status', 1)->get();
-        return response()->json(['departamentos' => $departamentos], 200);
+        return response()->json($departamentos, 200);
         // dd(DB::getQueryLog());
     }
     public function create()

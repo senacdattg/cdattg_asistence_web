@@ -33,7 +33,7 @@ class PisoController extends Controller
         $bloque_id = $request->bloque_id;
         // DB::enableQueryLog();
         $pisos = Piso::where('bloque_id', $bloque_id)->get();
-        return response()->json(['success' => true, 'pisos' => $pisos]);
+        return response()->json($pisos, 200);
         // dd(DB::getQueryLog());
     }
     /**

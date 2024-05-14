@@ -33,7 +33,8 @@ class AmbienteController extends Controller
         $piso_id = $request->piso_id;
         // DB::enableQueryLog();
         $ambientes = Ambiente::where('piso_id', $piso_id)->get();
-        return response()->json(['success' => true, 'ambientes' => $ambientes]);
+        return response()->json($ambientes, 200);
+        
         // dd(DB::getQueryLog());
     }
 

@@ -33,7 +33,7 @@ class BloqueController extends Controller
         // DB::enableQueryLog();
         $sede_id = $request->sede_id;
         $bloques = Bloque::where('sede_id', $sede_id)->get();
-        return response()->json(['success' => true, 'bloques' => $bloques]);
+        return response()->json($bloques, 200);
         // dd(DB::getQueryLog());
     }
     /**

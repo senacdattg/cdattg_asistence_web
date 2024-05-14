@@ -31,7 +31,7 @@ class SedeController extends Controller
         $municipio_id = $request->municipio_id;
         $sedes = Sede::where('municipio_id', $municipio_id)
             ->where('status', 1)->get();
-        return response()->json(['success' => true, 'sedes' => $sedes]);
+        return response()->json($sedes, 200);
     }
 
     /**

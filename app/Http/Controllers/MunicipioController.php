@@ -41,7 +41,7 @@ class MunicipioController extends Controller
         // DB::enableQueryLog();
         $municipios = Municipio::where('departamento_id', $departamento_id)
             ->where('status', 1)->get();
-        return response()->json(['municipios' => $municipios], 200);
+        return response()->json($municipios, 200);
         // dd(DB::getQueryLog());
     }
     /**
