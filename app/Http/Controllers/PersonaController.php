@@ -84,13 +84,14 @@ class PersonaController extends Controller
             return redirect()->route('persona.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
+            // @dd($e);
             return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
-        } catch (\Exception $e) {
-            // Manejar otras excepciones
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
+        // catch (\Exception $e) {
+        //     // Manejar otras excepciones
+        //     @dd($e);
+        //     return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        // }
     }
 
     /**

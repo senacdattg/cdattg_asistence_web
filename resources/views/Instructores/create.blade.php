@@ -48,8 +48,11 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="numero_documento">Número de Documento</label>
-                                <input type="text" class="form-control" value="{{ old('numero_documento') }}"
+                                <input type="text" class="form-control @error('numero_documento')
+                                    is-invalid
+                                    @enderror" value="{{ old('numero_documento') }}"
                                     name="numero_documento" placeholder="Número de Documento">
+
                             </div>
                         </div>
 
@@ -105,8 +108,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="email">Correo Electrónico</label>
-                                <input type="email" class="form-control" placeholder="Correo email"
+                                <input type="email" class="form-control @error('email')
+                                        is-invalid
+                                    @enderror" placeholder="Correo email"
                                     value="{{ old('email') }}" name="email">
+
                             </div>
 
                         </div>

@@ -51,7 +51,7 @@ class InstructorController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'tipo_documento' => 'required',
-                'numero_documento' => 'required',
+                'numero_documento' => 'required|numeric',
                 'primer_nombre' => 'required',
                 'segundo_nombre' => 'nullable',
                 'primer_apellido' => 'required',
@@ -62,7 +62,7 @@ class InstructorController extends Controller
             ]);
 
             if ($validator->fails()) {
-                @dd($validator);
+                // @dd($validator);
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();
@@ -95,13 +95,14 @@ class InstructorController extends Controller
             return redirect()->route('instructor.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
+            // @dd($e);
             return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
-        } catch (\Exception $e) {
-            // Manejar otras excepciones
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
+        // catch (\Exception $e) {
+        //     // Manejar otras excepciones
+        //     @dd($e);
+        //     return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        // }
     }
 
     /**
