@@ -6,7 +6,7 @@
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
                     {{-- Bienvenida al login --}}
-                    <a href="{{ route('login') }}" class="h1"><b>registro de asistencias SENA </b></a>
+                    {{-- <a href="{{ route('login') }}" class="h1"><b>registro de asistencias SENA </b></a> --}}
                 </div>
                 <div class="card-body">
                     <p class="login-box-msg">Registrarme</p>
@@ -85,7 +85,7 @@
                     </form>
                         </div>
                         <hr>
-                        <a href="{{ route('login') }}" class="text-center">Ya tengo una cuenta</a>
+                        {{-- <a href="{{ route('login') }}" class="text-center">Ya tengo una cuenta</a> --}}
                 </div>
 
             </div>

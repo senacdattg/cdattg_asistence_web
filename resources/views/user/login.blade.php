@@ -49,6 +49,7 @@
                                     </label>
                                 </div>
                             </div> --}}
+                            <a href="{{ route('registro') }}" class="btn tbn-sm-3 btn-danger">Registrarme</a>
 
                             <div class="col-6 ">
                                 <button type="submit" class="btn btn-success btn-block">Iniciar sesión <i class="fas fa-key"></i> </button>
