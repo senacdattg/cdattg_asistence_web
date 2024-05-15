@@ -55,7 +55,7 @@ class EntradaSalidaController extends Controller
         //     // "fecha" => $fecha,
         //     "registros" => $registros
         // ];
-        return response()->json(['registros' => $registros], 200);
+        return response()->json($registros, 200);
     }
     public function registros(Request $request)
     {
