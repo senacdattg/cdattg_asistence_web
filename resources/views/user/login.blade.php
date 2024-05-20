@@ -40,17 +40,6 @@
                             </div>
                         </div>
                         <div class="row d-flex justify-content-center">
-                            {{-- opcional boton de recordarme. mas adelante se implementara --}}
-                            {{-- <div class="col-8">
-                                <div class="icheck-primary">
-                                    <input type="checkbox" id="remember">
-                                    <label for="remember">
-                                        Recordarme
-                                    </label>
-                                </div>
-                            </div> --}}
-                            <a href="{{ route('registro') }}" class="btn tbn-sm-3 btn-danger">Registrarme</a>
-
                             <div class="col-6 ">
                                 <button type="submit" class="btn btn-success btn-block">Iniciar sesión <i class="fas fa-key"></i> </button>
                             </div>
