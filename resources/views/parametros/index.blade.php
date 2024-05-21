@@ -6,9 +6,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
+                        <h1>
+                            Parámetros
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -16,7 +15,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('verificarLogin') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Parámetros
                             </li>
                         </ol>
                     </div>
@@ -26,17 +25,6 @@
 
         <section class="content">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">{{ request()->path() }}</h3>
-                    {{-- <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div> --}}
-                </div>
                 @include('parametros.create')
 
                 <div class="card-body p-0">

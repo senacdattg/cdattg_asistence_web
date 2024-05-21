@@ -8,6 +8,9 @@ use App\Http\Requests\StoreparametroRequest;
 use App\Http\Requests\UpdateparametroRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class ParametroController extends Controller
 {
@@ -82,15 +85,23 @@ class ParametroController extends Controller
      */
     public function update(UpdateparametroRequest $request, parametro $parametro)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-        ]);
+        try {
+            DB::beginTransaction();
+            $data = $request->validate([
+                'name' => 'required|string|max:255',
+                'status' => 'required|boolean',
+            ]);
 
-        // Actualizar los datos del modelo
-        $parametro->update($data);
-
-        return redirect()->route('parametro.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
+            // Actualizar los datos del modelo
+            $parametro->update($data);
+            DB::commit();
+            return redirect()->route('parametro.show', $parametro->id)->with('success', 'Parámetro actualizado exitosamente');
+        }catch(QueryException $e){
+            DB::rollBack();
+            if( $e->getCode() == 23000){
+                return redirect()->back()->withErrors(['error' => 'El nombre asignado al parámetro ya existe.']);
+            }
+        }
 
     }
 
@@ -99,9 +110,17 @@ class ParametroController extends Controller
      */
     public function destroy(parametro $parametro)
     {
-        $parametro->delete();
-
-        return redirect()->route('parametro.index')->with('success', 'Parámetro eliminado exitosamente');
+        try{
+            DB::beginTransaction();
+            $parametro->delete();
+            DB::commit();
+            return redirect()->route('parametro.index')->with('success', 'Parámetro eliminado exitosamente');
+        }catch (QueryException $e){
+            DB::rollBack();
+            if ($e->getCode() == 23000){
+                return redirect()->back()->withErrors(['error' => 'El Parametro esta siendo usado y no es posible eliminarlo.']);
+            }
+        }
 
     }
     public function crearParametro(Request $request)
