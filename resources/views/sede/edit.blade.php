@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Crear sede</h1>
+                        <h1>Actualizar Sede / {{ $sede->sede }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('sede.index') }}">Sedes</a>
                             </li>
-                            <li class="breadcrumb-item active">Crear sede
+                            <li class="breadcrumb-item active">Actualizar Sede / {{ $sede->sede }}
                             </li>
                         </ol>
                     </div>
@@ -26,26 +26,51 @@
 
         <section class="content">
             <div class="card">
-                <div class="card-header">
-                    {{-- <h3 class="card-title">{{ request()->path() }}</h3> --}}
-                    {{-- formulario de registro --}}
-                    <h1>Crear Sede</h1>
-                    <form action="{{ route('sede.store') }}" method="post">
-                        @csrf
+                <div class="card-body">
+                    <a class="btn btn-warning btn-sm" href="{{ route('sede.index') }}">
+                        <i class="fas fa-arrow-left"></i>
+                        </i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body">
 
+                    <form action="{{ route('sede.update', ['sede' => $sede->id]) }}" method="post">
+                        @csrf
+                        @method('put')
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="sede">Nombre de la sede</label>
-                                <input type="text" class="form-control" value="{{ old('sede') }}" name="sede" placeholder="Nombre de la sede" required autofocus>
+                                <input type="text"
+                                    class="form-control @error('sede') is-invalid
+
+                                @enderror"
+                                    value="{{ old('sede', $sede->sede) }}" name="sede" placeholder=""
+                                    required autofocus>
+                                @error('sede')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="direccion">Direccion</label>
-                                <input type="text" class="form-control" value="{{ old('direccion') }}"
-                                    name="direccion" placeholder="Direccion" required>
+                                <label for="direccion">Dirección</label>
+                                <input type="text"
+                                    class="form-control @error('direccion') is-invalid
+
+                                @enderror"
+                                    value="{{ old('direccion', $sede->direccion) }}" name="direccion"
+                                    placeholder="Direccion" required>
+                                @error('direccion')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
-                        {{-- departamentos y municipios --}}
+
+                        {{-- Nombres --}}
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="departamento">Departamento</label>
@@ -73,10 +98,9 @@
                         </div>
                         {{-- Botón de Registro --}}
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Crear sede</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Actualizar sede</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </section>
@@ -89,4 +113,3 @@
 </script> --}}
     <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
 @endsection
-

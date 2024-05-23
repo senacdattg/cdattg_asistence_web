@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PhpParser\Node\Expr\FuncCall;
 
 class Municipio extends Model
 {
@@ -33,5 +34,8 @@ class Municipio extends Model
     public function sedes()
     {
         return $this->hasMany(Sede::class);
+    }
+    public function departamentos(){
+        return $this->belongsTo(Departamento::class, 'departamento_id');
     }
 }

@@ -22,4 +22,7 @@ class Departamento extends Model
             $departamento->departamento = strtoupper($departamento->departamento);
         });
     }
+    public function municipios(){
+        return $this->hasMany(Municipio::class);
+    }
 }
