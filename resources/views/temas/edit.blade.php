@@ -2,9 +2,8 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2-bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/dual-listbox/css/bootstrap-duallistbox.min.css') }}">
-
-    @endsection
+    <link rel="stylesheet" href="{{ asset('plugins/dual-listbox/css/bootstrap-duallistbox.min.css') }}">
+@endsection
 @section('content')
     <div class="content-wrapper contenido">
 
@@ -66,68 +65,44 @@
                 </div>
 
                 {{-- nuevo --}}
-                <div class="card">
-                    <div class="card-body">
+                <div class="card-body">
+                    <div class="card">
+                        <div class="card-body">
 
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            {{-- <form action="{{ route('temas.updateParametrosTemas') }}" method="post"> --}}
-                                <form action="{{ route('tema.update', $tema->id) }}" method="post">
-                                @csrf
-                                <label for="parametros[]">Seleccione los parámetros</label>
-                                <input type="hidden" name="tema_id" value="{{ $tema->id }}">
-                                <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_" name="parametros[]"
-                                    style="height: 120px;">
-                                    @forelse ($parametros as $parametro)
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <form action="{{ route('tema.updateParametrosTemas') }}" method="post">
+                                    {{-- <form action="{{ route('tema.update', $tema->id) }}" method="post"> --}}
+                                        @csrf
+                                        <label for="parametros[]">Seleccione los parámetros</label>
+                                        <input type="hidden" name="tema_id" value="{{ $tema->id }}">
+                                        <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_"
+                                            name="parametros[]" style="height: 120px;">
+                                            @forelse ($parametros as $parametro)
+                                                <option value="{{ $parametro->id }}"
+                                                    @if ($tema->parametros->contains($parametro->id)) selected @endif>
+                                                    {{ $parametro->name }}</option>
+                                            @empty
+                                                <!-- Manejo si no hay parámetros disponibles -->
+                                                <option value="" disabled>No hay parámetros disponibles</option>
+                                            @endforelse
+                                        </select>
 
-                                        <option value="{{ $parametro->id }}" @if ($tema->parametros->contains($parametro->id))
-                                        selected
-                                    @endif>{{ $parametro->name }}</option>
-                                    @empty
-                                        <!-- Manejo si no hay parámetros disponibles -->
-                                        <option value="" disabled>No hay parámetros disponibles</option>
-                                    @endforelse
-                                </select>
-                                {{-- <select class="js-example-basic-multiple form-control parametros" name="parametros[]"
-                                    multiple aria-placeholder="Seleccione los parámetros">
-                                    @forelse ($parametros as $parametro)
-                                        <option value="{{ $parametro->id }}">{{ $parametro->name }}</option>
-                                    @empty
-                                        <!-- Manejo si no hay parámetros disponibles -->
-                                        <option value="" disabled>No hay parámetros disponibles</option>
-                                    @endforelse
-                                </select> --}}
-                                <button type="submit" class="btn btn-primary">Añadir parametros</button>
-                            </form>
+                                        <button type="submit" class="btn btn-primary">Añadir parametros</button>
+                                    </form>
+                                </div>
+                            </div>
+
                         </div>
-
-                        {{-- <button type="submit" class="btn btn-primary">Enviar</button> --}}
-                    </div>
-
                     </div>
                 </div>
             </div>
         </section>
     </div>
-    @endsection
-    {{-- @section('scripts')
-    <script src="../../plugins/jquery/jquery.min.js"></script>
-    <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            $('.parametros').select2({
-                width: '100%', // Establece un ancho del 100%
-                placeholder: 'Selecciona los parametros', // Texto de marcador de posición
-                allowClear: true, // Permite borrar la selección
-                tags: true
-            });
-        });
-    </script>
-    @endsection --}}
-    @section('script')
+@endsection
+@section('script')
     <script src="{{ asset('plugins/dual-listbox/js/jquery.bootstrap-duallistbox.min.js') }}"></script>
     <script>
         var demo1 = $('select[name="parametros[]"]').bootstrapDualListbox();
-        // var demo1 = $ ( 'select[name="permisos"]' ).arranqueDualListbox();
     </script>
 @endsection
