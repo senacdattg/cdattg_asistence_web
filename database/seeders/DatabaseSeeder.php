@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         PersonaSeeder::class,
         UsersTableSeeder::class,
         PaisSeeder::class,
+        RegionalSeeder::class,
         DepartamentoSeeder::class,
         MunicipioSeeder::class,
         SedeSeeder::class,
