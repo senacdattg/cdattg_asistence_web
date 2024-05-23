@@ -49,9 +49,9 @@ class SedeController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'descripcion' => 'required',
+                'sede' => 'required',
                 'direccion' => 'required',
-                'ciudad' => 'required',
+                'municipio_id' => 'required',
             ]);
             if ($validator->fails()) {
                 @dd($validator);
@@ -61,9 +61,9 @@ class SedeController extends Controller
             }
 
             $sede = Sede::create([
-                'descripcion' => $request->input('descripcion'),
+                'sede' => $request->input('sede'),
                 'direccion' => $request->input('direccion'),
-                'ciudad' => $request->input('ciudad'),
+                'municipio_id' => $request->input('municipio_id'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
             ]);
@@ -92,7 +92,7 @@ class SedeController extends Controller
      */
     public function edit(Sede $sede)
     {
-        //
+        return view('sede.edit', ['sede' => $sede]);
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('components.layout.master-layout')
+@extends('layout.master-layout')
 @section('content')
     <div class="content-wrapper">
 
@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Actualizar Sede / {{ $sede->descripcion }}</h1>
+                        <h1>Actualizar Sede / {{ $sede->sede }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('sede.index') }}">Sedes</a>
                             </li>
-                            <li class="breadcrumb-item active">Actualizar Sede / {{ $sede->descripcion }}
+                            <li class="breadcrumb-item active">Actualizar Sede / {{ $sede->sede }}
                             </li>
                         </ol>
                     </div>
@@ -41,14 +41,14 @@
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="descripcion">Nombre de la sede</label>
+                                <label for="sede">Nombre de la sede</label>
                                 <input type="text"
-                                    class="form-control @error('descripcion') is-invalid
-                                    
+                                    class="form-control @error('sede') is-invalid
+
                                 @enderror"
-                                    value="{{ old('descripcion', $sede->descripcion) }}" name="descripcion" placeholder=""
+                                    value="{{ old('sede', $sede->sede) }}" name="sede" placeholder=""
                                     required autofocus>
-                                @error('descripcion')
+                                @error('sede')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -58,7 +58,7 @@
                                 <label for="direccion">Dirección</label>
                                 <input type="text"
                                     class="form-control @error('direccion') is-invalid
-                                    
+
                                 @enderror"
                                     value="{{ old('direccion', $sede->direccion) }}" name="direccion"
                                     placeholder="Direccion" required>
@@ -106,10 +106,10 @@
         </section>
     </div>
 @endsection
-@section('scripts')
+@section('script')
 {{-- <script>
     var sedeDepartamentoId = {{ $sede->municipio->departamento->id ?? 'null' }};
     var sedeMunicipioId = {{ $sede->municipio_id ?? 'null' }};
 </script> --}}
-    <script src="{{ asset('js/jquery-departamentosMunicipios.js') }}"></script>
+    <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
 @endsection

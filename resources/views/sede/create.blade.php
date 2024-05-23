@@ -6,17 +6,17 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
-                        </h1>
+                        <h1>Crear sede</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('sede.index') }}">Sedes</a>
+                            </li>
+                            <li class="breadcrumb-item active">Crear sede
                             </li>
                         </ol>
                     </div>
@@ -36,8 +36,8 @@
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="descripcion">Nombre de la sede</label>
-                                <input type="text" class="form-control" value="{{ old('descripcion') }}" name="descripcion" placeholder="Nombre de la sede" required autofocus>
+                                <label for="sede">Nombre de la sede</label>
+                                <input type="text" class="form-control" value="{{ old('sede') }}" name="sede" placeholder="Nombre de la sede" required autofocus>
                             </div>
                             <div class="col-md-6">
                                 <label for="direccion">Direccion</label>
@@ -45,13 +45,30 @@
                                     name="direccion" placeholder="Direccion" required>
                             </div>
                         </div>
-
-                        {{-- Nombres --}}
+                        {{-- departamentos y municipios --}}
                         <div class="row">
                             <div class="col-md-6">
-                                <label for="ciudad">Ciudad</label>
-                                <input type="text" class="form-control" value="{{ old('ciudad') }}"
-                                    placeholder="ciudad" name="ciudad" required>
+                                <label for="departamento">Departamento</label>
+                                <select name="departamento_id" class="form-control" id="departamento_id">
+
+                                </select>
+
+                            </div>
+                            <div class="col-md-6">
+                                <label for="municipio_id">Municipio</label>
+                                <select name="municipio_id"
+                                    class="form-control @error('municipio_id')
+                                    is-invalid
+                                @enderror"
+                                    id="municipio_id">
+
+                                </select>
+                                @error('municipio_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
                             </div>
                         </div>
                         {{-- Botón de Registro --}}
@@ -65,3 +82,11 @@
         </section>
     </div>
 @endsection
+@section('script')
+{{-- <script>
+    var sedeDepartamentoId = {{ $sede->municipio->departamento->id ?? 'null' }};
+    var sedeMunicipioId = {{ $sede->municipio_id ?? 'null' }};
+</script> --}}
+    <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
+@endsection
+
