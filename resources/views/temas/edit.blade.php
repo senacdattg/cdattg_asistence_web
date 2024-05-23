@@ -124,7 +124,7 @@
         });
     </script>
     @endsection --}}
-    @section('scripts')
+    @section('script')
     <script src="{{ asset('plugins/dual-listbox/js/jquery.bootstrap-duallistbox.min.js') }}"></script>
     <script>
         var demo1 = $('select[name="parametros[]"]').bootstrapDualListbox();
