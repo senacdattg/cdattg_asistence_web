@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Regional;
 use App\Http\Requests\StoreRegionalRequest;
 use App\Http\Requests\UpdateRegionalRequest;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class RegionalController extends Controller
 {
@@ -22,7 +26,7 @@ class RegionalController extends Controller
      */
     public function create()
     {
-        //
+        return view('regional.create');
     }
 
     /**
@@ -30,7 +34,34 @@ class RegionalController extends Controller
      */
     public function store(StoreRegionalRequest $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'regional' => 'required|string|unique:regionals'
+        ]);
+        if ($validator->fails()){
+            return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        try{
+            DB::beginTransaction();
+            $regional = Regional::create([
+                'regional' => $request->regional,
+                'user_create_id' => Auth::user()->id,
+                'user_edit_id' => Auth::user()->id,
+                'status' => 1,
+
+            ]);
+            DB::commit();
+
+            return redirect()->route('regional.show', $regional->id)->with('success', 'Regional creada con éxito');
+        }catch(QueryException $e){
+            DB::rollBack();
+            if($e->getCode() == 23000){
+                return redirect()->back()->withInput()->withErrors(['error' => 'Error al momento de crear la regional' . $e->getMessage()]);
+
+            }
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error al momento de crear la regional' . $e->getMessage()]);
+        }
     }
 
     /**

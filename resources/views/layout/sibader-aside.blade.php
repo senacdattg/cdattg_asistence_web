@@ -70,9 +70,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('sede.create') }}" class="nav-link">
+                                <a href="{{ route('regional.create') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Crear sede</p>
+                                    <p>Crear regional</p>
                                 </a>
                             </li>
 
