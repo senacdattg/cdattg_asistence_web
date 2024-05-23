@@ -61,7 +61,8 @@ class TemaController extends Controller
      */
     public function edit(Tema $tema)
     {
-        //
+        $parametros = parametro::where('status', 1)->get();
+        return view('temas.edit', compact('tema', 'parametros'));
     }
 
     /**

@@ -6,9 +6,8 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
+                        <h1>
+                            Temas
                         </h1>
                     </div>
                     <div class="col-sm-6">
@@ -16,7 +15,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('verificarLogin') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Temas
                             </li>
                         </ol>
                     </div>
@@ -26,17 +25,7 @@
 
         <section class="content">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">{{ request()->path() }}</h3>
-                    {{-- <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div> --}}
-                </div>
+                <div class="card-body">
                 @include('temas.create')
 
                 <div class="card-body p-0">
@@ -49,12 +38,12 @@
                                             #
                                         </th>
                                         <th style="width: 20%">
-                                            name
+                                            Nombre
                                         </th>
-                                        <th style="width: 30%">
-                                            estado
+                                        <th style="width: 10%">
+                                            Estado
                                         </th>
-                                        <th style="width: 40%">
+                                        <th class="project-state" style="width: 40%">
                                             Parametros
                                         </th>
 
@@ -84,9 +73,9 @@
                                                 </span>
 
                                             </td>
-                                            <td>
+                                            <td class="project-state">
                                                 @forelse ($tema->parametros as $parametro)
-                                                    <p>{{ $parametro->name }}</p>
+                                                        <span class="badge badge-info" >{{ $parametro->name }}</span>
                                                 @empty
                                                     <p>No hay parametros asignados al tema {{ $tema->name }}</p>
                                                 @endforelse
@@ -137,6 +126,7 @@
                         </div>
 
                 </div>
+            </div>
         </section>
     </div>
 @endsection

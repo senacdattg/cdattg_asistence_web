@@ -41,6 +41,8 @@ Route::resource('home', HomeController::class);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::middleware('auth')->group(function () {
+
 // Rutas para persona
 Route::resource('persona', PersonaController::class);
 Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
@@ -78,6 +80,27 @@ Route::get('/cargarAmbientes/{piso_id}', [AmbienteController::class, 'cargarAmbi
 
 
 
+    // rutas para parametros
+    Route::resource('parametro', ParametroController::class);
+    Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+
+
+    // rutas para temas
+    Route::resource('tema',
+        TemaController::class
+    );
+    Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
+    Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
+
+
+Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
+
+// rutas para departamentos
+
+Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
+Route::get('/cargarMunicipios/{departamento_id}', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
+});
+
 // rutas del controlador register
 Route::controller(RegisterController::class)->group(function(){
     Route::get('/registro', 'mostrarFormulario')->name('registro');
@@ -90,19 +113,3 @@ Route::controller(LoginController::class)->group(function(){
     // Route::get('/login','mostrarLogin')->name('login');
     Route::post('/iniciarSesion','iniciarSesion')->name('iniciarSesion');
 });
-// rutas para parametros
-Route::resource('parametro', ParametroController::class);
-Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
-
-
-// rutas para temas
-Route::resource('tema', TemaController::class);
-Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
-Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
-
-Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
-
-// rutas para departamentos
-
-Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
-Route::get('/cargarMunicipios/{departamento_id}', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
