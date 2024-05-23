@@ -65,11 +65,11 @@ class User extends Authenticatable implements MustVerifyEmail
     // relacion e sedes y usuario
     public function sedeCreated()
     {
-        return $this->hasMany(Sede::class, 'user_create_id');
+        return $this->hasMany(Sede::class);
     }
     public function sedeEdited()
     {
-        return $this->hasMany(Sede::class, 'user_edit_id');
+        return $this->hasMany(Sede::class);
     }
     // relacion  entre piso y usuario
     public function pisoCreated()
