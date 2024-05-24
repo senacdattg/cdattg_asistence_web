@@ -26,6 +26,13 @@
 
         <section class="content">
             <div class="card">
+                 <div class="card-body">
+                    <a class="btn btn-warning btn-sm" href="{{ route('regional.index') }}">
+                        <i class="fas fa-arrow-left"></i>
+                        </i>
+                        Volver
+                    </a>
+                </div>
                 <div class="card-header">
                     <form action="{{ route('regional.update', $regional->id) }}" method="post">
                         @csrf
