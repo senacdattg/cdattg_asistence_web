@@ -63,15 +63,15 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('regional.cambiarEstadoUser', ['regional' => $regional->id]) }}"
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('regional.cambiarEstado', ['regional' => $regional->id]) }}"
                                             method="POST">
                                             @csrf
-                                            @method('PUT') --}}
+                                            @method('PUT')
                                             <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
-                                    </td>
+                                        </td>
                                     <td>
                                         <a class="btn btn-warning btn-sm"
                                             href="{{ route('regional.show', ['regional' => $regional->id]) }}">

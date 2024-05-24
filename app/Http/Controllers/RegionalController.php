@@ -18,7 +18,7 @@ class RegionalController extends Controller
      */
     public function index()
     {
-        $regionales = Regional::where('status', 1)->paginate();
+        $regionales = Regional::paginate();
         return view('regional.index', compact('regionales'));
     }
 
@@ -126,6 +126,11 @@ class RegionalController extends Controller
         }
     }
     public function cambiarEstadoRegional(Regional $regional){
-        @dd($regional);
+        if ($regional->status === 1) {
+            $regional->update(['status' => 0]);
+        } else {
+            $regional->update(['status' => 1]);
+        }
+        return redirect()->back();
     }
 }
