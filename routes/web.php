@@ -93,6 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);
+    Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
 

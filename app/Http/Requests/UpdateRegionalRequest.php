@@ -11,7 +11,7 @@ class UpdateRegionalRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class UpdateRegionalRequest extends FormRequest
      */
     public function rules(): array
     {
+        $regionalId = $this->route('regional')->id;
+
         return [
-            //
+            'regional' => 'required|string|unique:regionals,regional,' . $regionalId,
+            'status' => 'required|boolean',
         ];
     }
 }

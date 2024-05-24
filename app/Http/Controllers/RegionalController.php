@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Regional;
 use App\Http\Requests\StoreRegionalRequest;
 use App\Http\Requests\UpdateRegionalRequest;
+use App\Models\Tema;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +78,8 @@ class RegionalController extends Controller
      */
     public function edit(Regional $regional)
     {
-        //
+
+        return view('regional.edit', ['regional' => $regional]);
     }
 
     /**
@@ -85,7 +87,24 @@ class RegionalController extends Controller
      */
     public function update(UpdateRegionalRequest $request, Regional $regional)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $regional->update([
+                'regional' => $request->input('regional'),
+                'user_edit_id' => Auth::id(),
+                'status' => $request->input('status'),
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('regional.show', $regional->id)
+                ->with('success', 'Regional actualizada con éxito');
+        } catch (QueryException $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withInput()->with('error', 'Error al momento de actualizar la regional: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -93,6 +112,20 @@ class RegionalController extends Controller
      */
     public function destroy(Regional $regional)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $regional->delete();
+            DB::commit();
+            return redirect()->route('regional.index')->with('success', 'Regional eliminada exitosamente');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            if ($e->getCode() == 23000) {
+
+                return redirect()->back()->with('error', 'La regional se encuentra en uso en estos momentos, no se puede eliminar');
+            }
+        }
+    }
+    public function cambiarEstadoRegional(Regional $regional){
+        @dd($regional);
     }
 }
