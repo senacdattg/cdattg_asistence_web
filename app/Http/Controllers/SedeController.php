@@ -54,7 +54,7 @@ class SedeController extends Controller
                 'municipio_id' => 'required',
             ]);
             if ($validator->fails()) {
-                @dd($validator);
+                // @dd($validator);
                 return redirect()->back()
                     ->withErrors($validator)
                     ->withInput();

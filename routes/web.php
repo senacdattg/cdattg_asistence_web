@@ -20,6 +20,7 @@ use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
 
@@ -90,7 +91,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
     Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
     Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
-
+    // rutas para las regionales
+    Route::resource('regional', RegionalController::class);
+    Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
 
