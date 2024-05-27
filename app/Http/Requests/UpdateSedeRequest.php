@@ -26,6 +26,7 @@ class UpdateSedeRequest extends FormRequest
         return [
             'sede' => 'required|unique:sedes,sede,' . $sedeId,
             'direccion' => 'required',
+            'status' => 'required',
             'municipio_id' => 'required',
             'regional_id' => 'required',
         ];

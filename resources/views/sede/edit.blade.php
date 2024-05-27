@@ -112,6 +112,15 @@
 
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="status">Estado:</label>
+                                <select name="status" id="" class="form-control">
+                                    <option value="1" @if($sede->status == 1) selected @endif>Activo</option>
+                                    <option value="0" @if($sede->status == 0) selected @endif>Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
                         {{-- Botón de Registro --}}
                         <div class="text-center text-lg-start mt-4 pt-2">
                             <button type="submit" class="btn btn-primary btn-lg">Actualizar sede</button>

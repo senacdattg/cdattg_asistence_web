@@ -51,18 +51,6 @@ class SedeController extends Controller
     public function store(StoreSedeRequest $request)
     {
         try {
-            // $validator = Validator::make($request->all(), [
-            //     'sede' => 'required',
-            //     'direccion' => 'required',
-            //     'municipio_id' => 'required',
-            // ]);
-            // if ($validator->fails()) {
-            //     // @dd($validator);
-            //     return redirect()->back()
-            //         ->withErrors($validator)
-            //         ->withInput();
-            // }
-
             $sede = Sede::create([
                 'sede' => $request->input('sede'),
                 'direccion' => $request->input('direccion'),
@@ -111,6 +99,7 @@ class SedeController extends Controller
                 'sede' => $request->sede,
                 'direccion' => $request->direccion,
                 'user_edit_id' => Auth::user()->id,
+                'status' => $request->status,
                 'municipio_id' => $request->municipio_id,
                 'regional_id' => $request->regional_id,
             ]);
