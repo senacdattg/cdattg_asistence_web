@@ -22,7 +22,10 @@ class StoreSedeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'sede' => 'required|string',
+            'direccion' => 'required',
+            'municipio_id' => 'required',
+            'regional_id' => 'required'
         ];
     }
 }

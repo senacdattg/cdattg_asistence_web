@@ -11,7 +11,7 @@ class UpdateSedeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,13 @@ class UpdateSedeRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $sedeId = $this->route('sede')->id;
         return [
-            //
+            'sede' => 'required|unique:sedes,sede,' . $sedeId,
+            'direccion' => 'required',
+            'municipio_id' => 'required',
+            'regional_id' => 'required',
         ];
     }
 }

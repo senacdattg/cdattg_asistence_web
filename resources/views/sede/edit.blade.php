@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Actualizar Sede / {{ $sede->sede }}</h1>
+                        <h1>Actualizar Sede</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('sede.index') }}">Sedes</a>
                             </li>
-                            <li class="breadcrumb-item active">Actualizar Sede / {{ $sede->sede }}
+                            <li class="breadcrumb-item active">Actualizar Sede
                             </li>
                         </ol>
                     </div>
@@ -69,7 +69,23 @@
                                 @enderror
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="regional_id">Regional</label>
+                                <select name="regional_id" id="" class="form-control @error('regional_id') is-invalid @enderror ">
+                                    <option value="" selected disabled>Seleccione una regional</option>
+                                    @foreach ($regionales as $regional )
+                                        <option value="{{ $regional->id }}"  @if ($sede->regional_id == $regional->id) selected @else
+                                        @endif>{{ $regional->regional }}</option>
+                                    @endforeach
+                                </select>
+                                @error('regional_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
                         {{-- Nombres --}}
                         <div class="row">
                             <div class="col-md-6">
