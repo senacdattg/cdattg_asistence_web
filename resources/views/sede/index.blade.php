@@ -79,11 +79,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('sede.cambiarEstadoUser', ['sede' => $sede->id]) }}"
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('sede.cambiarEstado', ['sede' => $sede->id]) }}"
                                             method="POST">
                                             @csrf
-                                            @method('PUT') --}}
+                                            @method('PUT')
                                             <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>

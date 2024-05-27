@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedes/{municipio_id}', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
+    Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
 
     // Ruta para bloques
     Route::resource('bloque', BloqueController::class);

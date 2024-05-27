@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sede extends Model
 {
     use HasFactory;
-    protected $fillable = ['sede', 'direccion', 'user_create_id', 'user_edit_id', 'status', 'municipio_id'];
+    protected $fillable = ['sede', 'direccion', 'user_create_id', 'user_edit_id', 'status', 'municipio_id', 'regional_id'];
 
     protected static function boot()
     {

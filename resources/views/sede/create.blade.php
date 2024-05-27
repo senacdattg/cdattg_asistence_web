@@ -26,6 +26,13 @@
 
         <section class="content">
             <div class="card">
+                <div class="card-body">
+                    <a class="btn btn-warning btn-sm" href="{{ route('sede.index') }}">
+                        <i class="fas fa-arrow-left"></i>
+                        </i>
+                        Volver
+                    </a>
+                </div>
                 <div class="card-header">
                     {{-- <h3 class="card-title">{{ request()->path() }}</h3> --}}
                     {{-- formulario de registro --}}
@@ -37,12 +44,38 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="sede">Nombre de la sede</label>
-                                <input type="text" class="form-control" value="{{ old('sede') }}" name="sede" placeholder="Nombre de la sede" required autofocus>
+                                <input type="text" class="form-control @error('sede') is-invalid @enderror" value="{{ old('sede') }}" name="sede" placeholder="Nombre de la sede" required autofocus>
+                                @error('sede')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <label for="direccion">Direccion</label>
-                                <input type="text" class="form-control" value="{{ old('direccion') }}"
+                                <input type="text" class="form-control @error('direccion') is-invalid @enderror " value="{{ old('direccion') }}"
                                     name="direccion" placeholder="Direccion" required>
+                                    @error('direccion')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="regional_id">Regional</label>
+                                <select name="regional_id" id="" class="form-control @error('regional_id') is-invalid @enderror ">
+                                    <option value="" selected disabled>Seleccione una regional</option>
+                                    @foreach ($regionales as $regional )
+                                        <option value="{{ $regional->id }}">{{ $regional->regional }}</option>
+                                    @endforeach
+                                </select>
+                                @error('regional_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                         </div>
                         {{-- departamentos y municipios --}}
