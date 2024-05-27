@@ -108,8 +108,16 @@ class InstructorController extends Controller
      */
     public function edit(Instructor $instructor)
     {
-
-        return view('Instructores.edit', ['instructor' => $instructor]);
+        // llamar los tipos de documentos
+        $documentos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(2);
+        // llamar los generos
+        $generos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(3);
+        $regionales = Regional::where('status', 1)->get();
+        return view('Instructores.edit', ['instructor' => $instructor], compact('documentos', 'generos', 'regionales'));
     }
 
     /**
@@ -117,7 +125,39 @@ class InstructorController extends Controller
      */
     public function update(UpdateInstructorRequest $request, Instructor $instructor)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $persona = Persona::find($instructor->persona_id);
+            $persona->update([
+                'tipo_documento' => $request->input('tipo_documento'),
+                'numero_documento' => $request->input('numero_documento'),
+                'primer_nombre' => $request->input('primer_nombre'),
+                'segundo_nombre' => $request->input('segundo_nombre'),
+                'primer_apellido' => $request->input('primer_apellido'),
+                'segundo_apellido' => $request->input('segundo_apellido'),
+                'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
+                'genero' => $request->input('genero'),
+                'email' => $request->input('email'),
+            ]);
+
+            $instructor->update([
+                'persona_id' => $persona->id,
+                'regional_id' => $request->regional_id,
+            ]);
+            // actualizar Usuario asociado a la Persona
+            $user = User::where('persona_id', $persona->id);
+            $user->update([
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('numero_documento')),
+            ]);
+            DB::commit();
+            return redirect()->route('instructor.index')->with('success', '¡Actualización Exitosa!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            // @dd($e);
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.' . $e->getMessage());
+        }
     }
 
     /**
