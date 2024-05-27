@@ -6,17 +6,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
-                        </h1>
+                        <h1>Crear Instructor</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Crear Instructor
                             </li>
                         </ol>
                     </div>
@@ -27,9 +24,13 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    {{-- <h3 class="card-title">{{ request()->path() }}</h3> --}}
-                    {{-- formulario de registro --}}
-                    <h1>Crear Instructor</h1>
+                    <div class="card-body">
+                        <a class="btn btn-warning btn-sm" href="{{ route('instructor.index') }}">
+                            <i class="fas fa-arrow-left"></i>
+                            </i>
+                            Volver
+                        </a>
+                    </div>
                     <form action="{{ route('instructor.store') }}" method="post">
                         @csrf
 
@@ -37,7 +38,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="tipo_documento">Tipo de Documento</label>
-                                <select class="form-control" name="tipo_documento" autofocus>
+                                <select class="form-control @error('tipo_documento') is-invalid @enderror" name="tipo_documento" autofocus>
                                     <option value="" disabled selected>Seleccione un tipo de documento</option>
                                     @forelse ($documentos->parametros as $parametro)
                                         <option value="{{ $parametro->id }}">{{ $parametro->name }}</option>
@@ -48,10 +49,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="numero_documento">Número de Documento</label>
-                                <input type="text" class="form-control @error('numero_documento')
+                                <input type="text"
+                                    class="form-control @error('numero_documento')
                                     is-invalid
-                                    @enderror" value="{{ old('numero_documento') }}"
-                                    name="numero_documento" placeholder="Número de Documento">
+                                    @enderror"
+                                    value="{{ old('numero_documento') }}" name="numero_documento"
+                                    placeholder="Número de Documento">
 
                             </div>
                         </div>
@@ -60,12 +63,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="primer_nombre">Primer Nombre</label>
-                                <input type="text" class="form-control" value="{{ old('primer_nombre') }}"
+                                <input type="text" class="form-control @error('primer_nombre') is-invalid @enderror" value="{{ old('primer_nombre') }}"
                                     placeholder="Primer Nombre" name="primer_nombre">
                             </div>
                             <div class="col-md-6">
                                 <label for="segundo_nombre">Segundo Nombre</label>
-                                <input type="text" class="form-control" value="{{ old('segundo_nombre') }}"
+                                <input type="text" class="form-control @error('segundo_nombre') is-invalid @enderror" value="{{ old('segundo_nombre') }}"
                                     placeholder="Segundo Nombre" name="segundo_nombre">
                             </div>
                         </div>
@@ -74,12 +77,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="primer_apellido">Primer Apellido</label>
-                                <input type="text" class="form-control" value="{{ old('primer_apellido') }}"
+                                <input type="text" class="form-control @error('primer_apellido') is-invalid @enderror" value="{{ old('primer_apellido') }}"
                                     placeholder="Primer Apellido" name="primer_apellido">
                             </div>
                             <div class="col-md-6">
                                 <label for="segundo_apellido">Segundo Apellido</label>
-                                <input type="text" class="form-control" value="{{ old('segundo_apellido') }}"
+                                <input type="text" class="form-control @error('segundo_apellido') is-invalid @enderror" value="{{ old('segundo_apellido') }}"
                                     placeholder="Segundo Apellido" name="segundo_apellido">
                             </div>
                         </div>
@@ -88,7 +91,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="genero">Género</label>
-                                <select class="form-control" name="genero">
+                                <select class="form-control @error('genero') is-invalid @enderror" name="genero">
                                     <option value="" disabled selected>Seleccione un genero</option>
                                     @forelse ($generos->parametros as $parametro)
                                         <option value="{{ $parametro->id }}">{{ $parametro->name }}</option>
@@ -99,7 +102,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="fecha_de_nacimiento">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" value="{{ old('fecha_de_nacimiento') }}"
+                                <input type="date" class="form-control @error('fecha_de_nacimiento') is-invalid @enderror" value="{{ old('fecha_de_nacimiento') }}"
                                     name="fecha_de_nacimiento" placeholder="Fecha de Nacimiento">
                             </div>
                         </div>
@@ -108,13 +111,23 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="email">Correo Electrónico</label>
-                                <input type="email" class="form-control @error('email')
+                                <input type="email"
+                                    class="form-control @error('email')
                                         is-invalid
-                                    @enderror" placeholder="Correo email"
-                                    value="{{ old('email') }}" name="email">
-
+                                    @enderror"
+                                    placeholder="Correo email" value="{{ old('email') }}" name="email">
                             </div>
-
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="regional_id">Regional</label>
+                                <select name="regional_id" id="" class="form-control @error('regional_id') is-invalid @enderror">
+                                    <option value="">Seleccione una regional</option>
+                                    @foreach ($regionales as $regional)
+                                        <option value="{{ $regional->id }}">{{ $regional->regional }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
 
                         {{-- Botón de Registro --}}

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Instructor;
 use App\Http\Requests\StoreInstructorRequest;
 use App\Http\Requests\UpdateInstructorRequest;
+use App\Models\FichaCaracterizacion;
 use App\Models\Persona;
+use App\Models\Regional;
 use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -37,9 +40,10 @@ class InstructorController extends Controller
         $generos = Tema::with(['parametros' => function ($query) {
             $query->wherePivot('status', 1);
         }])->findOrFail(3);
+        $regionales = Regional::where('status', 1)->get();
 
 
-        return view('Instructores.create', compact('documentos','generos'));
+        return view('Instructores.create', compact('documentos','generos', 'regionales'));
     }
 
     /**
@@ -48,26 +52,7 @@ class InstructorController extends Controller
     public function store(StoreInstructorRequest $request)
     {
         try {
-
-            $validator = Validator::make($request->all(), [
-                'tipo_documento' => 'required',
-                'numero_documento' => 'required|numeric',
-                'primer_nombre' => 'required',
-                'segundo_nombre' => 'nullable',
-                'primer_apellido' => 'required',
-                'segundo_apellido' => 'nullable',
-                'fecha_de_nacimiento' => 'required|date',
-                'genero' => 'required',
-                'email' => 'required|email|unique:personas,email|unique:users,email',
-            ]);
-
-            if ($validator->fails()) {
-                // @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
+            DB::beginTransaction();
             // Crear Persona
             $persona = Persona::create([
                 'tipo_documento' => $request->input('tipo_documento'),
@@ -83,6 +68,7 @@ class InstructorController extends Controller
 
             $instructor = Instructor::create([
                 'persona_id' => $persona->id,
+                'regional_id' => $request->regional_id,
             ]);
             // Crear Usuario asociado a la Persona
             $user = User::create([
@@ -91,12 +77,13 @@ class InstructorController extends Controller
                 'persona_id' => $persona->id,
             ]);
             $user->assignRole('INSTRUCTOR');
-
+            DB::commit();
             return redirect()->route('instructor.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             // @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.' . $e->getMessage());
         }
         // catch (\Exception $e) {
         //     // Manejar otras excepciones
@@ -110,9 +97,10 @@ class InstructorController extends Controller
      */
     public function show(Instructor $instructor)
     {
+        $fichasCaracterizacion = FichaCaracterizacion::all();
         $instructor->persona->edad = Carbon::parse($instructor->persona->fecha_de_nacimiento)->age;
         $instructor->persona->fecha_de_nacimiento = Carbon::parse($instructor->persona->fecha_de_nacimiento)->format('d/m/Y');
-        return view('Instructores.show', compact('instructor'));
+        return view('Instructores.show', compact('instructor', 'fichasCaracterizacion'));
     }
 
     /**
@@ -120,7 +108,8 @@ class InstructorController extends Controller
      */
     public function edit(Instructor $instructor)
     {
-        //
+
+        return view('Instructores.edit', ['instructor' => $instructor]);
     }
 
     /**
