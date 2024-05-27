@@ -12,6 +12,7 @@ class Instructor extends Model
 
     protected $fillable = [
         'persona_id',
+        'regional_id',
     ];
 
 
@@ -23,4 +24,8 @@ class Instructor extends Model
     // {
     //     return $this->belongsTo(FichaCaracterizacionController::class. 'instructor_asignado');
     // }
+    public function regional()
+    {
+        return $this->belongsTo(Regional::class, 'regional_id');
+    }
 }
