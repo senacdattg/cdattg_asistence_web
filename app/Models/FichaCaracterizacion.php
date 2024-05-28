@@ -28,4 +28,17 @@ class FichaCaracterizacion extends Model
     public function entradaSalida(){
         return $this->belongsTo(EntradaSalida::class);
     }
+
+    public function userCreate()
+    {
+        return  $this->belongsTo(User::class, 'user_create_id');
+    }
+    public function userEdit()
+    {
+        return  $this->belongsTo(User::class, 'user_edit_id');
+    }
+    public function regional(){
+        return $this->belongsTo(Regional::class);
+    }
+
 }

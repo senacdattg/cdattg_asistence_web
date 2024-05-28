@@ -28,4 +28,7 @@ class Regional extends Model
     {
         return $this->belongsTo(User::class, 'user_edit_id');
     }
+    public function fichasCaracterizacion(){
+        return $this->hasMany(FichaCaracterizacion::class, 'regional_id');
+    }
 }

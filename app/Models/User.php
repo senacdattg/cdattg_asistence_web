@@ -89,4 +89,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Parametro::class, 'user_create_id');
     }
+
+    // relacion e sedes y usuario
+    public function fichaCaracterizacionCreate()
+    {
+        return $this->hasMany(FichaCaracterizacion::class);
+    }
+    public function fichaCaracerizacionEdit()
+    {
+        return $this->hasMany(FichaCaracterizacion::class);
+    }
 }

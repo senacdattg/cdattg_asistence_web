@@ -41,8 +41,8 @@
                 </div>
                 <div class="container">
                     <div class="card-body">
-
-                        <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-md-6 ">
                                 <table class="table table-bordered border border-primary">
                                     <tr>
                                         <th>
@@ -75,23 +75,44 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <strong>Instructor asignado:</strong>
+                                            <strong>Creado por:</strong>
                                         </th>
                                         <td>
-                                            {{ $fichaCaracterizacion->instructor->persona->primer_nombre }}
-                                            {{ $fichaCaracterizacion->instructor->persona->primer_apellido }}
+                                            {{ $fichaCaracterizacion->userCreate->persona->primer_nombre }}
+                                            {{ $fichaCaracterizacion->userCreate->persona->primer_apellido }}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>
-                                            <Strong>Ambiente</Strong>
+                                            <strong>Actualizado por:</strong>
                                         </th>
                                         <td>
-                                            {{ $fichaCaracterizacion->ambiente->title }}
+                                            {{ $fichaCaracterizacion->userCreate->persona->primer_nombre }}
+                                            {{ $fichaCaracterizacion->userCreate->persona->primer_apellido }}
                                         </td>
                                     </tr>
-                                </table>
+                                    <tr>
+                                        <th>
+                                            <strong>Regional:</strong>
+                                        </th>
+                                        <td>
+                                            {{ $fichaCaracterizacion->regional->regional }}
+                                        </td>
+                                    </tr>
 
+                                </table>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Instructores asignados</li>
+                                        <li class="list-group-item">A second item</li>
+                                        <li class="list-group-item">A third item</li>
+                                        <li class="list-group-item">A fourth item</li>
+                                        <li class="list-group-item">And a fifth one</li>
+                                    </ul>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
