@@ -29,105 +29,103 @@
                             class="fas fa-clipboard-list"></i></a>
 
                 </div>
-                <div class="card-body">
-                    <div class="form-group justify-content-center">
-                        <form action="{{ route('entradaSalida.registros') }}" method="post">
-                            @csrf
-                            {{-- seleccionar la ficha --}}
-                            <div class="row">
-                                {{-- <div class="col-md-6 div-departamento"> --}}
-                                <label for="ficha_id">Ficha</label>
-                                <select name="ficha_id" id="" class="form-control" required>
-                                    <option value="" disabled selected>Seleccione la ficha de caracterización</option>
-                                    @forelse ($fichas as $ficha)
+               <div class="card-body p-0">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width: 1%">
+                                    #
+                                </th>
+                                <th style="width: 20%">
+                                    Ficha
+                                </th>
+                                <th style="width: 30%">
+                                    Nombre del curso
+                                </th>
+                                <th style="width: 40%">
+                                    Estado
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            ?>
+                            @forelse ($fichas as $ficha)
+                                <tr>
+                                    <td>
+                                        {{ $i++ }}
+                                    </td>
+                                    <td>
+                                        {{ $ficha->ficha }}
+                                    </td>
 
-                                        <option value="{{ $ficha->id }}">{{ $ficha->ficha }} {{ $ficha->nombre_curso }}
-                                        </option>
-                                    @empty
-                                    @endforelse
-                                </select>
-                                {{-- </div> --}}
+                                    <td>
+                                        {{ $ficha->nombre_curso }}
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{{ $ficha->status === 1 ? 'success' : 'danger' }}">
+                                            @if ($ficha->status === 1)
+                                                ACTIVO
+                                            @else
+                                                INACTIVO
+                                            @endif
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $ficha->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                                    class="fas fa-sync"></i></button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm"
+                                            href="{{ route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $ficha->id]) }}">
+                                            <i class="fas fa-eye"></i>
 
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm"
+                                            href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $ficha->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $ficha->id]) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
 
-                            </div>
-                            {{-- escoger departamento y municipio --}}
-                            <div class="row">
-                                <div class="col-md-6 div-departamento">
-                                    <label for="departamento_id">Departamento</label>
-                                    <select name="departamento_id" id="departamento_id" class="form-control" required>
-                                        <option value="" disabled selected>Seleccione un departamento</option>
-                                    </select>
-                                </div>
+                                        <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
 
-                                <div class="col-md-6 div-municipio">
-                                    <label for="municipio_id">municipio</label>
-                                    <select name="municipio_id" id="municipio_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona un municipio</option>
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- escoger el ambiente --}}
-                            <div class="row">
-                                <div class="col-md-6 div-sede">
-                                    <label for="sede_id">Seleccione la sede</label>
-                                    <select name="sede_id" id="sede_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona una sede</option>
-                                    </select>
-                                </div>
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        </form>
+                                    </td>
+                                </tr>
 
-                                <div class="col-md-6 div-bloque">
-                                    <label for="bloque_id">Seleccione el bloque</label>
-                                    <select name="bloque_id" id="bloque_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona un bloque</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {{-- Tipo de Documento y Número de Documento --}}
-                            <div class="row">
-
-                                <div class="col-md-6 div-piso">
-                                    <label for="piso_id">Seleccione el piso</label>
-                                    <select name="piso_id" id="piso_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona un piso</option>
-                                    </select>
-
-                                </div>
-
-                                <div class="col-md-6 div-ambiente">
-                                    <label for="ambiente_id">Seleccione el ambiente</label>
-                                    <select name="ambiente_id" id="ambiente_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona un ambiente</option>
-                                    </select>
-
-                                </div>
-
-                            </div>
-                            <div class="row">
-
-                                {{-- <div class="col-md-6 div-ambiente"> --}}
-                                <label for="descripcion">Describe el tema del día</label>
-                                <input type="text" class="form-control" name="descripcion" required>
-                                {{-- </div> --}}
-                            </div>
-                            {{-- boton asistencia --}}
-                            <div class="row">
-
-                                <div class="div justify-content-center boton-asistencia">
-
-                                    {{-- <a href="{{ route('entradaSalida.registros', ['fichaCaracterizacion' => $ficha->id]) }}" class="btn btn-success btn-sm">
-
-                                        </a> --}}
-                                    <div class="card-body">
-                                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-list-ul"></i> Tomar asistencia</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            @empty
+                                <tr>
+                                    <td colspan="4">No hay fichas de caracterización registradas</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </section>
+    </div>
+
+    <div class="card-footer">
+        <div class="float-right">
+            {{ $fichas->links() }}
+        </div>
     </div>
 @endsection
 

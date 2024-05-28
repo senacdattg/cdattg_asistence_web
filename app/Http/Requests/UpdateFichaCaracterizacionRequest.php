@@ -11,7 +11,7 @@ class UpdateFichaCaracterizacionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateFichaCaracterizacionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'ficha' => 'nullable',
+            'nombre_curso' => 'nullable',
+            'regional_id' => 'required',
         ];
     }
 }

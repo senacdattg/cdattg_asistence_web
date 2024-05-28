@@ -5,23 +5,16 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>
-                            @if ($fichaCaracterizacion->ficha)
-                                {{ $fichaCaracterizacion->ficha }}
-                            @else
-                                {{ $fichaCaracterizacion->nombre_curso }}
-                            @endif
+                        <h1>Ver Ficha
                         </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Inicio</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('fichaCaracterizacion.index') }}">Fichas de
+                                    caracterización</a></li>
                             <li class="breadcrumb-item active">
-                                @if ($fichaCaracterizacion->ficha)
-                                    {{ $fichaCaracterizacion->ficha }}
-                                @else
-                                    {{ $fichaCaracterizacion->nombre_curso }}
-                                @endif
+                                Ver Ficha
                             </li>
                         </ol>
                     </div>
@@ -99,17 +92,39 @@
                                             {{ $fichaCaracterizacion->regional->regional }}
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <th>
+                                            <strong>Estado:</strong>
+                                        </th>
+                                        <td>
+                                            <span
+                                                class="badge badge-{{ $fichaCaracterizacion->status === 1 ? 'success' : 'danger' }}">
+                                                @if ($fichaCaracterizacion->status === 1)
+                                                    ACTIVO
+                                                @else
+                                                    INACTIVO
+                                                @endif
+                                            </span>
+                                        </td>
+                                    </tr>
 
                                 </table>
                             </div>
                             <div class="col-sm-4">
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Instructores asignados</li>
-                                        <li class="list-group-item">A second item</li>
-                                        <li class="list-group-item">A third item</li>
-                                        <li class="list-group-item">A fourth item</li>
-                                        <li class="list-group-item">And a fifth one</li>
+                                        <li class="list-group-item"><strong>Instructores asignados</strong></li>
+                                       
+                                        @forelse ($fichaCaracterizacion->instructores as $instructor)
+                                            <li class="list-group-item">{{ $instructor->persona->primer_nombre }}
+                                                {{ $instructor->persona->segundo_nombre }}
+                                                {{ $instructor->persona->primer_apellido }}
+                                                {{ $instructor->persona->segundo_apellido }}
+                                            </li>
+                                        @empty
+                                            <li class="list-group-item">No hay instructores asignados
+                                            </li>
+                                        @endforelse
                                     </ul>
                                 </div>
                             </div>
@@ -120,25 +135,28 @@
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
 
-                    {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
+                    <form id="cambiarEstadoForm" class=" d-inline"
+                        action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
+                        method="POST">
                         @csrf
                         @method('PUT')
                         <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
                     </form>
-                    <a class="btn btn-info btn-sm" href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
+                    <a class="btn btn-info btn-sm"
+                        href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}">
                         <i class="fas fa-pencil-alt">
                         </i>
                     </a>
-                    <form class="formulario-eliminar btn" action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}" method="POST"
-                        class="d-inline">
+                    <form class="formulario-eliminar btn"
+                        action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
+                        method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
 
                         <button type="submit" class="btn btn-danger btn-sm">
                             <i class="fas fa-trash"></i>
                         </button>
-                    </form> --}}
+                    </form>
 
                 </div>
             </div>

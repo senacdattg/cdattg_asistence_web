@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FichaCaracterizacion;
 use App\Http\Requests\StoreFichaCaracterizacionRequest;
 use App\Http\Requests\UpdateFichaCaracterizacionRequest;
+use App\Models\Instructor;
 use App\Models\Regional;
 use App\Models\User;
 use Illuminate\Database\QueryException;
@@ -20,7 +21,7 @@ class FichaCaracterizacionController extends Controller
      */
     public function index()
     {
-        $fichas = FichaCaracterizacion::where('instructor_asignado', Auth::user()->id)->paginate(10);
+        $fichas = FichaCaracterizacion::paginate(10);
         return view('ficha.index', compact('fichas'));
     }
     public function apiIndex(Request $request)
@@ -80,7 +81,7 @@ class FichaCaracterizacionController extends Controller
     {
         try{
             if (!$request->filled('ficha') && !$request->filled('nombre_curso')) {
-                return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.']);
+                return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.', 'ficha' => ' ', 'nombre_curso' => ' ']);
             }
             DB::beginTransaction();
 
@@ -144,7 +145,9 @@ class FichaCaracterizacionController extends Controller
      */
     public function edit(FichaCaracterizacion $fichaCaracterizacion)
     {
-        //
+        $instructores = Instructor::all();
+        $regionales = Regional::where('status', 1)->get();
+        return view('ficha.edit', ['fichaCaracterizacion' => $fichaCaracterizacion, 'regionales' => $regionales, 'instructores' => $instructores]);
     }
 
     /**
@@ -152,14 +155,90 @@ class FichaCaracterizacionController extends Controller
      */
     public function update(UpdateFichaCaracterizacionRequest $request, FichaCaracterizacion $fichaCaracterizacion)
     {
-        //
-    }
+        try {
+            if (!$request->filled('ficha') && !$request->filled('nombre_curso')) {
+                return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.', 'ficha' => ' ', 'nombre_curso' => ' ']);
+            }
+            DB::beginTransaction();
 
+            $fichaCaracterizacion->update([
+                'ficha' => $request->input('ficha'),
+                'nombre_curso' => $request->input('nombre_curso'),
+                'user_edit_id' => Auth::user()->id,
+                'regional_id' => $request->input('regional_id'),
+                'status' => 1,
+            ]);
+            DB::commit();
+            return redirect()->route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $fichaCaracterizacion->id])->with('success', '¡Registro Exitoso!');
+        } catch (QueryException $e) {
+            // Manejar excepciones de la base de datos
+            @dd($e);
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            // Manejar otras excepciones
+            @dd($e);
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+        }
+    }
+    public function updateinstructoresFichaCaracterizacion(Request $request){
+        try{
+            DB::beginTransaction();
+            $ficha_id = $request->input('ficha_id');
+            $instructores = $request->input('instructores');
+
+            // Obtén el modelo del fichaCaracterizacion
+            $fichaCaracterizacion = FichaCaracterizacion::find($ficha_id);
+
+            // Crea un array para sincronizar los parámetros con valores específicos
+
+            $dataToSync = [];
+            if($instructores){
+
+                foreach ($instructores as $instructor_id) {
+                    $dataToSync[$instructor_id] = [
+                        'status' => 1,
+                    ];
+                }
+            }
+
+            // Sincroniza los parámetros en la tabla pivote sin eliminar los existentes
+            $fichaCaracterizacion->instructores()->sync($dataToSync);
+
+            DB::commit();
+
+            return redirect()->route('fichaCaracterizacion.show', $ficha_id)->with('success', 'Parámetros actualizados exitosamente');
+        }catch(QueryException $e){
+            DB::rollBack();
+        }
+    }
+    public function cambiarEstadoFichaCaracterizacion(FichaCaracterizacion $fichaCaracterizacion){
+        if ($fichaCaracterizacion->status === 1) {
+            // @dd($fichaCaracterizacion->update(['status' => 0]));
+
+            $fichaCaracterizacion->update(['status' => 0]);
+        } else {
+            $fichaCaracterizacion->update(['status' => 1]);
+        }
+        return redirect()->back();
+    }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(FichaCaracterizacion $fichaCaracterizacion)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $fichaCaracterizacion->delete();
+            DB::commit();
+            return redirect()->route('fichaCaracterizacion.index')->with('success', 'fichaCaracterizacion eliminado exitosamente');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            if ($e->getCode() == 23000) {
+
+                return redirect()->back()->with('error', 'El fichaCaracterizacion se encuentra en uso en estos momentos, no se puede eliminar');
+            }
+        }
     }
 }

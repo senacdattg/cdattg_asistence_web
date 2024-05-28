@@ -19,6 +19,7 @@ class FichaCaracterizacion extends Model
     'user_create_id',
     'user_edit_id',
     'regional_id',
+    'status'
     ];
 
     // public function user()
@@ -39,6 +40,12 @@ class FichaCaracterizacion extends Model
     }
     public function regional(){
         return $this->belongsTo(Regional::class);
+    }
+    public function instructores()
+    {
+        return $this->belongsToMany(Instructor::class, 'ficha_caracterizacions_instructors', 'ficha_id', 'instructor_id')
+        ->withPivot('status')
+        ->withTimestamps();
     }
 
 }
