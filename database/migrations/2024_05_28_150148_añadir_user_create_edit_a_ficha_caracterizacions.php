@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ficha_caracterizacions', function (Blueprint $table) {
-            $table->foreignId('ambiente_id')->constrained('ambientes')->after('user_id');
+            $table->foreignId('user_create_id')->after('dias_de_formacion')->constrained('users');
+            $table->foreignId('user_edit_id')->after('user_create_id')->constrained('users');
         });
     }
 

@@ -208,6 +208,32 @@
 
                         </ul>
                     </li>
+                    {{-- administrar fichas de caracrerización --}}
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <p>
+                                Administrar fichas
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('fichaCaracterizacion.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Fichas de caracterización</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('fichaCaracterizacion.create') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Crear Ficha</p>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
                 @endif
                 @if(auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
                 <li class="nav-item">

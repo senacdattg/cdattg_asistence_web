@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\FichaCaracterizacion;
 use App\Http\Requests\StoreFichaCaracterizacionRequest;
 use App\Http\Requests\UpdateFichaCaracterizacionRequest;
+use App\Models\Regional;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FichaCaracterizacionController extends Controller
 {
@@ -64,8 +66,8 @@ class FichaCaracterizacionController extends Controller
      */
     public function create()
     {
-
-        return view('ficha.create');
+        $regionales = Regional::where('status', 1)->get();
+        return view('ficha.create', compact('regionales'));
 
     }
     public function apiStore(){
@@ -77,40 +79,30 @@ class FichaCaracterizacionController extends Controller
     public function store(StoreFichaCaracterizacionRequest $request)
     {
         try{
-            $validator = Validator::make($request->all(),[
-                'ficha' => 'nullable',
-                'nombre_curso' => 'nullable',
-                'ambiente_id' => 'required',
-            ]);
             if (!$request->filled('ficha') && !$request->filled('nombre_curso')) {
                 return redirect()->back()->withErrors(['error' => 'Debe ingresar el número de ficha o nombre del programa.']);
             }
-
-
-            // 'ficha', 'nombre_curso','codigo_programa', 'horas_formacion', 'cupo', 'dias_de_formacion', 'municipio_id', 'instructor_asignado', 'ambiente_id'
-            // estos son los nuevos campos que se debe de poner
-            // ajustar la vista tambien
-            if($validator->fails()){
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+            DB::beginTransaction();
 
             $fichaCaracterizacion = FichaCaracterizacion::create([
                 'ficha' => $request->input('ficha'),
                 'nombre_curso' => $request->input('nombre_curso'),
-                'instructor_asignado' => Auth::user()->id,
-                'ambiente_id' => $request->input('ambiente_id'),
+                'user_create_id' => Auth::user()->id,
+                'user_edit_id' => Auth::user()->id,
+                'regional_id' => $request->input('regional_id'),
+                'status' => 1,
             ]);
-            return redirect()->route('entradaSalida.registros', ['fichaCaracterizacion' => $fichaCaracterizacion->id])->with('success', '¡Registro Exitoso!');
+            DB::commit();
+            return redirect()->route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $fichaCaracterizacion->id])->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             @dd($e);
+            DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
         } catch (\Exception $e) {
             // Manejar otras excepciones
             @dd($e);
+            DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
