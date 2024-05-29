@@ -26,14 +26,19 @@ class FichaCaracterizacionController extends Controller
     }
     public function apiIndex(Request $request)
     {
+        // @dd('hola mundo');
         // Obtener el ID del usuario de la solicitud
-        $userId = $request->user_id;
+        $instructorID = $request->instructor_id;
+        $instructor = Instructor::find($instructorID);
+        if (!$instructor){
+            return response()->json('Ocurrio un error al momento de encontrar el instructor!', 400);
+        }
         // Obtener las fichas de caracterización asociadas al usuario
-        $fichas = FichaCaracterizacion::where('instructor_asignado', $userId)->get();
+        // $fichas = FichaCaracterizacion::all();
         $fichasArray = [];
 
         // Iterar sobre las fichas obtenidas de la consulta
-        foreach ($fichas as $ficha) {
+        foreach ($instructor->fichas as $ficha) {
             // Crear un array para cada ficha con los atributos deseados
             $fichaArray = [
                 "id" => $ficha->id,
@@ -43,18 +48,17 @@ class FichaCaracterizacionController extends Controller
                 "horas_formacion" => $ficha->horas_formacion,
                 "cupo" => $ficha->cupo,
                 "dias_de_formacion" => $ficha->dias_de_formacion,
-                "Instructor" => [
-                    "id" => $ficha->instructor_asignado,
-                    "primer_nombre" => $ficha->instructor->persona->primer_nombre,
-                    "segundo_nombre" => $ficha->instructor->persona->segundo_nombre,
-                    "primer_apellido" => $ficha->instructor->persona->primer_apellido,
-                    "segundo_apellido" => $ficha->instructor->persona->segundo_apellido,
+                "user_create_id" => [
+                    'primer_nombre' => $ficha->userCreate->persona->primer_nombre,
+                    'segundo_nombre' => $ficha->userCreate->persona->segundo_nombre,
+                    'primer_apellido' => $ficha->userCreate->persona->primer_apellido,
+                    'segundo_apellido' => $ficha->userCreate->persona->segundo_apellido,
                 ],
                 "created_at" => $ficha->created_at->toIso8601String(),
                 "updated_at" => $ficha->updated_at->toIso8601String(),
                 "deleted_at" => $ficha->deleted_at,
-                "ambiente" => $ficha->ambiente->title,
-                "municipio" => $ficha->ambiente->piso->bloque->sede->municipio->municipio,
+                "regional" => $ficha->regional->regional,
+                // "municipio" => $ficha->ambiente->piso->bloque->sede->municipio->municipio,
             ];
 
             // Agregar el array de la ficha al array de fichas

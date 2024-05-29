@@ -114,7 +114,7 @@
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item"><strong>Instructores asignados</strong></li>
-                                       
+
                                         @forelse ($fichaCaracterizacion->instructores as $instructor)
                                             <li class="list-group-item">{{ $instructor->persona->primer_nombre }}
                                                 {{ $instructor->persona->segundo_nombre }}

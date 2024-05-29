@@ -93,9 +93,8 @@
                                 <div class="card-body">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1>En proceso!</h1>
+                                            <caption><strong>Fichas de caracterización</strong></caption>
                                             <table class="table table-striped">
-                                                <caption><strong>Fichas de caracterización</strong></caption>
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -105,9 +104,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $i = 1; ?>
-                                                    @foreach ($fichasCaracterizacion as $fichaCaracterizacion )
+                                                    @foreach ($instructor->fichas as $fichaCaracterizacion )
                                                         <tr>
-                                                            <td>$i++</td>
+                                                            <td>{{ $i++ }}</td>
                                                             <td>
                                                                 {{ $fichaCaracterizacion->nombre_curso }}
                                                             </td>
