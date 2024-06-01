@@ -64,7 +64,7 @@ class FichaCaracterizacionController extends Controller
             // Agregar el array de la ficha al array de fichas
             $fichasArray[] = $fichaArray;
         }
-        return response()->json(['fichas' => $fichasArray],200);
+        return response()->json($fichasArray,200);
     }
     /**
      * Show the form for creating a new resource.
@@ -125,6 +125,7 @@ class FichaCaracterizacionController extends Controller
         if (!$fichaCaracterizacion) {
             return response()->json(['error' => 'Ficha de caracterización no encontrada'], 404);
         }
+
         return response()->json([
             "id" => $fichaCaracterizacion->id,
             "ficha" => $fichaCaracterizacion->ficha,
@@ -141,7 +142,7 @@ class FichaCaracterizacionController extends Controller
             "ambiente" => $fichaCaracterizacion->ambiente->title,
 
 
-        ]);
+        ], 200);
     }
 
     /**

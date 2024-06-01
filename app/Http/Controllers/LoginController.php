@@ -66,7 +66,9 @@ class LoginController extends Controller
                 "genero" => $personaD->tipoGenero->name,
                 "email" => $personaD->email,
                 "created_at" => $personaD->created_at,
-                "updated_at" => $personaD->updated_at
+                "updated_at" => $personaD->updated_at,
+                "instructor_id" => $personaD->instructor->id,
+                "regional_id" => $personaD->instructor->regional->id,
             ];
             // Retornar la respuesta JSON incluyendo el token
             return response()->json(['user' => $user, 'persona' => $persona, 'token' => $token], 200);

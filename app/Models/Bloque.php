@@ -27,7 +27,7 @@ class Bloque extends Model
     }
     public function piso()
     {
-        return $this->belongsTo(Piso::class);
+        return $this->hasMany(Piso::class);
     }
 
     public function userCreated()
