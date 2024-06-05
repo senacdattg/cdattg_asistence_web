@@ -111,8 +111,16 @@ class BloqueController extends Controller
      */
     public function destroy(Bloque $bloque)
     {
-        $bloque->delete();
-
-        return redirect()->route('bloque.index')->with('success', 'Bloque eliminado exitosamente');
+        try {
+            DB::beginTransaction();
+            $bloque->delete();
+            DB::commit();
+            return redirect()->route('bloque.index')->with('success', 'Bloque eliminado exitosamente');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            if ($e->getCode() == 23000) {
+                return redirect()->back()->with('error','El bloque esta siendo usado y no es posible eliminarlo.');
+            }
+        }
     }
 }
