@@ -34,11 +34,11 @@
                     </a>
                 </div>
                 {{-- <div class="container"> --}}
-                <div class="container-fluid">
+                <div class="container-fluid ">
                     <div class="row">
                         <div class="col-md-3">
 
-                            <div class="card card-primary card-outline">
+                            <div class="card card-primary card-outline carne">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
                                         <img class="profile-user-img img-fluid img-circle"
@@ -83,7 +83,6 @@
                                     <p class="text-muted"> <strong>Regional: </strong>
                                         {{ $instructor->regional->regional }}</p>
                                 </div>
-
                             </div>
 
                         </div>
@@ -93,9 +92,8 @@
                                 <div class="card-body">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h1>En proceso!</h1>
+                                            <caption><strong>Fichas de caracterización</strong></caption>
                                             <table class="table table-striped">
-                                                <caption><strong>Fichas de caracterización</strong></caption>
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">#</th>
@@ -105,9 +103,9 @@
                                                 </thead>
                                                 <tbody>
                                                     <?php $i = 1; ?>
-                                                    @foreach ($fichasCaracterizacion as $fichaCaracterizacion )
+                                                    @foreach ($instructor->fichas as $fichaCaracterizacion)
                                                         <tr>
-                                                            <td>$i++</td>
+                                                            <td>{{ $i++ }}</td>
                                                             <td>
                                                                 {{ $fichaCaracterizacion->nombre_curso }}
                                                             </td>

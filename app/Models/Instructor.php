@@ -28,4 +28,10 @@ class Instructor extends Model
     {
         return $this->belongsTo(Regional::class, 'regional_id');
     }
+    public function fichas()
+    {
+        return $this->belongsToMany(FichaCaracterizacion::class, 'ficha_caracterizacions_instructors', 'instructor_id', 'ficha_id')
+        ->withPivot('status')
+        ->withTimestamps();
+    }
 }

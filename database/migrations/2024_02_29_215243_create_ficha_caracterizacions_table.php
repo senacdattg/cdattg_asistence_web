@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('horas_formacion')->nullable();
             $table->integer('cupo')->nullable();
             $table->string('dias_de_formacion')->nullable();
-            $table->foreignId('instructor_asignado')->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });

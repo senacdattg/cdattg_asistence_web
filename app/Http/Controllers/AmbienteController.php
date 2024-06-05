@@ -6,6 +6,7 @@ use App\Models\Ambiente;
 use App\Http\Requests\StoreAmbienteRequest;
 use App\Http\Requests\UpdateAmbienteRequest;
 use App\Models\Piso;
+use App\Models\Regional;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,13 +31,35 @@ class AmbienteController extends Controller
     }
     public function apiCargarAmbientes(Request $request)
     {
-        $piso_id = $request->piso_id;
-        // DB::enableQueryLog();
-        $ambientes = Ambiente::where('piso_id', $piso_id)->get();
+        $regional_id = $request->regional_id;
+
+        // Encontrar la regional por su ID
+        $regional = Regional::find($regional_id);
+
+        // Verificar si la regional existe
+        if (!$regional) {
+            return response()->json(['error' => 'Regional no encontrada'], 404);
+        }
+
+        // Inicializar el array para almacenar los ambientes
+        $ambientes = array();
+
+        // Recorrer las relaciones para obtener todos los ambientes
+        foreach ($regional->sedes as $sede) {
+            foreach ($sede->bloques as $bloque) {
+                foreach ($bloque->piso as $piso) {
+
+                //     // Combinar todos los ambientes en el array
+                // $ambientes = array($piso->ambientes);
+                    $ambientes = array_merge($ambientes, $piso->ambientes->toArray());
+                }
+            }
+        }
+        // return response()->json($pisos, 200);
+        // Devolver la respuesta en formato JSON con el código de estado 200
         return response()->json($ambientes, 200);
-        
-        // dd(DB::getQueryLog());
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -114,5 +137,4 @@ class AmbienteController extends Controller
     {
         //
     }
-
 }

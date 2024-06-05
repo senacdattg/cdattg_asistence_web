@@ -16,26 +16,36 @@ class FichaCaracterizacion extends Model
     'horas_formacion',
     'cupo',
     'dias_de_formacion',
-    'instructor_asignado',
-    'ambiente_id'];
+    'user_create_id',
+    'user_edit_id',
+    'regional_id',
+    'status'
+    ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-    public function municipio()
-    {
-        return $this->belongsTo(Municipio::class);
-    }
-    public function ambiente()
-    {
-        return $this->belongsTo(Ambiente::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
     public function entradaSalida(){
         return $this->belongsTo(EntradaSalida::class);
     }
-    public function instructor()
+
+    public function userCreate()
     {
-        return $this->belongsTo(User::class, 'instructor_asignado');
+        return  $this->belongsTo(User::class, 'user_create_id');
     }
+    public function userEdit()
+    {
+        return  $this->belongsTo(User::class, 'user_edit_id');
+    }
+    public function regional(){
+        return $this->belongsTo(Regional::class);
+    }
+    public function instructores()
+    {
+        return $this->belongsToMany(Instructor::class, 'ficha_caracterizacions_instructors', 'ficha_id', 'instructor_id')
+        ->withPivot('status')
+        ->withTimestamps();
+    }
+
 }

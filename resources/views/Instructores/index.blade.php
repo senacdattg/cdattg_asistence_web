@@ -101,17 +101,17 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{-- <form action="{{ route('instructores.destroy', ['instructor' => $instructor->id]) }}"
+                                       
+
+                                        <form class="formulario-eliminar btn" action="{{ route('instructor.destroy', ['instructor' => $instructor->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
-                                            @method('DELETE') --}}
+                                            @method('DELETE')
 
-                                        {{-- <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
-
-                                            <i class="fas fa-trash"></i>
-                                        </button> --}}
-                                        {{-- </form> --}}
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
 

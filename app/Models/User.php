@@ -49,10 +49,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(EntradaSalida::class);
     }
-    public function fichaCaracterizacion()
-    {
-        return $this->hasOne(FichaCaracterizacion::class, 'instructor_asignado');
-    }
     // relacion de bloques y usuario
     public function bloqueCreated()
     {
@@ -93,8 +89,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Parametro::class, 'user_create_id');
     }
-    public function instructores()
+
+    // relacion e sedes y usuario
+    public function fichaCaracterizacionCreate()
     {
-        return $this->belongsTo(User::class, 'instructor_asignado');
+        return $this->hasMany(FichaCaracterizacion::class);
+    }
+    public function fichaCaracerizacionEdit()
+    {
+        return $this->hasMany(FichaCaracterizacion::class);
     }
 }

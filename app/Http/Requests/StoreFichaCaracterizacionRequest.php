@@ -22,7 +22,9 @@ class StoreFichaCaracterizacionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'ficha' => 'nullable',
+            'nombre_curso' => 'nullable',
+            'regional_id' => 'required',
         ];
     }
 }
