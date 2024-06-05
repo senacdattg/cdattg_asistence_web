@@ -83,7 +83,6 @@
                                     <p class="text-muted"> <strong>Regional: </strong>
                                         {{ $instructor->regional->regional }}</p>
                                 </div>
-                                <button id="download">Descargar como PNG</button>
                             </div>
 
                         </div>
