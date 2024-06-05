@@ -133,6 +133,16 @@ class TemaController extends Controller
         }
 
     }
+    public function cambiarEstado(Tema $tema)
+    {
+        if ($tema->status === 1) {
+            $tema->update(['status' => 0]);
+        } else {
+            $tema->update(['status' => 1]);
+        }
+        // return redirect()->back()->with('success', 'Estado cambiado exitosamente');
+        return redirect()->back();
+    }
     public function cambiarEstadoParametro(parametro $parametro)
     {
 

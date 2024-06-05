@@ -26,7 +26,8 @@
         <section class="content">
             <div class="card">
                 <div class="card-body">
-                @include('temas.create')
+                    {{-- mas adelante sera implementada esta opción --}}
+                {{-- @include('temas.create') --}}
 
                 <div class="card-body p-0">
                     <table class="table table-striped projects">
