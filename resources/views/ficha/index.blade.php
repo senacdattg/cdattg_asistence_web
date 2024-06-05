@@ -97,16 +97,15 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <form action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $ficha->id]) }}"
+                                        
+                                        <form class="formulario-eliminar btn" action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $ficha->id]) }}"
                                             method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
 
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
-
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>

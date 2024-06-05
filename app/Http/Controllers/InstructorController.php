@@ -165,6 +165,17 @@ class InstructorController extends Controller
      */
     public function destroy(Instructor $instructor)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $instructor->delete();
+            DB::commit();
+            return redirect()->route('instructor.index')->with('success', 'Instructor eliminado exitosamente');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            if ($e->getCode() == 23000) {
+
+                return redirect()->back()->with('error', 'El instructor se encuentra en uso en estos momentos, no se puede eliminar');
+            }
+        }
     }
 }
