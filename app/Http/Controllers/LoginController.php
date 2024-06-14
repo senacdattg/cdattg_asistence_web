@@ -20,19 +20,25 @@ class LoginController extends Controller
     }
     public function iniciarSesion(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        try {
+            $credentials = $request->validate([
+                'email' => 'required|string',
+                'password' => 'required|string',
+            ]);
 
-        if (Auth::attempt($credentials)) {
-            // La autenticación fue exitosa
-            return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!'); // Puedes redirigir a donde desees
-        } else {
-            // La autenticación falló
-            return back()->withInput()->withErrors(['error' => 'Correo o contraseña invalido']);
+            if (Auth::attempt($credentials)) {
+                // La autenticación fue exitosa
+                return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!');
+            } else {
+                // La autenticación falló
+                return back()->withInput()->withErrors(['error' => 'Correo o contraseña inválido']);
+            }
+        } catch (\Exception $e) {
+            // Capturar y manejar cualquier excepción que ocurra durante el proceso
+            return back()->withInput()->withErrors(['error' => 'Error al iniciar sesión: ' . $e->getMessage()]);
         }
     }
+
     public function verificarLogin()
     {
 
