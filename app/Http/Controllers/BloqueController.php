@@ -83,7 +83,8 @@ class BloqueController extends Controller
      */
     public function edit(Bloque $bloque)
     {
-        //
+        $sedes = Sede::where('status', 1)->get();
+        return view('bloque.edit', ['bloque' => $bloque, 'sedes' => $sedes]);
     }
 
     /**
@@ -91,7 +92,19 @@ class BloqueController extends Controller
      */
     public function update(UpdateBloqueRequest $request, Bloque $bloque)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $bloque->update([
+                'bloque' => $request->bloque,
+                'sede_id' => $request->sede_id,
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            return redirect()->route('bloque.show', ['bloque' => $bloque->id])->with('success', 'Bloque Actualizado con éxito.');
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'No se pudo actualizar el bloque. ' . $e->getMessage());
+        }
     }
 
     /**

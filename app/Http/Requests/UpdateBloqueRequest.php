@@ -11,7 +11,7 @@ class UpdateBloqueRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateBloqueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'bloque' => 'required',
+            'sede_id' => 'required',
+            'status' => 'required|boolean',
         ];
     }
 }
