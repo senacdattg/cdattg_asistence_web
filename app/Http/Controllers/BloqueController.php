@@ -87,7 +87,7 @@ class BloqueController extends Controller
      */
     public function show(Bloque $bloque)
     {
-        //
+        return view('bloque.show', ['bloque' => $bloque]);
     }
 
     /**
@@ -121,6 +121,22 @@ class BloqueController extends Controller
             if ($e->getCode() == 23000) {
                 return redirect()->back()->with('error','El bloque esta siendo usado y no es posible eliminarlo.');
             }
+        }
+    }
+    public function cambiarEstado(Bloque $bloque){
+        try{
+            DB::beginTransaction();
+            if($bloque->status == 1){
+
+                $bloque->update(['status' => 0]);
+            }else{
+                $bloque->update(['status' => 1]);
+            }
+            DB::commit();
+            return redirect()->back();
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e);
         }
     }
 }
