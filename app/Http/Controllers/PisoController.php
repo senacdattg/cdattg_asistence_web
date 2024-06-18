@@ -87,7 +87,8 @@ class PisoController extends Controller
      */
     public function edit(Piso $piso)
     {
-        //
+        $regionales = Regional::where('status', 1)->get();
+        return view('piso.edit', ['piso' => $piso, 'regionales' => $regionales]);
     }
 
     /**
