@@ -79,7 +79,7 @@ class PisoController extends Controller
      */
     public function show(Piso $piso)
     {
-        //
+        return view('piso.show', ['piso' => $piso]);
     }
 
     /**
