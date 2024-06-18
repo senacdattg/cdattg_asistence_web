@@ -5,15 +5,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Ver Bloque
-                        </h1>
+                        <h1>{{ $bloque->bloque }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Inicio</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('bloque.index') }}">Blques</a></li>
                             <li class="breadcrumb-item active">
-                                {{-- {{ $bloque->bloque }} --}}
+                                {{ $bloque->bloque }}
                             </li>
                         </ol>
                     </div>
@@ -34,7 +33,7 @@
                 <div class="container">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6 ">
+                            <div class="col ">
                                 <table class="table table-bordered border border-primary">
                                     <tr>
                                         <th>
@@ -42,19 +41,16 @@
                                         </th>
                                         <td>
                                             <p>
-                                                {{-- {{ $bloque->bloque }} --}}
+                                                {{ $bloque->bloque }}
                                             </p>
                                         </td>
                                     </tr>
-                                    <tr>
+                                     <tr>
                                         <th>
-                                            <strong>Ficha de caracterización: </strong>
-
+                                            <strong>Sede:</strong>
                                         </th>
                                         <td>
-                                            <p>
-
-                                            </p>
+                                            {{ $bloque->sede->sede }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -62,8 +58,8 @@
                                             <strong>Creado por:</strong>
                                         </th>
                                         <td>
-                                            {{-- {{ $bloque->userCreate->persona->primer_nombre }}
-                                            {{ $bloque->userCreate->persona->primer_apellido }} --}}
+                                            {{ $bloque->userCreate->persona->primer_nombre }}
+                                            {{ $bloque->userCreate->persona->primer_apellido }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,16 +67,8 @@
                                             <strong>Actualizado por:</strong>
                                         </th>
                                         <td>
-                                            {{-- {{ $bloque->userEdit->persona->primer_nombre }}
-                                            {{ $bloque->userEdit->persona->primer_apellido }} --}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            <strong>Sede:</strong>
-                                        </th>
-                                        <td>
-                                            {{ $bloque->sede->sede }}
+                                            {{ $bloque->userEdit->persona->primer_nombre }}
+                                            {{ $bloque->userEdit->persona->primer_apellido }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -101,7 +89,7 @@
 
                                 </table>
                             </div>
-                           
+
 
                         </div>
                     </div>
