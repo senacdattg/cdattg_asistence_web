@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
+                        <h1>Crear Bloque
 
 
                         </h1>
@@ -14,9 +14,9 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Crear Bloque
                             </li>
                         </ol>
                     </div>
@@ -25,10 +25,7 @@
         </section>
         <section class="content">
             <div class="card">
-                <div class="card-header">
-                    {{-- <h3 class="card-title">{{ request()->path() }}</h3> --}}
-                    {{-- formulario de registro --}}
-                    <h1>Crear Sede</h1>
+                <div class="card-body">
                     <form action="{{ route('bloque.store') }}" method="post">
                         @csrf
 
@@ -37,25 +34,32 @@
 
                             <div class="col-md-6 div-sede">
                                 <label for="sede_id">Seleccione la sede</label>
-                                <select name="sede_id" id="sede_id" class="form-control" required>
+                                <select name="sede_id" id="sede_id"
+                                    class="form-control @error('sede_id') is-invalid @enderror" required>
                                     <option value="" disabled selected>Selecciona una sede</option>
+                                    @forelse ($sedes as $sede)
+                                        <option value="{{ $sede->id }}"{{ old('sede_id') == $sede->id ? 'selected' : '' }}>{{ $sede->sede }}</option>
+                                    @empty
+                                        <option value="">No hay sedes disponibles</option>
+                                    @endforelse
                                 </select>
                             </div>
 
                             <div class="col-md-6">
-                                <label for="descripcion">Descripcion</label>
-                                <input type="text" class="form-control" value="{{ old('descripcion') }}" name="descripcion"
-                                placeholder="Descripion del piso" required autofocus>
+                                <label for="bloque">Bloque</label>
+                                <input type="text" class="form-control @error('bloque') is-invalid @enderror"
+                                    value="{{ old('bloque') }}" name="bloque" placeholder="Nombre del bloque" required
+                                    autofocus>
                             </div>
                         </div>
-                </div>
 
 
-                {{-- Botón de Registro --}}
-                <div class="text-center text-lg-start mt-4 pt-2">
-                    <button type="submit" class="btn btn-primary btn-lg">Crear Bloque</button>
+                        {{-- Botón de Registro --}}
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Crear Bloque</button>
+                        </div>
+                    </form>
                 </div>
-                </form>
 
             </div>
 
@@ -63,5 +67,5 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>
+    {{-- <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script> --}}
 @endsection

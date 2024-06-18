@@ -41,7 +41,7 @@ class BloqueController extends Controller
      */
     public function create()
     {
-        $sedes = Sede::all();
+        $sedes = Sede::where('status', 1)->get();
         return view('bloque.create', compact('sedes'));
     }
 
@@ -52,20 +52,8 @@ class BloqueController extends Controller
     {
         // @dd($request);
         try {
-            $validator = Validator::make($request->all(), [
-                'descripcion' => 'required',
-                'sede_id' => 'required',
-            ]);
-            // @dd($validator);
-            if ($validator->fails()) {
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
             $bloque = Bloque::create([
-                'descripcion' => $request->input('descripcion'),
+                'bloque' => $request->input('bloque'),
                 'sede_id' => $request->input('sede_id'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
