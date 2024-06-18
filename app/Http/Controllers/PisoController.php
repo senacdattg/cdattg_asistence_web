@@ -9,6 +9,7 @@ use App\Models\Bloque;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PisoController extends Controller
@@ -113,5 +114,24 @@ class PisoController extends Controller
         $piso->delete();
 
         return redirect()->route('piso.index')->with('success', 'Piso eliminado exitosamente');
+    }
+    public function cambiarEstado(Piso $piso){
+        try{
+            DB::beginTransaction();
+            if ( $piso->status == 1){
+                $piso->update([
+                    'status' => 0,
+                ]);
+            }else{
+                $piso->update([
+                    'status' => 1,
+                ]);
+            }
+            DB::commit();
+            return redirect()->back();
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e->getMessage());
+        }
     }
 }
