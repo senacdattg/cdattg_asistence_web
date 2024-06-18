@@ -41,7 +41,7 @@ class BloqueController extends Controller
      */
     public function create()
     {
-        $sedes = Sede::all();
+        $sedes = Sede::where('status', 1)->get();
         return view('bloque.create', compact('sedes'));
     }
 
@@ -52,20 +52,8 @@ class BloqueController extends Controller
     {
         // @dd($request);
         try {
-            $validator = Validator::make($request->all(), [
-                'descripcion' => 'required',
-                'sede_id' => 'required',
-            ]);
-            // @dd($validator);
-            if ($validator->fails()) {
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
             $bloque = Bloque::create([
-                'descripcion' => $request->input('descripcion'),
+                'bloque' => $request->input('bloque'),
                 'sede_id' => $request->input('sede_id'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
@@ -87,7 +75,7 @@ class BloqueController extends Controller
      */
     public function show(Bloque $bloque)
     {
-        //
+        return view('bloque.show', ['bloque' => $bloque]);
     }
 
     /**
@@ -95,7 +83,8 @@ class BloqueController extends Controller
      */
     public function edit(Bloque $bloque)
     {
-        //
+        $sedes = Sede::where('status', 1)->get();
+        return view('bloque.edit', ['bloque' => $bloque, 'sedes' => $sedes]);
     }
 
     /**
@@ -103,7 +92,20 @@ class BloqueController extends Controller
      */
     public function update(UpdateBloqueRequest $request, Bloque $bloque)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $bloque->update([
+                'bloque' => $request->bloque,
+                'sede_id' => $request->sede_id,
+                'status' => $request->status,
+                'user_edit_id' => Auth::user()->id,
+            ]);
+            DB::commit();
+            return redirect()->route('bloque.show', ['bloque' => $bloque->id])->with('success', 'Bloque Actualizado con éxito.');
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'No se pudo actualizar el bloque. ' . $e->getMessage());
+        }
     }
 
     /**
@@ -111,8 +113,32 @@ class BloqueController extends Controller
      */
     public function destroy(Bloque $bloque)
     {
-        $bloque->delete();
+        try {
+            DB::beginTransaction();
+            $bloque->delete();
+            DB::commit();
+            return redirect()->route('bloque.index')->with('success', 'Bloque eliminado exitosamente');
+        } catch (QueryException $e) {
+            DB::rollBack();
+            if ($e->getCode() == 23000) {
+                return redirect()->back()->with('error','El bloque esta siendo usado y no es posible eliminarlo.');
+            }
+        }
+    }
+    public function cambiarEstado(Bloque $bloque){
+        try{
+            DB::beginTransaction();
+            if($bloque->status == 1){
 
-        return redirect()->route('bloque.index')->with('success', 'Bloque eliminado exitosamente');
+                $bloque->update(['status' => 0]);
+            }else{
+                $bloque->update(['status' => 1]);
+            }
+            DB::commit();
+            return redirect()->back();
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e);
+        }
     }
 }

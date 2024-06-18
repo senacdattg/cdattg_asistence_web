@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
+                        <h1>Bloques
 
 
                         </h1>
@@ -14,9 +14,9 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Bloques
                             </li>
                         </ol>
                     </div>
@@ -72,12 +72,12 @@
                                         </span>
                                     </td>
                                     <td>
-                                        {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('bloque.cambiarEstadoUser', ['bloque' => $bloque->id]) }}"
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('bloque.cambiarEstado', ['bloque' => $bloque->id]) }}"
                                             method="POST">
                                             @csrf
-                                            @method('PUT') --}}
-                                            {{-- <button type="submit" class="btn btn-success btn-sm"><i
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
@@ -94,7 +94,7 @@
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                    </td> --}}
+                                    </td>
                                     <td>
                                         <form class="formulario-eliminar btn" action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}" method="POST"
                                             class="d-inline">

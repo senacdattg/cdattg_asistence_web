@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
 
     // Ruta para bloques
     Route::resource('bloque', BloqueController::class);
+    route::put('/bloque/cambiarEstado/{bloque}', [BloqueController::class, 'cambiarEstado'])->name('bloque.cambiarEstado');
     Route::get('/cargarBloques/{sede_id}', [BloqueController::class, 'cargarBloques'])->name('bloque.cargarBloques');
 
     // Ruta para los pisos

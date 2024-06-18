@@ -22,7 +22,8 @@ class StoreBloqueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'bloque' => 'required',
+            'sede_id' => 'required',
         ];
     }
 }
