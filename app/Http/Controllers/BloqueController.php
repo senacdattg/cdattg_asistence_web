@@ -98,6 +98,7 @@ class BloqueController extends Controller
                 'bloque' => $request->bloque,
                 'sede_id' => $request->sede_id,
                 'status' => $request->status,
+                'user_edit_id' => Auth::user()->id,
             ]);
             DB::commit();
             return redirect()->route('bloque.show', ['bloque' => $bloque->id])->with('success', 'Bloque Actualizado con éxito.');
