@@ -66,7 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
-    Route::get('/cargarSedes/{municipio_id}', [SedeController::class, 'cargarSedes'])->name('sede.cargarSedes');
+    Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');
+    Route::get('/cargarSedesByRegional/{regional_id}', [SedeController::class, 'cargarSedesByRegional'])->name('sede.cargarSedesByRegional');
     Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
 
     // Ruta para bloques

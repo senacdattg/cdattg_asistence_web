@@ -6,6 +6,8 @@ use App\Models\Piso;
 use App\Http\Requests\StorePisoRequest;
 use App\Http\Requests\UpdatePisoRequest;
 use App\Models\Bloque;
+use App\Models\Regional;
+use App\Models\Sede;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +44,8 @@ class PisoController extends Controller
      */
     public function create()
     {
-        $bloques = Bloque::all();
-        return view('piso.create', compact('bloques'));
+        $regionales = Regional::where('status', 1)->get();
+        return view('piso.create', compact('regionales'));
     }
 
     /**
@@ -52,33 +54,23 @@ class PisoController extends Controller
     public function store(StorePisoRequest $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'descripcion' => 'required',
-                'bloque_id' => 'required',
-            ]);
-            // @dd($validator);
-            if ($validator->fails()) {
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
+            DB::beginTransaction();
             $piso = Piso::create([
-                'descripcion' => $request->input('descripcion'),
+                'piso' => $request->input('piso'),
                 'bloque_id' => $request->input('bloque_id'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
             ]);
+            DB::commit();
             return redirect()->route('piso.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+            DB::rollBack();
+            return redirect()->back()->with('error','Error de base de datos. Por favor, inténtelo de nuevo.');
         } catch (\Exception $e) {
             // Manejar otras excepciones
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+            DB::rollBack();
+            return redirect()->back()->with('error','Se produjo un error. Por favor, inténtelo de nuevo.');
         }
     }
 
