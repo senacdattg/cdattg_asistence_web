@@ -128,6 +128,35 @@ class AmbienteController extends Controller
      */
     public function destroy(Ambiente $ambiente)
     {
-        //
+        try{
+            DB::beginTransaction();
+                $ambiente->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Ambiente eliminado con éxito!');
+        }catch (QueryException $e){
+            DB::rollBack();
+
+            if ($e->getCode() == 23000) {
+                return redirect()->back()->with('error', 'El Ambiente esta siendo usado y no puede ser eliminado!');
+            }
+        }
+    }
+    public function cambiarEstado(Ambiente $ambiente){
+        try {
+            DB::beginTransaction();
+            if ($ambiente->status == 1) {
+                $ambiente->update([
+                    'status' => 0,
+                ]);
+            } else {
+                $ambiente->update([
+                    'status' => 1,
+                ]);
+            }
+            DB::commit();
+            return redirect()->back();
+        } catch (QueryException $e) {
+            return redirect()->back()->with('error', 'No se pudo cambiar el estado del Ambiente.');
+        }
     }
 }

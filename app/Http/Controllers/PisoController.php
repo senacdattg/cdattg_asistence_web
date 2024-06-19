@@ -116,7 +116,18 @@ class PisoController extends Controller
      */
     public function destroy(Piso $piso)
     {
-        $piso->delete();
+        try{
+            DB::beginTransaction();
+            $piso->delete();
+            DB::commit();
+            return redirect()->back()->with('success', 'Piso Eliminado exitosamente');
+        }catch(QueryException $e){
+            DB::rollBack();
+
+            if ($e->getCode() == 23000) {
+                return redirect()->back()->with('error', 'El piso esta siendo usado y no puede ser eliminado. ');
+            }
+        }
 
         return redirect()->route('piso.index')->with('success', 'Piso eliminado exitosamente');
     }
@@ -136,7 +147,7 @@ class PisoController extends Controller
             return redirect()->back();
         }catch (QueryException $e){
             DB::rollBack();
-            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque');
         }
     }
 }
