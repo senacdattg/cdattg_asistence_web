@@ -22,7 +22,8 @@ class StoreAmbienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required',
+            'piso_id' => 'required',
         ];
     }
 }
