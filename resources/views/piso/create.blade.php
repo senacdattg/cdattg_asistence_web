@@ -13,6 +13,9 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('piso.index') }}">Pisos</a>
+                            </li>
                             <li class="breadcrumb-item active">Crear Piso
                             </li>
                         </ol>
