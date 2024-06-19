@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 
 class AmbienteController extends Controller
 {
@@ -104,7 +105,7 @@ class AmbienteController extends Controller
      */
     public function show(Ambiente $ambiente)
     {
-        //
+        return view('ambiente.show', ['ambiente' => $ambiente]);
     }
 
     /**
@@ -112,7 +113,8 @@ class AmbienteController extends Controller
      */
     public function edit(Ambiente $ambiente)
     {
-        //
+        $regionales = Regional::where('status', 1)->get();
+        return view('ambiente.edit', ['regionales' => $regionales, 'ambiente' => $ambiente]);
     }
 
     /**
@@ -120,7 +122,21 @@ class AmbienteController extends Controller
      */
     public function update(UpdateAmbienteRequest $request, Ambiente $ambiente)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $ambiente->update([
+                'title' => $request->title,
+                'piso_id' => $request->piso_id,
+                'user_edit-id' => Auth::user()->id,
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            return redirect()->route('ambiente.show', ['ambiente' => $ambiente->id])->with('success', 'Ambiente Actualizado con éxito.');
+        }catch(QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Ha Ocurrido un error al actualizar el ambiente');
+
+        }
     }
 
     /**
