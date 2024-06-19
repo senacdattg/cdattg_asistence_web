@@ -6,7 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Crear Ambiente</h1>
+                        <h1>Editar Ambiente</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('ambiente.index') }}">Ambientes</a>
                             </li>
-                            <li class="breadcrumb-item active">Crear Ambientes
+                            <li class="breadcrumb-item active">Editar Ambientes
                             </li>
                         </ol>
                     </div>
@@ -33,8 +33,9 @@
                             Volver
                         </a>
                     </div>
-                    <form action="{{ route('ambiente.store') }}" method="post">
+                    <form action="{{ route('ambiente.update', ['ambiente' => $ambiente->id]) }}" method="post">
                         @csrf
+                        @method('put')
                         <div class="row">
                         <div class="col-md-6 div-regional">
                                 <label for="regional_id">Seleccione la regional</label>
@@ -57,7 +58,7 @@
 
                             <div class="col-md-6 div-bloque">
                                 <label for="bloque_id">Seleccione el bloque</label>
-                                <select name="bloque_id" id="bloque_id" class="form-control" required>
+                                <select name="bloque_id" id="bloque_id" class="form-control @error('bloque_id') is-invalid @enderror" required>
                                    <option value="" disabled selected>Selecciona un bloque</option>
                                 </select>
                             </div>
@@ -73,8 +74,15 @@
 
                             <div class="col-md-6">
                                 <label for="title">Ambiente</label>
-                                <input type="text" class="form-control" value="{{ old('title') }}"
+                                <input type="text" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $ambiente->title) }}"
                                     name="title" placeholder="Descripion del piso" required autofocus>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="status">Estado</label>
+                                <select name="status" id="" class="form-control @error('status') is-invalid @enderror">
+                                    <option value="1" {{ $ambiente->status == 1 ? 'selected' : '' }}>ACTIVO</option>
+                                    <option value="0" {{ $ambiente->status == 0 ? 'selected' : '' }}>INACTIVO</option>
+                                </select>
                             </div>
 
                         </div>
@@ -83,7 +91,7 @@
 
                         {{-- Botón de Registro --}}
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Crear Ambiente</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Actualizar Ambiente</button>
                         </div>
                     </form>
 

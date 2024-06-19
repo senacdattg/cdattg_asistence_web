@@ -11,7 +11,7 @@ class UpdateAmbienteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdateAmbienteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'piso_id' => 'required',
+            'title' => 'required',
+            'status' => 'required|boolean'
         ];
     }
 }

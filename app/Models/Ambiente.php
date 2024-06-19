@@ -24,12 +24,12 @@ class Ambiente extends Model
         return $this->belongsTo(Piso::class, 'piso_id');
     }
 
-    public function userCreated()
+    public function userCreate()
     {
         return $this->belongsTo(User::class, 'user_create_id');
     }
 
-    public function userEdited()
+    public function userEdit()
     {
         return $this->belongsTo(User::class, 'user_edit_id');
     }
