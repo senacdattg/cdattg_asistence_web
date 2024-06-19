@@ -22,7 +22,8 @@ class StorePisoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'piso' => 'required',
+            'bloque_id' => 'required',
         ];
     }
 }

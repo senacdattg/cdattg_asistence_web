@@ -6,9 +6,12 @@ use App\Models\Piso;
 use App\Http\Requests\StorePisoRequest;
 use App\Http\Requests\UpdatePisoRequest;
 use App\Models\Bloque;
+use App\Models\Regional;
+use App\Models\Sede;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class PisoController extends Controller
@@ -41,8 +44,8 @@ class PisoController extends Controller
      */
     public function create()
     {
-        $bloques = Bloque::all();
-        return view('piso.create', compact('bloques'));
+        $regionales = Regional::where('status', 1)->get();
+        return view('piso.create', compact('regionales'));
     }
 
     /**
@@ -51,33 +54,23 @@ class PisoController extends Controller
     public function store(StorePisoRequest $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'descripcion' => 'required',
-                'bloque_id' => 'required',
-            ]);
-            // @dd($validator);
-            if ($validator->fails()) {
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
+            DB::beginTransaction();
             $piso = Piso::create([
-                'descripcion' => $request->input('descripcion'),
+                'piso' => $request->input('piso'),
                 'bloque_id' => $request->input('bloque_id'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
             ]);
+            DB::commit();
             return redirect()->route('piso.index')->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+            DB::rollBack();
+            return redirect()->back()->with('error','Error de base de datos. Por favor, inténtelo de nuevo.');
         } catch (\Exception $e) {
             // Manejar otras excepciones
-            @dd($e);
-            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+            DB::rollBack();
+            return redirect()->back()->with('error','Se produjo un error. Por favor, inténtelo de nuevo.');
         }
     }
 
@@ -86,7 +79,7 @@ class PisoController extends Controller
      */
     public function show(Piso $piso)
     {
-        //
+        return view('piso.show', ['piso' => $piso]);
     }
 
     /**
@@ -94,7 +87,8 @@ class PisoController extends Controller
      */
     public function edit(Piso $piso)
     {
-        //
+        $regionales = Regional::where('status', 1)->get();
+        return view('piso.edit', ['piso' => $piso, 'regionales' => $regionales]);
     }
 
     /**
@@ -102,7 +96,19 @@ class PisoController extends Controller
      */
     public function update(UpdatePisoRequest $request, Piso $piso)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $piso->update([
+                'piso' => $request->piso,
+                'bloque_id' => $request->bloque_id,
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            return redirect()->route('piso.show', ['piso' => $piso->id])->with('success', 'Piso Actualizado con éxito!');
+        }catch(QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Ha ocurrido un error al actualizar el piso.' . $e->getMessage());
+        }
     }
 
     /**
@@ -113,5 +119,24 @@ class PisoController extends Controller
         $piso->delete();
 
         return redirect()->route('piso.index')->with('success', 'Piso eliminado exitosamente');
+    }
+    public function cambiarEstado(Piso $piso){
+        try{
+            DB::beginTransaction();
+            if ( $piso->status == 1){
+                $piso->update([
+                    'status' => 0,
+                ]);
+            }else{
+                $piso->update([
+                    'status' => 1,
+                ]);
+            }
+            DB::commit();
+            return redirect()->back();
+        }catch (QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e->getMessage());
+        }
     }
 }

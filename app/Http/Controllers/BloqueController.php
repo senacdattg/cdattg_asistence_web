@@ -138,7 +138,7 @@ class BloqueController extends Controller
             return redirect()->back();
         }catch (QueryException $e){
             DB::rollBack();
-            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e);
+            return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque' . $e->getMessage());
         }
     }
 }

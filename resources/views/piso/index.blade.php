@@ -6,17 +6,15 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
+                        <h1>Pisos
                         </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('home.index') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
+                            <li class="breadcrumb-item active">Pisos
                             </li>
                         </ol>
                     </div>
@@ -74,13 +72,13 @@
                                             @endif
                                         </span>
                                     </td>
-                                    {{-- <td> --}}
-                                        {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('piso.cambiarEstadoUser', ['piso' => $piso->id]) }}"
+                                    <td>
+                                        <form id="cambiarEstadoForm" class=" d-inline"
+                                            action="{{ route('piso.cambiarEstado', ['piso' => $piso->id]) }}"
                                             method="POST">
                                             @csrf
-                                            @method('PUT') --}}
-                                            {{-- <button type="submit" class="btn btn-success btn-sm"><i
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm"><i
                                                     class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
@@ -97,7 +95,7 @@
                                             <i class="fas fa-pencil-alt">
                                             </i>
                                         </a>
-                                    </td>--}}
+                                    </td>
                                     <td>
                                         <form class="formulario-eliminar " action="{{ route('piso.destroy', ['piso' => $piso->id]) }}" method="POST"
                                             class="d-inline">

@@ -11,7 +11,7 @@ class UpdatePisoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class UpdatePisoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'piso' => 'required',
+            'bloque_id' => 'required',
+            'status' => 'required|boolean',
         ];
     }
 }
