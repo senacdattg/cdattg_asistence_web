@@ -24,7 +24,7 @@ class UpdateFichaCaracterizacionRequest extends FormRequest
         return [
             'ficha' => 'nullable',
             'nombre_curso' => 'nullable',
-            'regional_id' => 'required',
+            // 'regional_id' => 'required',
         ];
     }
 }

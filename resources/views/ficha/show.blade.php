@@ -86,14 +86,6 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <strong>Regional:</strong>
-                                        </th>
-                                        <td>
-                                            {{ $fichaCaracterizacion->regional->regional }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
                                             <strong>Estado:</strong>
                                         </th>
                                         <td>

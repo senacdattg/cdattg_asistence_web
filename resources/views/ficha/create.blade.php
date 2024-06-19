@@ -47,7 +47,7 @@
                             </div>
                             {{-- escoger la regional --}}
 
-                            <div class="row">
+                            {{-- <div class="row">
 
                                 <div class="col-md-6 div-piso">
                                     <label for="regional_id">Regional</label>
@@ -60,7 +60,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> --}}
                             {{-- boton asistencia --}}
                             <div class="row text-center">
 

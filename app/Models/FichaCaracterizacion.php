@@ -18,7 +18,6 @@ class FichaCaracterizacion extends Model
     'dias_de_formacion',
     'user_create_id',
     'user_edit_id',
-    'regional_id',
     'status'
     ];
 
@@ -37,9 +36,6 @@ class FichaCaracterizacion extends Model
     public function userEdit()
     {
         return  $this->belongsTo(User::class, 'user_edit_id');
-    }
-    public function regional(){
-        return $this->belongsTo(Regional::class);
     }
     public function instructores()
     {

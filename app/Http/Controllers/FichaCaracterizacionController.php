@@ -57,7 +57,7 @@ class FichaCaracterizacionController extends Controller
                 "created_at" => $ficha->created_at->toIso8601String(),
                 "updated_at" => $ficha->updated_at->toIso8601String(),
                 "deleted_at" => $ficha->deleted_at,
-                "regional" => $ficha->regional->regional,
+                3
                 // "municipio" => $ficha->ambiente->piso->bloque->sede->municipio->municipio,
             ];
 
@@ -71,8 +71,8 @@ class FichaCaracterizacionController extends Controller
      */
     public function create()
     {
-        $regionales = Regional::where('status', 1)->get();
-        return view('ficha.create', compact('regionales'));
+        // $regionales = Regional::where('status', 1)->get();
+        return view('ficha.create');
 
     }
     public function apiStore(){
@@ -94,7 +94,6 @@ class FichaCaracterizacionController extends Controller
                 'nombre_curso' => $request->input('nombre_curso'),
                 'user_create_id' => Auth::user()->id,
                 'user_edit_id' => Auth::user()->id,
-                'regional_id' => $request->input('regional_id'),
                 'status' => 1,
             ]);
             DB::commit();
@@ -139,7 +138,6 @@ class FichaCaracterizacionController extends Controller
             ],
             "created_at" => $fichaCaracterizacion->created_at,
             "updated_at" => $fichaCaracterizacion->updated_at,
-            "ambiente" => $fichaCaracterizacion->ambiente->title,
 
 
         ], 200);
@@ -151,8 +149,8 @@ class FichaCaracterizacionController extends Controller
     public function edit(FichaCaracterizacion $fichaCaracterizacion)
     {
         $instructores = Instructor::all();
-        $regionales = Regional::where('status', 1)->get();
-        return view('ficha.edit', ['fichaCaracterizacion' => $fichaCaracterizacion, 'regionales' => $regionales, 'instructores' => $instructores]);
+        // $regionales = Regional::where('status', 1)->get();
+        return view('ficha.edit', ['fichaCaracterizacion' => $fichaCaracterizacion,  'instructores' => $instructores]);
     }
 
     /**
@@ -170,21 +168,20 @@ class FichaCaracterizacionController extends Controller
                 'ficha' => $request->input('ficha'),
                 'nombre_curso' => $request->input('nombre_curso'),
                 'user_edit_id' => Auth::user()->id,
-                'regional_id' => $request->input('regional_id'),
-                'status' => 1,
+                'status' => $request->status,
             ]);
             DB::commit();
             return redirect()->route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $fichaCaracterizacion->id])->with('success', '¡Registro Exitoso!');
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
-            @dd($e);
+            // @dd($e);
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Error de base de datos. Por favor, inténtelo de nuevo.']);
+            return redirect()->back()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.');
         } catch (\Exception $e) {
             // Manejar otras excepciones
-            @dd($e);
+            // @dd($e);
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
+            return redirect()->back()->with('error', 'Se produjo un error. Por favor, inténtelo de nuevo.');
         }
     }
     public function updateinstructoresFichaCaracterizacion(Request $request){
@@ -242,7 +239,7 @@ class FichaCaracterizacionController extends Controller
             DB::rollBack();
             if ($e->getCode() == 23000) {
 
-                return redirect()->back()->with('error', 'El fichaCaracterizacion se encuentra en uso en estos momentos, no se puede eliminar');
+                return redirect()->back()->with('error', 'la Ficha de Caracteriación se encuentra en uso en estos momentos, no se puede eliminar');
             }
         }
     }

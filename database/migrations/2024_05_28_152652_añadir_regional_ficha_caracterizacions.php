@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('ficha_caracterizacions', function (Blueprint $table) {
-            $table->foreignId('regional_id')->constrained('regionals');
             $table->boolean('status')->default(1);
         });
     }
