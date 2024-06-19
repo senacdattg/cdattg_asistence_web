@@ -82,6 +82,7 @@ Route::middleware('auth')->group(function () {
 
     // Ruta para ambientes
     Route::resource('ambiente', AmbienteController::class);
+    Route::put('/ambiente/cambiarEstado/{ambiente}', [AmbienteController::class, 'cambiarEstado'])->name('ambiente.cambiarEstado');
     Route::get('/cargarAmbientes/{piso_id}', [AmbienteController::class, 'cargarAmbientes'])->name('ambiente.cargarAmbientes');
 
 
