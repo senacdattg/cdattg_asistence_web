@@ -96,7 +96,19 @@ class PisoController extends Controller
      */
     public function update(UpdatePisoRequest $request, Piso $piso)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $piso->update([
+                'piso' => $request->piso,
+                'bloque_id' => $request->bloque_id,
+                'status' => $request->status,
+            ]);
+            DB::commit();
+            return redirect()->route('piso.show', ['piso' => $piso->id])->with('success', 'Piso Actualizado con éxito!');
+        }catch(QueryException $e){
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Ha ocurrido un error al actualizar el piso.' . $e->getMessage());
+        }
     }
 
     /**
