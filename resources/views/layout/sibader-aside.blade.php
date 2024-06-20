@@ -27,32 +27,30 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 @if (auth()->user()->hasRole(['ADMINISTRADOR', 'SUPER ADMINISTRADOR']))
-
-
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Panel de control
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Panel de control
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
+                                <a href="{{ route('parametro.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Parametros</p>
                                 </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="{{ route('parametro.index') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Parametros</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('tema.index') }}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Temas</p>
-                                        </a>
-                                    </li>
-
-                                </ul>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('tema.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Temas</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                     {{-- gestion de regionales --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link">
@@ -235,28 +233,50 @@
                         </ul>
                     </li>
                 @endif
-                @if(auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <p>
-                            Asistencia
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('fichaCaracterizacion.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Asistencia</p>
-                            </a>
-                        </li>
+                @if (auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <p>
+                                Asistencia
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('fichaCaracterizacion.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Asistencia</p>
+                                </a>
+                            </li>
 
 
                         </ul>
                     </li>
                 @endif
+                {{-- @haspermission() --}}
+                @can('ASIGNAR PERMISOS')
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('permiso.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Asignar permisos</p>
+                            </a>
+                        </li>
 
+
+                    </ul>
+                @endcan
+                {{-- <ul class="nav nav-treeview"> --}}
+                    <li class="nav-item">
+                        <a href="{{ route('permiso.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Asignar permisos</p>
+                        </a>
+                    </li>
+
+
+                {{-- </ul> --}}
         </nav>
 
     </div>

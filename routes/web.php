@@ -20,6 +20,7 @@ use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
@@ -38,12 +39,12 @@ use App\Http\Middleware\CorsMiddleware;
 Route::get('/apis', function () {
     return view('apis');
 });
-Route::resource('home', HomeController::class);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 Route::middleware('auth')->group(function () {
 
+    Route::resource('home', HomeController::class);
     // Rutas para persona
     Route::resource('persona', PersonaController::class);
     Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
@@ -93,13 +94,18 @@ Route::middleware('auth')->group(function () {
 
 
     // rutas para temas
-    Route::resource('tema',TemaController::class);
+    Route::resource('tema', TemaController::class);
     Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
     Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
     Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);
     Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
+    // rutas para los permisos
+    route::middleware('permission: ASIGNAR PERMISOS')->group(function () {
+
+        route::resource('permiso', PermisoController::class);
+    });
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
 

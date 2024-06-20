@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PermisoController extends Controller
@@ -11,7 +12,8 @@ class PermisoController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::where('status', 1)->paginate(10);
+        return view('permisos.index', ['users' => $users]);
     }
 
     /**
