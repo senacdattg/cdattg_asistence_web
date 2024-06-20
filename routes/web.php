@@ -102,9 +102,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('regional', RegionalController::class);
     Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
     // rutas para los permisos
-    route::middleware('permission: ASIGNAR PERMISOS')->group(function () {
+    route::middleware('can:ASIGNAR PERMISOS')->group(function () {
 
         route::resource('permiso', PermisoController::class);
+        route::get('/showpermiso/{user}', [PermisoController::class, 'showUserPermiso'])->name('permiso.showUserPermiso');
     });
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');

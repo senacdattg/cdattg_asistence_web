@@ -16,19 +16,27 @@ class UsersTableSeeder extends Seeder
     public function run(): void
     {
 
-        $admin = User::create([
-            'email' => 'admin@admin.com',
+        $superAdmin = User::create([
+            'email' => 'superAdmin@superAdmin.com',
             'password' => Hash::make('123456'),
             'status' => 1,
             'persona_id' => 1,
         ]);
-        $admin->assignRole('SUPER ADMINISTRADOR');
+        $superAdmin->assignRole('SUPER ADMINISTRADOR');
+
+        $admin = User::create([
+            'email' => 'admin@admin.com',
+            'password' => Hash::make('123456'),
+            'status' => 1,
+            'persona_id' => 2,
+        ]);
+        $admin->assignRole('ADMINISTRADOR');
 
         $instructor = User::create([
             'email' => 'instructor@instructor.com',
             'password' => Hash::make('123456'),
             'status' => 1,
-            'persona_id' => 2,
+            'persona_id' => 3,
         ]);
         $instructor->assignRole('INSTRUCTOR');
 

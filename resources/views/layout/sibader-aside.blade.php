@@ -254,29 +254,16 @@
                         </ul>
                     </li>
                 @endif
-                {{-- @haspermission() --}}
-                @can('ASIGNAR PERMISOS')
-                    <ul class="nav nav-treeview">
+                @haspermission('ASIGNAR PERMISOS')
+                {{-- @can('ASIGNAR PERMISOS') --}}
                         <li class="nav-item">
                             <a href="{{ route('permiso.index') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Asignar permisos</p>
                             </a>
                         </li>
-
-
-                    </ul>
-                @endcan
-                {{-- <ul class="nav nav-treeview"> --}}
-                    <li class="nav-item">
-                        <a href="{{ route('permiso.index') }}" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Asignar permisos</p>
-                        </a>
-                    </li>
-
-
-                {{-- </ul> --}}
+                {{-- @endcan --}}
+                @endhaspermission
         </nav>
 
     </div>

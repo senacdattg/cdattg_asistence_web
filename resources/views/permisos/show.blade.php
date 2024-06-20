@@ -14,7 +14,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Inicio</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('permission.index') }}">Usuarios</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('permiso.index') }}">Usuarios</a></li>
                             <li class="breadcrumb-item active">Permisos</li>
                         </ol>
                     </div>
@@ -26,7 +26,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('permission.index') }}">
+                    <a class="btn btn-warning btn-sm" href="{{ route('permiso.index') }}">
                         <i class="fas fa-arrow-left"></i>
                         </i>
                         Volver
@@ -37,11 +37,11 @@
                     <div class="row">
                         <div class="col-md-3">
 
-                            <div class="card card-primary card-outline">
+                            <div class="card card-primary card-outline carne">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
                                         <img class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('dist/img/LogoSena.png') }}" alt="User profile picture">
+                                            src="{{ asset('dist/img/LogoSena.jpeg') }}" alt="User profile picture">
                                     </div>
                                     <h3 class="profile-username text-center">
                                         {{ $user->persona->primer_nombre }}
@@ -49,12 +49,12 @@
                                         {{ $user->persona->primer_apellido }}
                                         {{ $user->persona->segundo_apellido }}
                                     </h3>
-                                    <p class="h4 text-muted text-center">Información básica</p>
+                                    <p class="h4 text-muted text-center">Información Básica</p>
 
-                                    <p class="text-muted "><strong>Tipo de documento:</strong>
+                                    <p class="text-muted"><strong>Tipo de documento:</strong>
                                         {{ $user->persona->tipoDocumento->name }}</p>
 
-                                    <p class="text-muted "><strong>Número de documento:</strong>
+                                    <p class="text-muted "><strong>Numero de documento:</strong>
                                         {{ $user->persona->numero_documento }}</p>
 
                                     <p class="text-muted "><strong>Fecha de nacimiento:</strong>
@@ -62,15 +62,16 @@
 
                                     <p class="text-muted "><strong>Correo:</strong> {{ $user->persona->email }}</p>
 
-                                    <p class="text-muted "><strong>Fecha de edad:</strong> {{ $user->persona->edad }}</p>
+                                    <p class="text-muted "><strong>Fecha de edad:</strong> {{ $user->persona->edad }}
+                                    </p>
 
-                                    <p class="text-muted "><strong>Genero: </strong>{{ $user->persona->tipoGenero->name }}
+                                    <p class="text-muted "><strong>Genero:</strong>
+                                        {{ $user->persona->tipoGenero->name }}
                                     </p>
 
                                     <p class="text-muted "><strong>estado:</strong>
                                         <span
                                             class="badge badge-{{ $user->persona->user->status === 1 ? 'success' : 'danger' }}">
-                                            {{-- {{ $preRegistro->user->status }} --}}
                                             @if ($user->persona->user->status === 1)
                                                 ACTIVO
                                             @else
@@ -78,8 +79,12 @@
                                             @endif
                                         </span>
                                     </p>
-                                </div>
+                                    @if ($user->persona->instructor && $user->persona->instructor->regional)
+                                        <p class="text-muted"> <strong>Regional: </strong>
+                                            {{ $user->persona->instructor->regional->regional }}</p>
+                                    @endif
 
+                                </div>
                             </div>
 
                         </div>
@@ -106,24 +111,23 @@
                                             <h4><strong>Permisos de usuario</strong></h4>
                                         </div>
                                         {{-- <div class="box1 ">  --}}
-                                            <form action="{{ route('permission.store') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" value="{{ $user->id }}" name="user_id">
-                                                <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_"
-                                                    name="permisos[]" style="height: 120px;">
-                                                    @forelse ($permisos as $permiso)
-                                                        <option value="{{ $permiso->name }}"
-                                                            @if($user->hasAnyPermission([$permiso]))
-                                                                selected
-                                                            @endif
-                                                            >{{ $permiso->name }}</option>
-                                                    @empty
-                                                    @endforelse
-                                                </select>
-                                                <br>
+                                        <form action="{{ route('permiso.store') }}" method="post">
+                                            @csrf
+                                            <input type="hidden" value="{{ $user->id }}" name="user_id">
+                                            <select multiple="multiple" id="bootstrap-duallistbox-nonselected-list_"
+                                                name="permisos[]" style="height: 120px;">
+                                                @forelse ($permisos as $permiso)
+                                                    <option value="{{ $permiso->name }}"
+                                                        @if ($user->hasAnyPermission([$permiso])) selected @endif>
+                                                        {{ $permiso->name }}</option>
+                                                @empty
+                                                @endforelse
+                                            </select>
+                                            <br>
 
-                                                <button type="submit" class="btn btn-success btn-sm-3">Asignar permisos</button>
-                                            </form>
+                                            <button type="submit" class="btn btn-success btn-sm-3">Asignar
+                                                permisos</button>
+                                        </form>
                                         {{-- </div> --}}
                                         {{-- <div class="box2 ">
 
@@ -141,7 +145,7 @@
         </section>
     </div>
 @endsection
-@section('scripts')
+@section('script')
     <script src="{{ asset('plugins/dual-listbox/js/jquery.bootstrap-duallistbox.min.js') }}"></script>
     <script>
         var demo1 = $('select[name="permisos[]"]').bootstrapDualListbox();
