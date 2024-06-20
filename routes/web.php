@@ -90,7 +90,10 @@ Route::middleware('auth')->group(function () {
 
     // rutas para parametros
     Route::resource('parametro', ParametroController::class);
-    Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+    route::middleware('can:EDITAR PARAMETRO')->group( function(){
+
+        Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+    });
 
 
     // rutas para temas
