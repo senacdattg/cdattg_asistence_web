@@ -51,8 +51,37 @@ class PermisoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $permisosUser = $request->input('permisos', []);
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+        $roles = $user->roles->pluck('name'); // Obtener los nombres de los roles del usuario
+        $instructorNecesario = false;
+        $instructorRole = false;
+
+        foreach ($permisosUser as $permiso) {
+            if ($permiso == 'TOMAR ASISTENCIA') {
+                $instructorNecesario = true;
+                break;
+            }
+        }
+
+        if ($instructorNecesario) {
+            if ($roles->contains('INSTRUCTOR')) {
+                $instructorRole = true;
+            }
+
+            if ($instructorRole) {
+                $user->syncPermissions($permisosUser);
+                return redirect()->route('permiso.index')->with('success', 'Permisos asignados con éxito');
+            } else {
+                return redirect()->back()->with('error', 'Para asignar el permiso TOMAR ASISTENCIA el usuario debe tener el Rol de instructor');
+            }
+        } else {
+            $user->syncPermissions($permisosUser);
+            return redirect()->route('permiso.index')->with('success', 'Permisos asignados con éxito');
+        }
     }
+
 
     /**
      * Display the specified resource.

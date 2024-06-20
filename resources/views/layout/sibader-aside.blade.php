@@ -233,7 +233,7 @@
                         </ul>
                     </li>
                 @endif
-                @if (auth()->user()->hasRole(['INSTRUCTOR', 'SUPER ADMINISTRADOR']))
+                @if (auth()->user()->hasRole(['INSTRUCTOR']))
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-users"></i>
