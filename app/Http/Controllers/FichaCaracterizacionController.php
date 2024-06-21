@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\DB;
 
 class FichaCaracterizacionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER FICHA DE CARACTERIZACION')->only('index');
+        $this->middleware('can:VER FICHA DE CARACTERIZACION')->only('show');
+        $this->middleware('can:CREAR FICHA DE CARACTERIZACION')->only(['create', 'store']);
+        $this->middleware('can:EDITAR FICHA DE CARACTERIZACION')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR FICHA DE CARACTERIZACION')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

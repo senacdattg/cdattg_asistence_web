@@ -245,6 +245,8 @@
                     </li>
                 @endcan
                 {{-- administrar fichas de caracrerización --}}
+                @can('VER FICHA DE CARACTERIZACION')
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="fas fa-users"></i>
@@ -260,16 +262,18 @@
                                 <p>Fichas de caracterización</p>
                             </a>
                         </li>
+                        @can('CREAR FICHA DE CARACTERIZACION')
+
                         <li class="nav-item">
                             <a href="{{ route('fichaCaracterizacion.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear Ficha</p>
                             </a>
                         </li>
-
-
+                        @endcan
                     </ul>
                 </li>
+                @endcan
                 {{-- @endif --}}
                 @if (auth()->user()->hasRole(['INSTRUCTOR']))
                     <li class="nav-item">

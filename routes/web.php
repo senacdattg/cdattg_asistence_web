@@ -65,8 +65,10 @@ Route::middleware('auth')->group(function () {
 
     // Rutas oara fucha de caracterizacion
     Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
-    Route::post('updateInstructoresFichaCaracterizacion', [FichaCaracterizacionController::class, 'updateinstructoresFichaCaracterizacion'])->name('fichaCaracterizacion.updateinstructoresFichaCaracterizacion');
-    Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
+    route::middleware('can:EDITAR FICHA DE CARACTERIZACION')->group(function () {
+        Route::post('updateInstructoresFichaCaracterizacion', [FichaCaracterizacionController::class, 'updateinstructoresFichaCaracterizacion'])->name('fichaCaracterizacion.updateinstructoresFichaCaracterizacion');
+        Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
+    });
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');

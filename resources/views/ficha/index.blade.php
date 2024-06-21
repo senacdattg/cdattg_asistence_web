@@ -23,13 +23,14 @@
 
         <section class="content">
             <div class="card">
+                @can('CREAR FICHA DE CARACTERIZACION')
+                    <div class="card-body">
+                        <a href="{{ route('fichaCaracterizacion.create') }}" class="btn btn-success bnt-sm-2"><i
+                                class="fas fa-clipboard-list"></i></a>
 
-                <div class="card-body">
-                    <a href="{{ route('fichaCaracterizacion.create') }}" class="btn btn-success bnt-sm-2"><i
-                            class="fas fa-clipboard-list"></i></a>
-
-                </div>
-               <div class="card-body p-0">
+                    </div>
+                @endcan
+                <div class="card-body p-0">
                     <table class="table table-responsive">
                         <thead>
                             <tr>
@@ -72,42 +73,51 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $ficha->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $ficha->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                    @can('EDITAR FICHA DE CARACTERIZACION')
+                                        <td>
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $ficha->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can('VER FICHA DE CARACTERIZACION')
+                                        <td>
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('fichaCaracterizacion.show', ['fichaCaracterizacion' => $ficha->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $ficha->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        
-                                        <form class="formulario-eliminar btn" action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $ficha->id]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('EDITAR FICHA DE CARACTERIZACION')
+                                        <td>
+                                            <a class="btn btn-info btn-sm"
+                                                href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $ficha->id]) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('ELIMINAR FICHA DE CARACTERIZACION')
+                                        <td>
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                            <form class="formulario-eliminar btn"
+                                                action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $ficha->id]) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </tr>
 
                             @empty
