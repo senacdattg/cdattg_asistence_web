@@ -22,7 +22,7 @@ class ParametroController extends Controller
         $this->middleware('can:VER PARAMETRO')->only('index');
         $this->middleware('can:VER PARAMETRO')->only('show');
         $this->middleware('can:CREAR PARAMETRO')->only(['create', 'store']);
-        $this->middleware('can:CREAR PARAMETRO')->only(['edit', 'update']);
+        $this->middleware('can:EDITAR PARAMETRO')->only(['edit', 'update']);
         $this->middleware('can:ELIMINAR PARAMETRO')->only('destroy');
     }
 

@@ -45,7 +45,7 @@
                                             </p>
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <th>
                                             <strong>Sede:</strong>
                                         </th>
@@ -76,8 +76,7 @@
                                             <strong>Estado:</strong>
                                         </th>
                                         <td>
-                                            <span
-                                                class="badge badge-{{ $bloque->status === 1 ? 'success' : 'danger' }}">
+                                            <span class="badge badge-{{ $bloque->status === 1 ? 'success' : 'danger' }}">
                                                 @if ($bloque->status === 1)
                                                     ACTIVO
                                                 @else
@@ -96,29 +95,29 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR BLOQUE')
+                        <form id="cambiarEstadoForm" class=" d-inline"
+                            action="{{ route('bloque.cambiarEstado', ['bloque' => $bloque->id]) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                        </form>
+                        <a class="btn btn-info btn-sm" href="{{ route('bloque.edit', ['bloque' => $bloque->id]) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                        </a>
+                    @endcan
+                    @can('ELIMINAR BLOQUE')
+                        <form class="formulario-eliminar btn" action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}"
+                            method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
 
-                    <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('bloque.cambiarEstado', ['bloque' => $bloque->id]) }}"
-                        method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('bloque.edit', ['bloque' => $bloque->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn"
-                        action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}"
-                        method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
 
                 </div>
             </div>

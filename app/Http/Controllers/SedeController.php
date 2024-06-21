@@ -22,7 +22,7 @@ class SedeController extends Controller
         $this->middleware('can:VER SEDE')->only('index');
         $this->middleware('can:VER SEDE')->only('show');
         $this->middleware('can:CREAR SEDE')->only(['create', 'store']);
-        $this->middleware('can:CREAR SEDE')->only(['edit', 'update']);
+        $this->middleware('can:EDITAR SEDE')->only(['edit', 'update']);
         $this->middleware('can:ELIMINAR SEDE')->only('destroy');
     }
     /**

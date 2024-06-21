@@ -23,7 +23,7 @@ class TemaController extends Controller
         $this->middleware('can:VER TEMA')->only('index');
         $this->middleware('can:VER TEMA')->only('show');
         $this->middleware('can:CREAR TEMA')->only(['create', 'store']);
-        $this->middleware('can:CREAR TEMA')->only(['edit', 'update']);
+        $this->middleware('can:EDITAR TEMA')->only(['edit', 'update']);
         $this->middleware('can:ELIMINAR TEMA')->only('destroy');
     }
     public function index()
