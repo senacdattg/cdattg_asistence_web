@@ -1,4 +1,6 @@
 @extends('layout.master-layout')
+@section('css')
+@endsection
 @section('content')
     <div class="content-wrapper">
 
@@ -6,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}</h1>
+                        <h1>Perfil</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            {{-- <li class="breadcrumb-item"><a href="{{ route('/home') }}">Inicio</a></li> --}}
-                            <li class="breadcrumb-item active">{{ request()->path() }}</li>
+                            <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Inicio</a></li>
+                            <li class="breadcrumb-item active">Perfil</li>
                         </ol>
                     </div>
                 </div>
@@ -21,94 +23,104 @@
         <section class="content">
 
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">{{ request()->path() }}</h3>
-                    {{-- <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div> --}}
-                </div>
+
                 <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('persona.index') }}">
+                    <a class="btn btn-warning btn-sm" href="{{ route('instructor.index') }}">
                         <i class="fas fa-arrow-left"></i>
                         </i>
                         Volver
                     </a>
                 </div>
                 {{-- <div class="container"> --}}
-                <div class="container-fluid">
+                <div class="container-fluid ">
                     <div class="row">
                         <div class="col-md-3">
 
-                            <div class="card card-primary card-outline">
+                            <div class="card card-primary card-outline carne">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
                                         <img class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('dist/img/LogoSena.png') }}" alt="User profile picture">
+                                            src="{{ asset('dist/img/LogoSena.jpeg') }}" alt="User profile picture">
                                     </div>
-                                    <h3 class="profile-username text-center">{{ $persona->primer_nombre }}
+                                    <h3 class="profile-username text-center">
+                                        {{ $persona->primer_nombre }}
                                         {{ $persona->segundo_nombre }}
-                                        {{ $persona->primer_apellido }} {{ $persona->segundo_apellido }}</h3>
-                                    <p class="text-muted text-center">{{ $persona->cargo }}</p>
-                                    <h1>Informacion basica</h1>
+                                        {{ $persona->primer_apellido }}
+                                        {{ $persona->segundo_apellido }}
+                                    </h3>
+                                    <p class="h4 text-muted text-center">Información Básica</p>
 
-                                    <p class="text-muted text-center">Tipo de documento:
-                                        {{ $persona->tipo_documento }}</p>
+                                    <p class="text-muted"><strong>Tipo de documento:</strong>
+                                        {{ $persona->tipoDocumento->name }}</p>
 
-                                    <p class="text-muted text-center">Numero de documento:
+                                    <p class="text-muted "><strong>Numero de documento:</strong>
                                         {{ $persona->numero_documento }}</p>
 
-                                    <p class="text-muted text-center">Fecha de nacimiento:
+                                    <p class="text-muted "><strong>Fecha de nacimiento:</strong>
                                         {{ $persona->fecha_de_nacimiento }}</p>
 
-                                    <p class="text-muted text-center">Correo: {{ $persona->email }}</p>
+                                    <p class="text-muted "><strong>Correo:</strong> {{ $persona->email }}</p>
 
-                                    <p class="text-muted text-center">Fecha de edad: {{ $persona->edad }}</p>
+                                    <p class="text-muted "><strong>Fecha de edad:</strong> {{ $persona->edad }}
+                                    </p>
 
-                                    <p class="text-muted text-center">Genero: {{ $persona->genero }}</p>
+                                    <p class="text-muted "><strong>Genero:</strong>
+                                        {{ $persona->tipoGenero->name }}
+                                    </p>
 
-                                    <p class="text-muted text-center">estado: {{ $persona->user->status }}</p>
+                                    <p class="text-muted "><strong>estado:</strong>
+                                        <span
+                                            class="badge badge-{{ $persona->user->status === 1 ? 'success' : 'danger' }}">
+                                            @if ($persona->user->status === 1)
+                                                ACTIVO
+                                            @else
+                                                INACTIVO
+                                            @endif
+                                        </span>
+                                    </p>
+                                    @if ($persona->instructor)
+                                        <p class="text-muted"> <strong>Regional: </strong>
+                                            {{ $persona->instructor->regional->regional }}</p>
+                                    @endif
                                 </div>
-
                             </div>
 
                         </div>
-
+                        {{-- mas información --}}
                         <div class="col-md-9">
                             <div class="card">
-                                <div class="card-header p-2">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="card" style="width: 18rem;">
-                                                <div class="card-body">
-                                                    <h1>Fichas</h1>
-                                                    <hr>
-                                                    <p>Se podria añadir las fichas aqui</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="card" style="width: 18rem;">
-                                                <div class="card-body">
-                                                    <h1>Pendientes</h1>
-                                                    <hr>
-                                                    <p>Aqui la ista de csv pendientes</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="card-body">
                                     <div class="card">
-                                        bueno, hay que considerar, talvez los vehiculos del pre-registro
+                                        <div class="card-body">
+                                            @if ($persona->instructor)
+                                                <caption><strong>Fichas de caracterización</strong></caption>
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Nombre de curso</th>
+                                                            <th scope="col">Ficha de caracterización</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php $i = 1; ?>
+
+                                                        @foreach ($persona->instructor->fichas as $fichaCaracterizacion)
+                                                            <tr>
+                                                                <td>{{ $i++ }}</td>
+                                                                <td>
+                                                                    {{ $fichaCaracterizacion->nombre_curso }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ $fichaCaracterizacion->ficha }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            @endif
+                                        </div>
                                     </div>
-
-
-
                                 </div>
                             </div>
 
@@ -116,32 +128,14 @@
 
                     </div>
 
-                    {{-- </div> --}}
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
-
-                    <a class="btn btn-info btn-sm" href="{{ route('persona.edit', ['persona' => $persona->id]) }}">
+                    <a class="btn btn-info btn-sm"
+                        href="{{ route('persona.edit', ['persona' => $persona->id]) }}">
                         <i class="fas fa-pencil-alt">
                         </i>
                     </a>
-                    {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('parametros.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <form action="{{ route('parametros.destroy', ['parametro' => $parametro->id]) }}" method="POST"
-                        class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm"
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form> --}}
-
                 </div>
             </div>
         </section>
