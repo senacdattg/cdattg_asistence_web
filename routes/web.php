@@ -47,7 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('home', HomeController::class);
     // Rutas para persona
     Route::resource('persona', PersonaController::class);
-    Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+    route::middleware('can:EDITAR INSTRUCTOR')->group(function () {
+        Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+    });
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);

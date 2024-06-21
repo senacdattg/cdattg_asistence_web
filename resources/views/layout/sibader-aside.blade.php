@@ -34,7 +34,6 @@
                 @endphp
 
                 @if ($canVerParametro || $canVerTema)
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -67,186 +66,184 @@
                 {{-- gestion de regionales --}}
                 @can('VER REGIONAL')
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Administrar Regionales
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('regional.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Regionales</p>
-                            </a>
-                        </li>
-                        @can('CREAR REGIONAL')
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Administrar Regionales
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('regional.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Regionales</p>
+                                </a>
+                            </li>
+                            @can('CREAR REGIONAL')
+                                <li class="nav-item">
+                                    <a href="{{ route('regional.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear regional</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        <li class="nav-item">
-                            <a href="{{ route('regional.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear regional</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 @endcan
                 {{-- gestion de sedes --}}
                 @can('VER SEDE')
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Administrar Sedes
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('sede.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Sedes</p>
-                            </a>
-                        </li>
-                        @can('CREAR SEDE')
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Administrar Sedes
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('sede.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Sedes</p>
+                                </a>
+                            </li>
+                            @can('CREAR SEDE')
+                                <li class="nav-item">
+                                    <a href="{{ route('sede.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear sede</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        <li class="nav-item">
-                            <a href="{{ route('sede.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear sede</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 @endcan
 
                 {{-- Administrad bloques --}}
                 @can('VER BLOQUE')
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Administrar Bloques
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('bloque.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Bloques</p>
-                            </a>
-                        </li>
-                        @can('CREAR BLOQUE')
-
-                        <li class="nav-item">
-                            <a href="{{ route('bloque.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear bloque</p>
-                            </a>
-                        </li>
-                        @endcan
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Administrar Bloques
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('bloque.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Bloques</p>
+                                </a>
+                            </li>
+                            @can('CREAR BLOQUE')
+                                <li class="nav-item">
+                                    <a href="{{ route('bloque.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear bloque</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
                 @endcan
 
                 {{-- Administrad bloques --}}
                 @can('VER PISO')
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Administrar pisos
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('piso.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>pisos</p>
-                            </a>
-                        </li>
-                        @can('CREAR PISO')
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Administrar pisos
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('piso.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>pisos</p>
+                                </a>
+                            </li>
+                            @can('CREAR PISO')
+                                <li class="nav-item">
+                                    <a href="{{ route('piso.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear piso</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        <li class="nav-item">
-                            <a href="{{ route('piso.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear piso</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 @endcan
 
                 {{-- Administrad bloques --}}
                 @can('VER AMBIENTE')
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Administrar ambientes
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('ambiente.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>ambientes</p>
-                            </a>
-                        </li>
-                        @can('CREAR AMBIENTE')
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Administrar ambientes
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('ambiente.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>ambientes</p>
+                                </a>
+                            </li>
+                            @can('CREAR AMBIENTE')
+                                <li class="nav-item">
+                                    <a href="{{ route('ambiente.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear ambiente</p>
+                                    </a>
+                                </li>
+                            @endcan
 
-                        <li class="nav-item">
-                            <a href="{{ route('ambiente.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear ambiente</p>
-                            </a>
-                        </li>
-                        @endcan
-
-                    </ul>
-                </li>
+                        </ul>
+                    </li>
                 @endcan
 
                 {{-- administrar instructores --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users"></i>
-                        <p>
-                            Administrar instructores
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('instructor.index') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Instructores</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('instructor.create') }}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Crear Instructor</p>
-                            </a>
-                        </li>
+                @can('VER INSTRUCTOR')
 
-
-                    </ul>
-                </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <p>
+                                Administrar instructores
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('instructor.index') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Instructores</p>
+                                </a>
+                            </li>
+                            @can('CREAR INSTRUCTOR')
+                                <li class="nav-item">
+                                    <a href="{{ route('instructor.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear Instructor</p>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endcan
                 {{-- administrar fichas de caracrerización --}}
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -305,8 +302,8 @@
                     </li>
                     {{-- @endcan --}}
                 @endhaspermission
-    </nav>
+        </nav>
 
-</div>
+    </div>
 
 </aside>

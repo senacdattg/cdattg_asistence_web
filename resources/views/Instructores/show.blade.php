@@ -129,27 +129,32 @@
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
 
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('persona.edit', ['persona' => $instructor->persona->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    {{-- <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('parametros.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <form action="{{ route('parametros.destroy', ['parametro' => $parametro->id]) }}" method="POST"
-                        class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    @can('EDITAR INSTRUCTOR')
+                        <a class="btn btn-info btn-sm"
+                            href="{{ route('instructor.edit', ['instructor' => $instructor->id]) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                        </a>
+                        <form id="cambiarEstadoForm" class=" d-inline"
+                            action="{{ route('persona.cambiarEstadoUser', ['persona' => $instructor->persona->user->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                        </form>
+                    @endcan
+                    @can('ELIMINAR INSTRUCTOR')
+                        <form class="formulario-eliminar btn"
+                            action="{{ route('instructor.destroy', ['instructor' => $instructor->id]) }}" method="POST"
+                            class="d-inline">
+                            @csrf
+                            @method('DELETE')
 
-                        <button type="submit" class="btn btn-danger btn-sm"
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form> --}}
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
 
                 </div>
             </div>
