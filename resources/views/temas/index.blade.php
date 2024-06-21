@@ -82,34 +82,46 @@
                                                 @endforelse
                                             </td>
                                             <td class="project-actions text-right">
+                                                @can('EDITAR TEMA')
+
                                                 <form id="cambiarEstadoForm" class=" d-inline"
-                                                    action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" class="btn btn-success btn-sm"><i
-                                                            class="fas fa-sync"></i></button>
+                                                action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                    class="fas fa-sync"></i></button>
                                                 </form>
+                                                @endcan
+                                                @can('VER TEMA')
+
                                                 <a class="btn btn-warning btn-sm"
-                                                    href="{{ route('tema.show', ['tema' => $tema->id]) }}">
-                                                    <i class="fas fa-eye"></i>
+                                                href="{{ route('tema.show', ['tema' => $tema->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                                </a>
-                                                <a class="btn btn-info btn-sm"
-                                                    href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
-                                                    <i class="fas fa-pencil-alt">
-                                                    </i>
-                                                </a>
-                                                <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
-                                                    method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
+                                            </a>
+                                            @endcan
+                                            @can('EDITAR TEMA')
 
-                                                    <button type="submit" class="btn btn-danger btn-sm">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                            <a class="btn btn-info btn-sm"
+                                            href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
+                                            <i class="fas fa-pencil-alt">
+                                            </i>
+                                        </a>
+                                        @endcan
+                                        @can('ELIMINAR TEMA')
+
+                                        <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
+                                            method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                        @endcan
+                                    </td>
                                         </tr>
                                     @empty
                                         <tr>

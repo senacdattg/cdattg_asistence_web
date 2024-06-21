@@ -122,14 +122,17 @@
                                             </span>
                                         </td>
                                         <td>
+                                            @can('EDITAR TEMA')
+
                                             <form id="cambiarEstadoForm" class=" d-inline"
-                                                action="{{ route('tema.cambiarEstadoParametro', ['parametro' => $parametro->id]) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('PUT')
-                                                <button type="submit" class="btn btn-success btn-sm"><i
-                                                        class="fas fa-sync"></i></button>
+                                            action="{{ route('tema.cambiarEstadoParametro', ['parametro' => $parametro->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm"><i
+                                                class="fas fa-sync"></i></button>
                                             </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @empty
@@ -140,25 +143,30 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR TEMA')
 
                     <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm" href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                </form>
+                <a class="btn btn-info btn-sm" href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
+                    <i class="fas fa-pencil-alt">
+                    </i>
+                </a>
+                @endcan
+                @can('ELIMINAR TEMA')
 
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+                @endcan
 
                 </div>
             </div>
