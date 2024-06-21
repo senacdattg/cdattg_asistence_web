@@ -96,26 +96,31 @@
                     </div>
                 </div>
                  <div class="mb-3 text-center">
+                    @can('EDITAR REGIONAL')
 
                     <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('regional.cambiarEstado', ['regional' => $regional->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm" href="{{ route('regional.edit', ['regional' => $regional->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn" action="{{ route('regional.destroy', ['regional' => $regional->id]) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    action="{{ route('regional.cambiarEstado', ['regional' => $regional->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                </form>
+                <a class="btn btn-info btn-sm" href="{{ route('regional.edit', ['regional' => $regional->id]) }}">
+                    <i class="fas fa-pencil-alt">
+                    </i>
+                </a>
+                @endcan
+                @can('ELIMINAR REGIONAL')
 
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                <form class="formulario-eliminar btn" action="{{ route('regional.destroy', ['regional' => $regional->id]) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
 
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+
+                @endcan
                 </div>
             </div>
         </section>

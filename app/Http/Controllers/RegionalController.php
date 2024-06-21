@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Validator;
 
 class RegionalController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER REGIONAL')->only('index');
+        $this->middleware('can:VER REGIONAL')->only('show');
+        $this->middleware('can:CREAR REGIONAL')->only(['create', 'store']);
+        $this->middleware('can:CREAR REGIONAL')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR REGIONAL')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

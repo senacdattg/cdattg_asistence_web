@@ -63,42 +63,54 @@
                                         </span>
                                     </td>
                                     <td>
+                                        @can('EDITAR REGIONAL')
+
                                         <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('regional.cambiarEstado', ['regional' => $regional->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
+                                        action="{{ route('regional.cambiarEstado', ['regional' => $regional->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-success btn-sm"><i
+                                            class="fas fa-sync"></i></button>
                                         </form>
-                                        </td>
+                                    </td>
+                                        @endcan
+                                        @can('VER REGIONAL')
                                     <td>
+
                                         <a class="btn btn-warning btn-sm"
-                                            href="{{ route('regional.show', ['regional' => $regional->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                        href="{{ route('regional.show', ['regional' => $regional->id]) }}">
+                                        <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
+                                    </a>
+                                </td>
+                                @endcan
+                                    @can('EDITAR REGIONAL')
                                     <td>
+
                                         <a class="btn btn-info btn-sm"
-                                            href="{{ route('regional.edit', ['regional' => $regional->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form class="formulario-eliminar " action="{{ route('regional.destroy', ['regional' => $regional->id]) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                        href="{{ route('regional.edit', ['regional' => $regional->id]) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                    </a>
+                                </td>
+                                @endcan
+                                @can('ELIMINAR REGIONAL')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                <td>
+                                    <form class="formulario-eliminar " action="{{ route('regional.destroy', ['regional' => $regional->id]) }}" method="POST"
+                                        class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
 
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                        <button type="submit" class="btn btn-danger btn-sm">
+
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                @endcan
+                            </tr>
 
                             @empty
                                 <tr>
