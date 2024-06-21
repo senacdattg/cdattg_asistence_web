@@ -153,7 +153,7 @@
 
 
                         <div class="text-center text-lg-start mt-4 pt-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Actualizar instructor</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Actualizar Perfíl</button>
                         </div>
                     </form>
 
