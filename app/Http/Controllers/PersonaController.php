@@ -7,9 +7,12 @@ use App\Models\Persona;
 
 use App\Http\Requests\StorePersonaRequest;
 use App\Http\Requests\UpdatePersonaRequest;
+use App\Models\Regional;
+use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
@@ -112,8 +115,16 @@ class PersonaController extends Controller
      */
     public function edit(Persona $persona)
     {
+        // llamar los tipos de documentos
+        $documentos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(2);
+        // llamar los generos
+        $generos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(3);
         // $persona = Persona::find(1);
-        return view('personas.edit', ['persona' => $persona]);
+        return view('personas.edit', ['persona' => $persona, 'documentos' => $documentos, 'generos' => $generos]);
     }
 
     /**
@@ -121,32 +132,9 @@ class PersonaController extends Controller
      */
     public function update(UpdatePersonaRequest $request, Persona $persona)
     {
-        // @dd($persona->id);
-        // dd($request->all());
-        $validator = Validator::make($request->all(), [
-            'tipo_documento' => 'required',
-            'numero_documento' => 'required',
-            'primer_nombre' => 'required',
-            'segundo_nombre' => 'nullable',
-            'primer_apellido' => 'required',
-            'segundo_apellido' => 'nullable',
-            'fecha_de_nacimiento' => 'required|date',
-            'genero' => 'required',
-            'email' => 'required|email' ,// Agrega la regla unique con la excepción del registro actual
-            'cargo' => 'required',
-            'status' => 'required|boolean'
-        ]);
-
-        if ($validator->fails()) {
-            @dd($validator);
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
-
         try {
             // Actualizar Persona
-            // $persona = Persona::findOrFail($persona);
+            DB::beginTransaction();
             $persona->update([
                 'tipo_documento' => $request->input('tipo_documento'),
                 'numero_documento' => $request->input('numero_documento'),
@@ -157,7 +145,6 @@ class PersonaController extends Controller
                 'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
                 'genero' => $request->input('genero'),
                 'email' => $request->input('email') ,
-                'cargo' => $request->input('cargo'),
             ]);
             // Actualizar Usuario asociado a la Persona
             $user = User::where('persona_id', $persona->id)->first();
@@ -166,14 +153,13 @@ class PersonaController extends Controller
                 $user->update([
                     'email' => $request->input('email'),
                     'password' => Hash::make($request->input('numero_documento')),
-                    'status' => $request->input('status'),
                 ]);
             }
-
+            DB::commit();
             return redirect()->route('persona.show', ['persona' => $persona->id])
                 ->with('success', 'Información actualizada exitosamente');
-        } catch (\Exception $e) {
-            dd( $e);
+        } catch (QueryException $e) {
+            DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo.']);
         }
     }
