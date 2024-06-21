@@ -51,7 +51,7 @@
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1
+                            $i = 1;
                             ?>
                             @forelse ($ambientes as $ambiente)
                                 <tr>
@@ -80,42 +80,52 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('ambiente.cambiarEstado', ['ambiente' => $ambiente->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('ambiente.show', ['ambiente' => $ambiente->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                    @can('EDITAR AMBIENTE')
+                                        <td>
 
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('ambiente.edit', ['ambiente' => $ambiente->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form class="formulario-eliminar btn" action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('ambiente.cambiarEstado', ['ambiente' => $ambiente->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can('VER AMBIENTE')
+                                        <td>
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('ambiente.show', ['ambiente' => $ambiente->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('EDITAR AMBIENTE')
+                                        <td>
+                                            <a class="btn btn-info btn-sm"
+                                                href="{{ route('ambiente.edit', ['ambiente' => $ambiente->id]) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('ELIMINAR AMBIENTE')
+                                        <td>
+                                            <form class="formulario-eliminar btn"
+                                                action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
 
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </tr>
 
                             @empty
