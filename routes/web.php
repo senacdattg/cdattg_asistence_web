@@ -83,7 +83,9 @@ Route::middleware('auth')->group(function () {
 
     // Ruta para los pisos
     Route::resource('piso', PisoController::class);
-    route::put('/piso/cambiarEstado/{piso}', [PisoController::class, 'cambiarEstado'])->name('piso.cambiarEstado');
+    route::middleware('can:EDITAR PISO')->group(function () {
+        route::put('/piso/cambiarEstado/{piso}', [PisoController::class, 'cambiarEstado'])->name('piso.cambiarEstado');
+    });
     Route::get('/cargarPisos/{bloque_id}', [PisoController::class, 'cargarPisos'])->name('piso.cargarPisos');
 
     // Ruta para ambientes

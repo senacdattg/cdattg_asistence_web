@@ -159,6 +159,8 @@
                 @endcan
 
                 {{-- Administrad bloques --}}
+                @can('VER PISO')
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -174,15 +176,19 @@
                                 <p>pisos</p>
                             </a>
                         </li>
+                        @can('CREAR PISO')
+
                         <li class="nav-item">
                             <a href="{{ route('piso.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear piso</p>
                             </a>
                         </li>
+                        @endcan
 
                     </ul>
                 </li>
+                @endcan
 
                 {{-- Administrad bloques --}}
                 <li class="nav-item">
