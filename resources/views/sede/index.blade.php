@@ -50,7 +50,7 @@
                         </thead>
                         <tbody>
                             <?php
-                                $i = 1;
+                            $i = 1;
                             ?>
                             @forelse ($sedes as $sede)
                                 <tr>
@@ -78,42 +78,53 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('sede.cambiarEstado', ['sede' => $sede->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('sede.show', ['sede' => $sede->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                    @can('EDITAR SEDE')
+                                        <td>
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('sede.cambiarEstado', ['sede' => $sede->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can('VER SEDE')
+                                        <td>
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('sede.show', ['sede' => $sede->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('EDITAR SEDE')
+
                                     <td>
                                         <a class="btn btn-info btn-sm"
-                                            href="{{ route('sede.edit', ['sede' => $sede->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form class="formulario-eliminar " action="{{ route('sede.destroy', ['sede' => $sede->id]) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                        href="{{ route('sede.edit', ['sede' => $sede->id]) }}">
+                                        <i class="fas fa-pencil-alt">
+                                        </i>
+                                    </a>
+                                </td>
+                                @endcan
+                                @can('ELIMINAR SEDE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                <td>
+                                    <form class="formulario-eliminar "
+                                    action="{{ route('sede.destroy', ['sede' => $sede->id]) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
 
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            @endcan
                                 </tr>
 
                             @empty

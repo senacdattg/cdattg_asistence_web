@@ -96,6 +96,8 @@
                 </li>
                 @endcan
                 {{-- gestion de sedes --}}
+                @can('VER SEDE')
+
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -111,15 +113,19 @@
                                 <p>Sedes</p>
                             </a>
                         </li>
+                        @can('CREAR SEDE')
+
                         <li class="nav-item">
                             <a href="{{ route('sede.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear sede</p>
                             </a>
                         </li>
+                        @endcan
 
                     </ul>
                 </li>
+                @endcan
 
                 {{-- Administrad bloques --}}
                 <li class="nav-item">

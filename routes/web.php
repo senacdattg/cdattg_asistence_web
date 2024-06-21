@@ -69,7 +69,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');
     Route::get('/cargarSedesByRegional/{regional_id}', [SedeController::class, 'cargarSedesByRegional'])->name('sede.cargarSedesByRegional');
-    Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
+    route::middleware('can:EDITAR SEDE')->group(function(){
+        Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
+    });
 
     // Ruta para bloques
     Route::resource('bloque', BloqueController::class);
@@ -106,7 +108,9 @@ Route::middleware('auth')->group(function () {
     });
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);
-    Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
+    route::middleware('can:EDITAR REGIONAL')->group(function(){
+        Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
+    });
     // rutas para los permisos
     route::middleware('can:ASIGNAR PERMISOS')->group(function () {
 
