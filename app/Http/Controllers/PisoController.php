@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\Validator;
 
 class PisoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER PISO')->only('index');
+        $this->middleware('can:VER PISO')->only('show');
+        $this->middleware('can:CREAR PISO')->only(['create', 'store']);
+        $this->middleware('can:EDITAR PISO')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR PISO')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

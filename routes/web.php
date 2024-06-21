@@ -20,6 +20,7 @@ use App\Models\Bloque;
 use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
+use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
@@ -38,15 +39,17 @@ use App\Http\Middleware\CorsMiddleware;
 Route::get('/apis', function () {
     return view('apis');
 });
-Route::resource('home', HomeController::class);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
 Route::middleware('auth')->group(function () {
 
+    Route::resource('home', HomeController::class);
     // Rutas para persona
     Route::resource('persona', PersonaController::class);
-    Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+    route::middleware('can:EDITAR INSTRUCTOR')->group(function () {
+        Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+    });
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);
@@ -62,44 +65,69 @@ Route::middleware('auth')->group(function () {
 
     // Rutas oara fucha de caracterizacion
     Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
-    Route::post('updateInstructoresFichaCaracterizacion', [FichaCaracterizacionController::class, 'updateinstructoresFichaCaracterizacion'])->name('fichaCaracterizacion.updateinstructoresFichaCaracterizacion');
-    Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
+    route::middleware('can:EDITAR FICHA DE CARACTERIZACION')->group(function () {
+        Route::post('updateInstructoresFichaCaracterizacion', [FichaCaracterizacionController::class, 'updateinstructoresFichaCaracterizacion'])->name('fichaCaracterizacion.updateinstructoresFichaCaracterizacion');
+        Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
+    });
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');
     Route::get('/cargarSedesByRegional/{regional_id}', [SedeController::class, 'cargarSedesByRegional'])->name('sede.cargarSedesByRegional');
-    Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
+    route::middleware('can:EDITAR SEDE')->group(function(){
+        Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
+    });
 
     // Ruta para bloques
     Route::resource('bloque', BloqueController::class);
-    route::put('/bloque/cambiarEstado/{bloque}', [BloqueController::class, 'cambiarEstado'])->name('bloque.cambiarEstado');
+    route::middleware('can:EDITAR BLOQUE')->group(function () {
+        route::put('/bloque/cambiarEstado/{bloque}', [BloqueController::class, 'cambiarEstado'])->name('bloque.cambiarEstado');
+    });
+
     Route::get('/cargarBloques/{sede_id}', [BloqueController::class, 'cargarBloques'])->name('bloque.cargarBloques');
 
     // Ruta para los pisos
     Route::resource('piso', PisoController::class);
-    route::put('/piso/cambiarEstado/{piso}', [PisoController::class, 'cambiarEstado'])->name('piso.cambiarEstado');
+    route::middleware('can:EDITAR PISO')->group(function () {
+        route::put('/piso/cambiarEstado/{piso}', [PisoController::class, 'cambiarEstado'])->name('piso.cambiarEstado');
+    });
     Route::get('/cargarPisos/{bloque_id}', [PisoController::class, 'cargarPisos'])->name('piso.cargarPisos');
 
     // Ruta para ambientes
     Route::resource('ambiente', AmbienteController::class);
-    Route::put('/ambiente/cambiarEstado/{ambiente}', [AmbienteController::class, 'cambiarEstado'])->name('ambiente.cambiarEstado');
+    route::middleware('can:EDITAR AMBIENTE')->group(function () {
+        Route::put('/ambiente/cambiarEstado/{ambiente}', [AmbienteController::class, 'cambiarEstado'])->name('ambiente.cambiarEstado');
+    });
     Route::get('/cargarAmbientes/{piso_id}', [AmbienteController::class, 'cargarAmbientes'])->name('ambiente.cargarAmbientes');
 
 
 
     // rutas para parametros
     Route::resource('parametro', ParametroController::class);
-    Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+    route::middleware('can:EDITAR PARAMETRO')->group( function(){
+
+        Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
+    });
 
 
     // rutas para temas
-    Route::resource('tema',TemaController::class);
-    Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
-    Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
-    Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
+    Route::resource('tema', TemaController::class);
+    route::middleware('can:EDITAR TEMA')->group(function(){
+
+        Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
+        Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
+        Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
+    });
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);
-    Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
+    route::middleware('can:EDITAR REGIONAL')->group(function(){
+        Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
+    });
+    // rutas para los permisos
+    route::middleware('can:ASIGNAR PERMISOS')->group(function () {
+
+        route::resource('permiso', PermisoController::class);
+        route::get('/showpermiso/{user}', [PermisoController::class, 'showUserPermiso'])->name('permiso.showUserPermiso');
+    });
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
 

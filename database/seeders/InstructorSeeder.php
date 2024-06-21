@@ -15,7 +15,7 @@ class InstructorSeeder extends Seeder
     {
         Instructor::create([
             'id' => 1,
-            'persona_id' => 2,
+            'persona_id' => 3,
             'regional_id' => 1,
         ]);
 

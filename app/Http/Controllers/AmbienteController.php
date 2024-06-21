@@ -16,6 +16,17 @@ use Spatie\LaravelIgnition\Recorders\QueryRecorder\QueryRecorder;
 
 class AmbienteController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER AMBIENTE')->only('index');
+        $this->middleware('can:VER AMBIENTE')->only('show');
+        $this->middleware('can:CREAR AMBIENTE')->only(['create', 'store']);
+        $this->middleware('can:EDITAR AMBIENTE')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR AMBIENTE')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

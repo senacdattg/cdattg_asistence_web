@@ -61,7 +61,7 @@
                                             {{ $ambiente->piso->bloque->bloque }}
                                         </td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <th>
                                             <strong>Piso:</strong>
                                         </th>
@@ -92,8 +92,7 @@
                                             <strong>Estado:</strong>
                                         </th>
                                         <td>
-                                            <span
-                                                class="badge badge-{{ $ambiente->status === 1 ? 'success' : 'danger' }}">
+                                            <span class="badge badge-{{ $ambiente->status === 1 ? 'success' : 'danger' }}">
                                                 @if ($ambiente->status === 1)
                                                     ACTIVO
                                                 @else
@@ -112,29 +111,30 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR AMBIENTE')
+                        <form id="cambiarEstadoForm" class=" d-inline"
+                            action="{{ route('ambiente.cambiarEstado', ['ambiente' => $ambiente->id]) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                        </form>
+                        <a class="btn btn-info btn-sm" href="{{ route('ambiente.edit', ['ambiente' => $ambiente->id]) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                        </a>
+                    @endcan
+                    @can('ELIMINAR AMBIENTE')
+                        <form class="formulario-eliminar btn"
+                            action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}" method="POST"
+                            class="d-inline">
+                            @csrf
+                            @method('DELETE')
 
-                    <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('ambiente.cambiarEstado', ['ambiente' => $ambiente->id]) }}"
-                        method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('ambiente.edit', ['ambiente' => $ambiente->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn"
-                        action="{{ route('ambiente.destroy', ['ambiente' => $ambiente->id]) }}"
-                        method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
 
                 </div>
             </div>

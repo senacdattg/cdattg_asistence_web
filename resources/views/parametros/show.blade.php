@@ -92,26 +92,31 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR PARAMETRO')
 
                     <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm" href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn" action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}" method="POST"
-                        class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                </form>
+                <a class="btn btn-info btn-sm" href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
+                    <i class="fas fa-pencil-alt">
+                    </i>
+                </a>
+                @endcan
+                @can('ELIMINAR PARAMETRO')
 
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                <form class="formulario-eliminar btn" action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}" method="POST"
+                    class="d-inline">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+                @endcan
 
                 </div>
                     </div>

@@ -47,7 +47,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $i = 1 ?>
+                            <?php $i = 1; ?>
                             @forelse ($pisos as $piso)
                                 <tr>
                                     <td>
@@ -72,42 +72,51 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('piso.cambiarEstado', ['piso' => $piso->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('piso.show', ['piso' => $piso->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                    @can('EDITAR PISO')
+                                        <td>
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('piso.cambiarEstado', ['piso' => $piso->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can('VER PISO')
+                                        <td>
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('piso.show', ['piso' => $piso->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('piso.edit', ['piso' => $piso->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form class="formulario-eliminar " action="{{ route('piso.destroy', ['piso' => $piso->id]) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('EDITAR PISO')
+                                        <td>
+                                            <a class="btn btn-info btn-sm"
+                                                href="{{ route('piso.edit', ['piso' => $piso->id]) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('ELIMINAR PISO')
+                                        <td>
+                                            <form class="formulario-eliminar "
+                                                action="{{ route('piso.destroy', ['piso' => $piso->id]) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <button type="submit" class="btn btn-danger btn-sm">
 
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </tr>
 
                             @empty

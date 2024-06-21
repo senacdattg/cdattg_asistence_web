@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\DB;
 
 class ParametroController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER PARAMETRO')->only('index');
+        $this->middleware('can:VER PARAMETRO')->only('show');
+        $this->middleware('can:CREAR PARAMETRO')->only(['create', 'store']);
+        $this->middleware('can:EDITAR PARAMETRO')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR PARAMETRO')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

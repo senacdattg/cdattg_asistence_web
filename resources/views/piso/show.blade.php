@@ -84,8 +84,7 @@
                                             <strong>Estado:</strong>
                                         </th>
                                         <td>
-                                            <span
-                                                class="badge badge-{{ $piso->status === 1 ? 'success' : 'danger' }}">
+                                            <span class="badge badge-{{ $piso->status === 1 ? 'success' : 'danger' }}">
                                                 @if ($piso->status === 1)
                                                     ACTIVO
                                                 @else
@@ -104,29 +103,29 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR PISO')
+                        <form id="cambiarEstadoForm" class=" d-inline"
+                            action="{{ route('piso.cambiarEstado', ['piso' => $piso->id]) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                        </form>
+                        <a class="btn btn-info btn-sm" href="{{ route('piso.edit', ['piso' => $piso->id]) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                        </a>
+                    @endcan
+                    @can('ELIMINAR PISO')
+                        <form class="formulario-eliminar btn" action="{{ route('piso.destroy', ['piso' => $piso->id]) }}"
+                            method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
 
-                    <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('piso.cambiarEstado', ['piso' => $piso->id]) }}"
-                        method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('piso.edit', ['piso' => $piso->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn"
-                        action="{{ route('piso.destroy', ['piso' => $piso->id]) }}"
-                        method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
 
                 </div>
             </div>

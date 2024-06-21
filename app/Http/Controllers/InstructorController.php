@@ -18,6 +18,17 @@ use Illuminate\Support\Facades\Validator;
 
 class InstructorController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER INSTRUCTOR')->only('index');
+        $this->middleware('can:VER INSTRUCTOR')->only('show');
+        $this->middleware('can:CREAR INSTRUCTOR')->only(['create', 'store']);
+        $this->middleware('can:EDITAR INSTRUCTOR')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR INSTRUCTOR')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

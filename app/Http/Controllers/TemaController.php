@@ -15,6 +15,17 @@ class TemaController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER TEMA')->only('index');
+        $this->middleware('can:VER TEMA')->only('show');
+        $this->middleware('can:CREAR TEMA')->only(['create', 'store']);
+        $this->middleware('can:EDITAR TEMA')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR TEMA')->only('destroy');
+    }
     public function index()
     {
         $temas = Tema::paginate(10);

@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Validator;
 
 class BloqueController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER BLOQUE')->only('index');
+        $this->middleware('can:VER BLOQUE')->only('show');
+        $this->middleware('can:CREAR BLOQUE')->only(['create', 'store']);
+        $this->middleware('can:EDITAR BLOQUE')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR BLOQUE')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */

@@ -23,5 +23,9 @@ class updatePersona extends Seeder
             'tipo_documento' => 8,
             'genero' => 11,
         ]);
+        Persona::where('id', 3)->update([
+            'tipo_documento' => 8,
+            'genero' => 11,
+        ]);
     }
 }

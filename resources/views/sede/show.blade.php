@@ -107,25 +107,30 @@
                     </div>
                 </div>
                 <div class="mb-3 text-center">
+                    @can('EDITAR SEDE')
 
                     <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('sede.cambiarEstado', ['sede' => $sede->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm" href="{{ route('sede.edit', ['sede' => $sede->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn" action="{{ route('sede.destroy', ['sede' => $sede->id]) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
+                    action="{{ route('sede.cambiarEstado', ['sede' => $sede->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                </form>
+                <a class="btn btn-info btn-sm" href="{{ route('sede.edit', ['sede' => $sede->id]) }}">
+                    <i class="fas fa-pencil-alt">
+                    </i>
+                </a>
+                @endcan
+                @can('ELIMINAR SEDE')
 
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                <form class="formulario-eliminar btn" action="{{ route('sede.destroy', ['sede' => $sede->id]) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+                @endcan
 
                 </div>
             </div>

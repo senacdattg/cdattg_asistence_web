@@ -58,7 +58,8 @@
                                         {{ $i++ }}
                                     </td>
                                     <td>
-                                        {{ $instructor->persona->primer_nombre }} {{ $instructor->persona->primer_apellido }}
+                                        {{ $instructor->persona->primer_nombre }}
+                                        {{ $instructor->persona->primer_apellido }}
                                     </td>
 
                                     <td>
@@ -68,7 +69,8 @@
                                         {{ $instructor->persona->email }}
                                     </td>
                                     <td>
-                                        <span class="badge badge-{{ $instructor->persona->user->status === 1 ? 'success' : 'danger' }}">
+                                        <span
+                                            class="badge badge-{{ $instructor->persona->user->status === 1 ? 'success' : 'danger' }}">
                                             @if ($instructor->persona->user->status === 1)
                                                 ACTIVO
                                             @else
@@ -76,43 +78,52 @@
                                             @endif
                                         </span>
                                     </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('persona.cambiarEstadoUser', ['persona' => $instructor->persona->user->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('instructor.show', ['instructor' => $instructor->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                    @can('EDITAR INSTRUCTOR')
+                                        <td>
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('persona.cambiarEstadoUser', ['persona' => $instructor->persona->user->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        </td>
+                                    @endcan
+                                    @can('VER INSTRUCTOR')
+                                        <td>
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('instructor.show', ['instructor' => $instructor->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('instructor.edit', ['instructor' => $instructor->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                       
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('EDITAR INSTRUCTOR')
+                                        <td>
+                                            <a class="btn btn-info btn-sm"
+                                                href="{{ route('instructor.edit', ['instructor' => $instructor->id]) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    @endcan
+                                    @can('ELIMINAR INSTRUCTOR')
+                                        <td>
 
-                                        <form class="formulario-eliminar btn" action="{{ route('instructor.destroy', ['instructor' => $instructor->id]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                                            <form class="formulario-eliminar btn"
+                                                action="{{ route('instructor.destroy', ['instructor' => $instructor->id]) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </tr>
 
                             @empty

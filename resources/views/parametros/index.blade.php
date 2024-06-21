@@ -25,7 +25,9 @@
 
         <section class="content">
             <div class="card">
-                @include('parametros.create')
+                @can('CREAR PARAMETRO')
+                    @include('parametros.create')
+                @endcan
 
                 <div class="card-body p-0">
                     <table class="table table-striped projects">
@@ -65,32 +67,42 @@
 
                                     </td>
                                     <td class="project-actions text-right">
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                                        </form>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('parametro.show', ['parametro' => $parametro->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                        @can('EDITAR PARAMETRO')
+                                            <form id="cambiarEstadoForm" class=" d-inline"
+                                                action="{{ route('parametro.cambiarEstado', ['parametro' => $parametro->id]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-success btn-sm"><i
+                                                        class="fas fa-sync"></i></button>
+                                            </form>
+                                        @endcan
+                                        @can('VER PARAMETRO')
+                                            <a class="btn btn-warning btn-sm"
+                                                href="{{ route('parametro.show', ['parametro' => $parametro->id]) }}">
+                                                <i class="fas fa-eye"></i>
 
-                                        </a>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                        <form class="formulario-eliminar btn" action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                            </a>
+                                        @endcan
+                                        @can('EDITAR PARAMETRO')
+                                            <a class="btn btn-info btn-sm"
+                                                href="{{ route('parametro.edit', ['parametro' => $parametro->id]) }}">
+                                                <i class="fas fa-pencil-alt">
+                                                </i>
+                                            </a>
+                                        @endcan
+                                        @can('ELIMINAR PARAMETRO')
+                                            <form class="formulario-eliminar btn"
+                                                action="{{ route('parametro.destroy', ['parametro' => $parametro->id]) }}"
+                                                method="POST" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @empty

@@ -71,42 +71,54 @@
                                             @endif
                                         </span>
                                     </td>
+                                    @can('EDITAR BLOQUE')
+
                                     <td>
                                         <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('bloque.cambiarEstado', ['bloque' => $bloque->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
+                                        action="{{ route('bloque.cambiarEstado', ['bloque' => $bloque->id]) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-success btn-sm"><i
+                                            class="fas fa-sync"></i></button>
                                         </form>
                                     </td>
+                                    @endcan
+                                    @can('VER BLOQUE')
+
                                     <td>
                                         <a class="btn btn-warning btn-sm"
-                                            href="{{ route('bloque.show', ['bloque' => $bloque->id]) }}">
-                                            <i class="fas fa-eye"></i>
+                                        href="{{ route('bloque.show', ['bloque' => $bloque->id]) }}">
+                                        <i class="fas fa-eye"></i>
 
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('bloque.edit', ['bloque' => $bloque->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form class="formulario-eliminar btn" action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}" method="POST"
-                                            class="d-inline">
-                                            @csrf
-                                            @method('DELETE')
+                                    </a>
+                                </td>
+                                @endcan
+                                @can('EDITAR BLOQUE')
 
-                                            <button type="submit" class="btn btn-danger btn-sm">
+                                <td>
+                                    <a class="btn btn-info btn-sm"
+                                    href="{{ route('bloque.edit', ['bloque' => $bloque->id]) }}">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </a>
+                            </td>
+                            @endcan
+                            @can('ELIMINAR BLOQUE')
 
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
+                            <td>
+                                <form class="formulario-eliminar btn" action="{{ route('bloque.destroy', ['bloque' => $bloque->id]) }}" method="POST"
+                                    class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="submit" class="btn btn-danger btn-sm">
+
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            @endcan
                                 </tr>
 
                             @empty

@@ -126,29 +126,32 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
+                    @can('EDITAR FICHA DE CARACTERIZACION')
+                        <form id="cambiarEstadoForm" class=" d-inline"
+                            action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
+                        </form>
+                        <a class="btn btn-info btn-sm"
+                            href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}">
+                            <i class="fas fa-pencil-alt">
+                            </i>
+                        </a>
+                    @endcan
+                    @can('ELIMINAR FICHA DE CARACTERIZACION')
+                        <form class="formulario-eliminar btn"
+                            action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
+                            method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
 
-                    <form id="cambiarEstadoForm" class=" d-inline"
-                        action="{{ route('fichaCaracterizacion.cambiarEstado', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
-                        method="POST">
-                        @csrf
-                        @method('PUT')
-                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                    </form>
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('fichaCaracterizacion.edit', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}">
-                        <i class="fas fa-pencil-alt">
-                        </i>
-                    </a>
-                    <form class="formulario-eliminar btn"
-                        action="{{ route('fichaCaracterizacion.destroy', ['fichaCaracterizacion' => $fichaCaracterizacion->id]) }}"
-                        method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    @endcan
 
                 </div>
             </div>

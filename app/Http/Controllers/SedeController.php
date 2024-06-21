@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Validator;
 
 class SedeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth'); // Middleware de autenticación para todos los métodos del controlador
+
+        // Middleware específico para métodos individuales
+        $this->middleware('can:VER SEDE')->only('index');
+        $this->middleware('can:VER SEDE')->only('show');
+        $this->middleware('can:CREAR SEDE')->only(['create', 'store']);
+        $this->middleware('can:EDITAR SEDE')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR SEDE')->only('destroy');
+    }
     /**
      * Display a listing of the resource.
      */
