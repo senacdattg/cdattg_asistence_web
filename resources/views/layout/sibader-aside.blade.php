@@ -275,7 +275,7 @@
                 </li>
                 @endcan
                 {{-- @endif --}}
-                @if (auth()->user()->hasRole(['INSTRUCTOR']))
+                {{-- @if (auth()->user()->hasRole(['INSTRUCTOR']))
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fas fa-users"></i>
@@ -295,7 +295,7 @@
 
                         </ul>
                     </li>
-                @endif
+                @endif --}}
                 @haspermission('ASIGNAR PERMISOS')
                     {{-- @can('ASIGNAR PERMISOS') --}}
                     <li class="nav-item">
