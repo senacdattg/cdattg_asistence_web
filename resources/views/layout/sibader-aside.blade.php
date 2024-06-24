@@ -240,6 +240,12 @@
                                         <p>Crear Instructor</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('instructor.createImportarCSV') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Importar CSV</p>
+                                    </a>
+                                </li>
                             @endcan
                         </ul>
                     </li>

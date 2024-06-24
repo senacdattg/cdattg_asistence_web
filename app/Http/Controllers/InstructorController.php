@@ -189,4 +189,10 @@ class InstructorController extends Controller
             }
         }
     }
+    public function createImportarCSV(){
+        return view('Instructores.createImportarCSV');
+    }
+    public function importarCSV(){
+
+    }
 }
