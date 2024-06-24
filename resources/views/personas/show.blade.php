@@ -25,11 +25,11 @@
             <div class="card">
 
                 <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('instructor.index') }}">
+                    <a class="btn btn-warning btn-sm" href="javascript:history.back()">
                         <i class="fas fa-arrow-left"></i>
-                        </i>
                         Volver
                     </a>
+
                 </div>
                 {{-- <div class="container"> --}}
                 <div class="container-fluid ">
@@ -131,8 +131,7 @@
                 </div>
                 {{-- Botones --}}
                 <div class="mb-3 text-center">
-                    <a class="btn btn-info btn-sm"
-                        href="{{ route('persona.edit', ['persona' => $persona->id]) }}">
+                    <a class="btn btn-info btn-sm" href="{{ route('persona.edit', ['persona' => $persona->id]) }}">
                         <i class="fas fa-pencil-alt">
                         </i>
                     </a>
