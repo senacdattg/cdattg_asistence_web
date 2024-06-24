@@ -197,7 +197,8 @@ class InstructorController extends Controller
     {
         // @dd('hola mundo');
         $request->validate([
-            'archivoCSV' => 'required|file|mimes:csv',
+            'archivoCSV' => 'required|file|mimes:csv,xslm',
+            // 'archivoCSV' => 'required',
         ]);
         $archivo = $request->file('archivoCSV');
         $csvData = file_get_contents($archivo);
@@ -222,10 +223,13 @@ class InstructorController extends Controller
                 'persona-id' => $persona->id,
             ]);
             $instructor = Instructor::create([
-                
+                'persona_id' => $persona->id,
+                'regional_id' => 1,
             ]);
 
 
         }
+        DB::commit();
+        return redirect()->back()->with('success', 'Instructores creados exitosamente');
     }
 }
