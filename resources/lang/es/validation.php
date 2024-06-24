@@ -24,6 +24,7 @@ return [
         'array' => 'El campo :attribute debe tener al menos :min elementos.',
         'password' => 'La contraseña debe tener al menos :min caracteres.',
     ],
+    'mimes' => 'El archivo seleccionado no es compatible con el formato solicitado.'
 
 
     // ... puedes continuar añadiendo más mensajes de error

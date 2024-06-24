@@ -12,9 +12,9 @@ use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class InstructorController extends Controller
 {
@@ -44,7 +44,7 @@ class InstructorController extends Controller
     public function create()
     {
         // llamar los tipos de documentos
-        $documentos = Tema::with(['parametros' => function ($query){
+        $documentos = Tema::with(['parametros' => function ($query) {
             $query->wherePivot('status', 1);
         }])->findOrFail(2);
         // llamar los generos
@@ -54,7 +54,7 @@ class InstructorController extends Controller
         $regionales = Regional::where('status', 1)->get();
 
 
-        return view('Instructores.create', compact('documentos','generos', 'regionales'));
+        return view('Instructores.create', compact('documentos', 'generos', 'regionales'));
     }
 
     /**
@@ -189,10 +189,43 @@ class InstructorController extends Controller
             }
         }
     }
-    public function createImportarCSV(){
+    public function createImportarCSV()
+    {
         return view('Instructores.createImportarCSV');
     }
-    public function importarCSV(){
+    public function storeImportarCSV(Request $request)
+    {
+        // @dd('hola mundo');
+        $request->validate([
+            'archivoCSV' => 'required|file|mimes:csv',
+        ]);
+        $archivo = $request->file('archivoCSV');
+        $csvData = file_get_contents($archivo);
+        $rows = array_map('str_getcsv', explode("\n", $csvData));
+        $header = array_shift($rows);
+        foreach ($rows as $row) {
+            if (count($row) != count($header)) {
+                continue;
+            }
+            $data = array_combine($header, $row);
+            DB::beginTransaction();
+            $persona = Persona::create([
+                'tipo_documento' => 8,
+                'numero_documento' => $data['ID_PERSONAL'],
+                'primer_nombre' => $data['Title'],
+                'genero' => 11,
+                'email' => $data['CORREO INSTITUCIONAL'],
+            ]);
+            $user = User::create([
+                'email' => $data['CORREO INSTITUCIONAL'],
+                'password' => Hash::make($data['ID_PERSONAL']),
+                'persona-id' => $persona->id,
+            ]);
+            $instructor = Instructor::create([
+                
+            ]);
 
+
+        }
     }
 }

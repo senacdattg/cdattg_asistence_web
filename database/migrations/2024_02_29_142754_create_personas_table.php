@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('numero_documento');
             $table->string('primer_nombre');
             $table->string('segundo_nombre')->nullable();
-            $table->string('primer_apellido');
+            $table->string('primer_apellido')->nullable();
             $table->string('segundo_apellido')->nullable();
-            $table->date('fecha_de_nacimiento');
+            $table->date('fecha_de_nacimiento')->nullable();
             $table->string('email')->unique(); // Asegura que el email sea único
             $table->timestamps();
 
-            
+
         });
     }
 
