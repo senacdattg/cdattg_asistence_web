@@ -11,6 +11,7 @@ use App\Models\Regional;
 use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -195,41 +196,100 @@ class InstructorController extends Controller
     }
     public function storeImportarCSV(Request $request)
     {
-        // @dd('hola mundo');
-        $request->validate([
-            'archivoCSV' => 'required|file|mimes:csv,xslm',
-            // 'archivoCSV' => 'required',
-        ]);
-        $archivo = $request->file('archivoCSV');
-        $csvData = file_get_contents($archivo);
-        $rows = array_map('str_getcsv', explode("\n", $csvData));
-        $header = array_shift($rows);
-        foreach ($rows as $row) {
-            if (count($row) != count($header)) {
-                continue;
+        try {
+            $request->validate([
+                'archivoCSV' => 'required|file|mimes:csv,txt',
+            ]);
+
+            $archivo = $request->file('archivoCSV');
+            $csvData = file_get_contents($archivo);
+
+            // Eliminar el BOM si está presente
+            if (substr($csvData, 0, 3) === "\u{FEFF}") {
+                $csvData = substr($csvData, 3);
             }
-            $data = array_combine($header, $row);
+
+            // Usar el delimitador de punto y coma
+            $rows = array_map(function ($row) {
+                return str_getcsv($row, ';');
+            }, explode("\n", $csvData));
+
+            $header = array_shift($rows);
+
+            // Trimming spaces and converting headers to uppercase for consistency
+            $header = array_map('trim', $header);
+            $header = array_map('strtoupper', $header);
+
+            // Debugging: Print the header
+            // dd('Header from CSV:', $header);
+
+            // Expected header keys
+            $expectedHeader = ['TITLE', 'ID_PERSONAL', 'CORREO INSTITUCIONAL'];
+
+            // Check if the header matches the expected header
+            if ($header !== $expectedHeader) {
+                return redirect()->back()->with('error', 'El encabezado del archivo CSV no coincide con el formato esperado.');
+            }
+
             DB::beginTransaction();
-            $persona = Persona::create([
-                'tipo_documento' => 8,
-                'numero_documento' => $data['ID_PERSONAL'],
-                'primer_nombre' => $data['Title'],
-                'genero' => 11,
-                'email' => $data['CORREO INSTITUCIONAL'],
-            ]);
-            $user = User::create([
-                'email' => $data['CORREO INSTITUCIONAL'],
-                'password' => Hash::make($data['ID_PERSONAL']),
-                'persona-id' => $persona->id,
-            ]);
-            $instructor = Instructor::create([
-                'persona_id' => $persona->id,
-                'regional_id' => 1,
-            ]);
 
+            $errores = [];
+            $procesados = 0;
 
+            foreach ($rows as $row) {
+                if (count($row) != count($header)) {
+                    $errores[] = $row; // Save the row that couldn't be processed
+                    continue; // Skip rows with incorrect number of columns
+                }
+
+                $data = array_combine($header, $row);
+
+                // Debugging: Print the data row
+                // dd('Data row:', $data);
+
+                try {
+                    $persona = Persona::create([
+                        'tipo_documento' => 8,
+                        'numero_documento' => $data['ID_PERSONAL'],
+                        'primer_nombre' => $data['TITLE'],
+                        'genero' => 11,
+                        'email' => $data['CORREO INSTITUCIONAL'],
+                    ]);
+
+                    $user = User::create([
+                        'email' => $data['CORREO INSTITUCIONAL'],
+                        'password' => Hash::make($data['ID_PERSONAL']),
+                        'persona_id' => $persona->id,
+                    ]);
+
+                    Instructor::create([
+                        'persona_id' => $persona->id,
+                        'regional_id' => 1,
+                    ]);
+
+                    $procesados++;
+                } catch (Exception $e) {
+                    $errores[] = $data; // Save the data that couldn't be processed
+                    continue; // Continue processing the next row
+                }
+            }
+
+            DB::commit();
+
+            $mensaje = 'Instructores creados exitosamente: ' . $procesados;
+
+            if (count($errores) > 0) {
+                $mensaje .= '. Algunos registros no pudieron ser procesados.';
+            }
+
+            return view('Instructores.errorImport', compact('errores'))->with('success', $mensaje);
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error en la base de datos: ' . $e->getMessage());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
         }
-        DB::commit();
-        return redirect()->back()->with('success', 'Instructores creados exitosamente');
     }
+
 }
