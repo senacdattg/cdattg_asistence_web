@@ -11,10 +11,11 @@ use App\Models\Regional;
 use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class InstructorController extends Controller
 {
@@ -32,9 +33,20 @@ class InstructorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $instructores = Instructor::paginate(10);
+        // $instructores = Instructor::paginate(10);
+        $search = $request->input('search');
+
+        $instructores = Instructor::whereHas('persona', function ($query) use ($search) {
+            if ($search) {
+                $query->where('primer_nombre', 'like', "%{$search}%")
+                ->orWhere('segundo_nombre', 'like', "%{$search}%")
+                ->orWhere('primer_apellido', 'like', "%{$search}%")
+                ->orWhere('segundo_apellido', 'like', "%{$search}%")
+                ->orWhere('numero_documento', 'like', "%{$search}%");
+            }
+        })->paginate(10);
         return view('Instructores.index', compact('instructores'));
     }
 
@@ -44,7 +56,7 @@ class InstructorController extends Controller
     public function create()
     {
         // llamar los tipos de documentos
-        $documentos = Tema::with(['parametros' => function ($query){
+        $documentos = Tema::with(['parametros' => function ($query) {
             $query->wherePivot('status', 1);
         }])->findOrFail(2);
         // llamar los generos
@@ -54,7 +66,7 @@ class InstructorController extends Controller
         $regionales = Regional::where('status', 1)->get();
 
 
-        return view('Instructores.create', compact('documentos','generos', 'regionales'));
+        return view('Instructores.create', compact('documentos', 'generos', 'regionales'));
     }
 
     /**
@@ -189,4 +201,107 @@ class InstructorController extends Controller
             }
         }
     }
+    public function createImportarCSV()
+    {
+        return view('Instructores.createImportarCSV');
+    }
+    public function storeImportarCSV(Request $request)
+    {
+        try {
+            $request->validate([
+                'archivoCSV' => 'required|file|mimes:csv,txt',
+            ]);
+
+            $archivo = $request->file('archivoCSV');
+            $csvData = file_get_contents($archivo);
+
+            // Eliminar el BOM si está presente
+            if (substr($csvData, 0, 3) === "\u{FEFF}") {
+                $csvData = substr($csvData, 3);
+            }
+
+            // Usar el delimitador de punto y coma
+            $rows = array_map(function ($row) {
+                return str_getcsv($row, ';');
+            }, explode("\n", $csvData));
+
+            $header = array_shift($rows);
+
+            // Trimming spaces and converting headers to uppercase for consistency
+            $header = array_map('trim', $header);
+            $header = array_map('strtoupper', $header);
+
+            // Debugging: Print the header
+            // dd('Header from CSV:', $header);
+
+            // Expected header keys
+            $expectedHeader = ['TITLE', 'ID_PERSONAL', 'CORREO INSTITUCIONAL'];
+
+            // Check if the header matches the expected header
+            if ($header !== $expectedHeader) {
+                return redirect()->back()->with('error', 'El encabezado del archivo CSV no coincide con el formato esperado.');
+            }
+
+            DB::beginTransaction();
+
+            $errores = [];
+            $procesados = 0;
+
+            foreach ($rows as $row) {
+                if (count($row) != count($header)) {
+                    $errores[] = $row; // Save the row that couldn't be processed
+                    continue; // Skip rows with incorrect number of columns
+                }
+
+                $data = array_combine($header, $row);
+
+                // Debugging: Print the data row
+                // dd('Data row:', $data);
+
+                try {
+                    $persona = Persona::create([
+                        'tipo_documento' => 8,
+                        'numero_documento' => $data['ID_PERSONAL'],
+                        'primer_nombre' => $data['TITLE'],
+                        'genero' => 11,
+                        'email' => $data['CORREO INSTITUCIONAL'],
+                    ]);
+
+                    $user = User::create([
+                        'email' => $data['CORREO INSTITUCIONAL'],
+                        'password' => Hash::make($data['ID_PERSONAL']),
+                        'persona_id' => $persona->id,
+                    ]);
+
+                    $user->assignRole('INSTRUCTOR');
+                    Instructor::create([
+                        'persona_id' => $persona->id,
+                        'regional_id' => 1,
+                    ]);
+
+                    $procesados++;
+                } catch (Exception $e) {
+                    $errores[] = $data; // Save the data that couldn't be processed
+                    continue; // Continue processing the next row
+                }
+            }
+
+            DB::commit();
+
+            $mensaje = 'Instructores creados exitosamente: ' . $procesados;
+
+            if (count($errores) > 0) {
+                $mensaje .= '. Algunos registros no pudieron ser procesados.';
+            }
+
+            return view('Instructores.errorImport', compact('errores'))->with('success', $mensaje);
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error en la base de datos: ' . $e->getMessage());
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+        }
+    }
+
 }

@@ -12,6 +12,7 @@ use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -102,6 +103,9 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
+        if (Auth::user()->id != $persona->id){
+            return redirect()->back()->with('error', 'No tiene permitido realizar esta acción!');
+        }
         // $persona = Persona::find(1);
         $persona->edad = Carbon::parse($persona->fecha_de_nacimiento)->age;
         $persona->fecha_de_nacimiento = Carbon::parse($persona->fecha_de_nacimiento)->format('d/m/Y');
