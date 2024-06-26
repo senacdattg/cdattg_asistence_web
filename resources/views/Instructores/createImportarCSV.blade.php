@@ -1,4 +1,20 @@
 @extends('layout.master-layout')
+@section('css')
+    <style>
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="content-wrapper">
 
@@ -38,11 +54,12 @@
                         @csrf
                         <div class="form-group">
                             <label for="archivoCSV">Seleccionar archivo</label>
-                            <input type="file" class="form-control" id="archivoCSV" name="archivoCSV" required>
+                            <input type="file" class="form-control @error('archivoCSV') is-invalid @enderror" id="archivoCSV" name="archivoCSV" >
                         </div>
-                        <button type="submit" class="btn btn-primary">Importar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-importar" onclick="showSpinner()">Importar</button>
                     </form>
                 </div>
+
                 <div class="card-body">
 
                     <div class="alert alert-info" role="alert">
@@ -54,8 +71,32 @@
             </div>
         </section>
     </div>
+    <!-- Spinner and Overlay -->
+    <div id="overlay" style="display: none;">
+        <div class="spinner-border text-success" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+    </div>
 @endsection
 @section('script')
+    <script>
+    // Asegúrate de que el DOM esté completamente cargado antes de añadir los listeners
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Obtén el botón por su ID
+        let btn_importar = document.getElementById('btn-importar');
+
+        // Añade un evento click al botón para ejecutar la función showSpinner
+        btn_importar.addEventListener('click', function() {
+            showSpinner();
+        });
+    });
+
+    // La función showSpinner que muestra el spinner
+    function showSpinner() {
+        document.getElementById('overlay').style.display = 'flex';
+    }
+</script>
+
     {{-- <script>
         let mensaje =  `Recuerde que el archivo CSV debe tener el title, que es el nombre completo del instructor, el
                             id_personal, que es el número de documento del instructor y el correo institucional.`

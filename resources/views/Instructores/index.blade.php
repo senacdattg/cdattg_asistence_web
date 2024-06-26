@@ -26,7 +26,18 @@
 
         <section class="content">
             <div class="card">
-
+                <div class="card-header">
+                    <form method="GET" action="{{ route('instructor.index') }}">
+                        <div class="input-group input-group-sm">
+                            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o documento" value="{{ request()->input('search') }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
                 <div class="card-body p-0">
                     <table class="table table-responsive">
                         <thead>

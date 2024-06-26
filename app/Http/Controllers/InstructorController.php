@@ -33,9 +33,20 @@ class InstructorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $instructores = Instructor::paginate(10);
+        // $instructores = Instructor::paginate(10);
+        $search = $request->input('search');
+
+        $instructores = Instructor::whereHas('persona', function ($query) use ($search) {
+            if ($search) {
+                $query->where('primer_nombre', 'like', "%{$search}%")
+                ->orWhere('segundo_nombre', 'like', "%{$search}%")
+                ->orWhere('primer_apellido', 'like', "%{$search}%")
+                ->orWhere('segundo_apellido', 'like', "%{$search}%")
+                ->orWhere('numero_documento', 'like', "%{$search}%");
+            }
+        })->paginate(10);
         return view('Instructores.index', compact('instructores'));
     }
 
@@ -262,6 +273,7 @@ class InstructorController extends Controller
                         'persona_id' => $persona->id,
                     ]);
 
+                    $user->assignRole('INSTRUCTOR');
                     Instructor::create([
                         'persona_id' => $persona->id,
                         'regional_id' => 1,
