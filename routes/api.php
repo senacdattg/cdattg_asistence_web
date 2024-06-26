@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('parametroApi', [ParametroController::class, 'apiIndex'])->name('api.parametro.index');
-Route::get('fichaCaracterizacion/apiIndex', [FichaCaracterizacionController::class, 'apiIndex'])->name('api.fichaCaracterizacion.index');
+Route::get('fichaCaracterizacion/apiIndex', [FichaCaracterizacionController::class, 'apiIndex'])->name('api.fichaCaracterizacion.index')->middleware('auth:sanctum');
 Route::get('fichaCaracterizacion/apiShow', [FichaCaracterizacionController::class, 'apiShow']);
 Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::class, 'apiStore']);
 // http://127.0.0.1:8000/api/fichaCaracterizacion/apiStore
@@ -44,7 +44,7 @@ Route::get('apiCargarMunicipios', [MunicipioController::class, 'apiCargarMunicip
 Route::get('apiCargarSedes', [SedeController::class, 'apiCargarSedes']);
 Route::get('apiCargarBloques', [BloqueController::class, 'apiCargarBloques']);
 Route::get('apiCargarPisos', [PisoController::class, 'apiCargarPisos']);
-Route::get('apiCargarAmbientes', [AmbienteController::class, 'apiCargarAmbientes']);
+Route::get('apiCargarAmbientes', [AmbienteController::class, 'apiCargarAmbientes'])->middleware('auth:sanctum');
 
 
 route::post('authenticate', [LoginController::class, 'authenticate']);
