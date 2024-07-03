@@ -37,24 +37,12 @@ class EntradaSalidaController extends Controller
     {
         $fichaCaracterizacion = $request->ficha_id;
         $instructor = $request->instructor_id;
-        // $ambiente_id = $request->ambiente_id;
-
-        // $ambiente = Ambiente::where('id', $ambiente_id)->first();
-        // $descripcion = $request->descripcion;
-        // $fecha = Carbon::now()->toDateString();
-        // @dd($ficha);
-        // $ficha = FichaCaracterizacion::where('id', $fichaCaracterizacion)->first();
         // Obtén todos los registros de entrada/salida del usuario actual
         $registros = EntradaSalida::where('instructor_user_id', $instructor)
             ->where('fecha', Carbon::now()->toDateString())
             ->where('ficha_caracterizacion_id', $fichaCaracterizacion)
             ->where('listado', null)->get();
-        // @dd($registros);
-        // $datos = [
-        //     // "ficha_caracterizacion" => $ficha,
-        //     // "fecha" => $fecha,
-        //     "registros" => $registros
-        // ];
+
         return response()->json($registros, 200);
     }
     public function registros(Request $request)
@@ -92,12 +80,15 @@ class EntradaSalidaController extends Controller
         $ficha_caracterizacion_id = $request->ficha_caracterizacion_id;
         $aprendiz = $request->aprendiz;
         $instructor_user_id = $request->instructor_user_id;
+        $ambiente_id = $request->ambiente_id;
+        // @dd($ambiente_id);
         $entradaSalida = EntradaSalida::create([
             'fecha' => Carbon::now()->toDateString(),
             'instructor_user_id' => $instructor_user_id,
             'aprendiz' => $aprendiz,
             'entrada' => Carbon::now(),
             'ficha_caracterizacion_id' => $ficha_caracterizacion_id,
+            'ambiente_id' => $ambiente_id,
         ]);
         if ($entradaSalida) {
 
