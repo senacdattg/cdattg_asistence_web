@@ -5,6 +5,7 @@ use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\MunicipioController;
@@ -29,7 +30,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::middleware('auth:sanctum')->group(function(){
+
     Route::get('parametroApi', [ParametroController::class, 'apiIndex'])->name('api.parametro.index');
+    Route::get('apiGetTipoDocumentos', [ParametroController::class, 'apiGetTipoDocumentos']);
+    Route::get('apiGetGeneros', [ParametroController::class, 'apiGetGeneros']);
     Route::get('fichaCaracterizacion/apiIndex', [FichaCaracterizacionController::class, 'apiIndex']);
     Route::get('fichaCaracterizacion/apiShow', [FichaCaracterizacionController::class, 'apiShow']);
     Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::class, 'apiStore']);
@@ -38,6 +42,8 @@ Route::middleware('auth:sanctum')->group(function(){
     // http://127.0.0.1:8000/api/entradaSalida/apiIndex/1
     Route::post('entradaSalida/apiStoreEntradaSalida', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
     Route::post('entradaSalida/apiUpdateEntradaSalida', [EntradaSalidaController::class, 'apiUpdateEntradaSalida']);
+    // ruta para actualizar perfil de instructor
+    Route::post('instructor/apiUpdate', [InstructorController::class, 'apiUpdate']);
 
     // select dinamico
     Route::get('apiCargarDepartamentos', [DepartamentoController::class, 'apiCargarDepartamentos']);

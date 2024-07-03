@@ -74,6 +74,8 @@ class InstructorController extends Controller
      */
     public function store(StoreInstructorRequest $request)
     {
+        $fechaNacimiento = $request->fecha_de_nacimiento;
+        @dd($fechaNacimiento);
         try {
             DB::beginTransaction();
             // Crear Persona
@@ -180,6 +182,60 @@ class InstructorController extends Controller
             // @dd($e);
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.' . $e->getMessage());
+        }
+    }
+    public function ApiUpdate(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $personaD = Persona::find($request->persona_id);
+            $personaD->update([
+                'tipo_documento' => $request->tipo_documento,
+                'numero_documento' => $request->numero_documento,
+                'primer_nombre' => $request->primer_nombre,
+                'segundo_nombre' => $request->segundo_nombre,
+                'primer_apellido' => $request->primer_apellido,
+                'segundo_apellido' => $request->segundo_apellido,
+                'fecha_de_nacimiento' => $request->fecha_de_nacimiento,
+                'genero' => $request->genero,
+                'email' => $request->email,
+            ]);
+            // actualizar Usuario asociado a la Persona
+            // Actualizar Usuario asociado a la Persona
+            $user = User::where('persona_id', $request->persona_id)->first();
+            if ($user) {
+                $user->update([
+                    'email' => $request->email,
+                    'password' => Hash::make($request->numero_documento),
+                ]);
+                // Refrescar el modelo del usuario
+                $user = $user->fresh();
+            }
+            DB::commit();
+            $user->refresh();
+            $token = $user->createToken('Token Name')->plainTextToken; // Generar el token
+            $personaD->refresh();
+            $persona = [
+                "id" => $personaD->id,
+                "tipo_documento" => $personaD->tipoDocumento->name,
+                "numero_documento" => $personaD->numero_documento,
+                "primer_nombre" => $personaD->primer_nombre,
+                "segundo_nombre" => $personaD->segundo_nombre,
+                "primer_apellido" => $personaD->primer_apellido,
+                "segundo_apellido" => $personaD->segundo_apellido,
+                "fecha_de_nacimiento" => $personaD->fecha_de_nacimiento,
+                "genero" => $personaD->tipoGenero->name,
+                "email" => $personaD->email,
+                "created_at" => $personaD->created_at,
+                "updated_at" => $personaD->updated_at,
+                "instructor_id" => $personaD->instructor->id,
+                "regional_id" => $personaD->instructor->regional->id,
+            ];
+            // Retornar la respuesta JSON incluyendo el token
+            return response()->json(['user' => $user, 'persona' => $persona, 'token' => $token], 200);
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

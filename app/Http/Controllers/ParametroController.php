@@ -8,6 +8,7 @@ use App\Http\Requests\StoreparametroRequest;
 use App\Http\Requests\UpdateparametroRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
+use App\Models\Tema;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -139,7 +140,32 @@ class ParametroController extends Controller
     {
 
     }
-
+    public function apiGetTipoDocumentos(){
+        // llamar los tipos de documentos
+        $consultaDocumentos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(2);
+        foreach($consultaDocumentos->parametros as $consultaDocumento){
+            $documentos[] = [
+                'id' => $consultaDocumento->id,
+                'name' => $consultaDocumento->name,
+            ];
+        }
+        return response()->json($documentos, 200);
+    }
+    public function apiGetGeneros(){
+        // llamar los generos
+        $consultaGeneros = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1)->get();
+        }])->findOrFail(3);
+        foreach ($consultaGeneros->parametros as $consultaGenero) {
+            $generos[]= [
+                'id' => $consultaGenero->id,
+                'name' => $consultaGenero->name,
+            ];
+        }
+        return response()->json($generos, 200);
+    }
 
 
 }
