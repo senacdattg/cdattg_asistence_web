@@ -141,6 +141,53 @@ class EntradaSalidaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
         }
     }
+    public function apiListarEntradaSalida(Request $request)
+    {
+        // Obtener la fecha actual
+        $fechaHoy = Carbon::now()->toDateString();
+
+        // Realizar la consulta inicial
+        $entradaSalidas = EntradaSalida::where('fecha', $fechaHoy)
+            ->where('instructor_user_id', $request->instructor_user_id)
+            ->where('ficha_caracterizacion_id', $request->ficha_caracterizacion_id)
+            ->where('ambiente_id', $request->ambiente_id)
+            ->where('listado', null)
+            ->get();
+
+        try {
+            DB::beginTransaction();
+
+            // Verificar si hay resultados en la consulta inicial
+            if ($entradaSalidas->isNotEmpty()) {
+                foreach ($entradaSalidas as $entradaSalida) {
+                    $entradaSalida->update([
+                        'listado' => 1,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            // Realizar una nueva consulta para verificar las actualizaciones
+            $entradaSalidasNew = EntradaSalida::where('fecha', $fechaHoy)
+                ->where('instructor_user_id', $request->instructor_user_id)
+                ->where('ficha_caracterizacion_id', $request->ficha_caracterizacion_id)
+                ->where('ambiente_id', $request->ambiente_id)
+                ->where('listado', 1)
+                ->get();
+
+            // Verificar si la nueva consulta tiene resultados
+            if ($entradaSalidasNew->isNotEmpty()) {
+                return response()->json('Listado exitosamente', 200);
+            } else {
+                return response()->json('No se encontraron registros actualizados', 404);
+            }
+        } catch (QueryException $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al listar: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function store(StoreEntradaSalidaRequest $request)
     {
         @dd('holis');
