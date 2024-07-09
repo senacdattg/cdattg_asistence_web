@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::class, 'apiStore']);
     // http://127.0.0.1:8000/api/fichaCaracterizacion/apiStore
     Route::get('entradaSalida/apiIndex', [EntradaSalidaController::class, 'apiIndex']);
+    Route::post('entradaSalida/apiListarEntradaSalida', [EntradaSalidaController::class, 'apiListarEntradaSalida']);
     // http://127.0.0.1:8000/api/entradaSalida/apiIndex/1
     Route::post('entradaSalida/apiStoreEntradaSalida', [EntradaSalidaController::class, 'apiStoreEntradaSalida']);
     Route::post('entradaSalida/apiUpdateEntradaSalida', [EntradaSalidaController::class, 'apiUpdateEntradaSalida']);

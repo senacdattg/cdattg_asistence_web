@@ -75,7 +75,7 @@ class InstructorController extends Controller
     public function store(StoreInstructorRequest $request)
     {
         $fechaNacimiento = $request->fecha_de_nacimiento;
-        @dd($fechaNacimiento);
+        // @dd($fechaNacimiento);
         try {
             DB::beginTransaction();
             // Crear Persona

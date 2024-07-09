@@ -18,6 +18,7 @@ class EntradaSalida extends Model
         'salida',
         'ficha_caracterizacion_id',
         'listado',
+        'ambiente_id'
     ];
 
     public function instructor()
