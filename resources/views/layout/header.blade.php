@@ -39,7 +39,8 @@
 
                 <li class="nav-item dropdown user-menu ml-auto ">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
+                        <img src="
+                        {{ asset('dist/img/LogoSena.png') }}" class="user-image img-circle elevation-2"
                             alt="User Image">
                         <span class="d-none d-md-inline">{{ Auth::user()->persona->primer_nombre }}
                             {{ Auth::user()->persona->primer_apellido }}</span>
@@ -47,7 +48,8 @@
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
                         <li class="user-header bg-primary">
-                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="
+                            {{ asset('dist/img/LogoSena.png') }}" class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ Auth::user()->persona->primer_nombre }} {{ Auth::user()->persona->primer_apellido }}
                                 {{-- <small>Member since Nov. 2012</small> --}}

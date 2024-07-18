@@ -12,7 +12,7 @@
                 {{-- logo del sena --}}
                 <div class="card-body ">
                     <div class="d-flex justify-content-center">
-                        <img src="{{ asset('dist/img/LogoSena.jpeg') }}" alt="Logo del sena"
+                        <img src="{{ asset('dist/img/LogoSena.png') }}" alt="Logo del sena"
                             style="width: 150px; height: auto;">
                     </div>
                     <br>
