@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ficha_caracterizacions', function (Blueprint $table) {
+        Schema::create('fichas_caracterizacion', function (Blueprint $table) {
             $table->id();
-            $table->string('ficha')->nullable();
-            $table->string('nombre_curso')->nullable();
-            $table->string('codigo_programa')->nullable();
-            $table->integer('horas_formacion')->nullable();
-            $table->integer('cupo')->nullable();
-            $table->string('dias_de_formacion')->nullable();
+            $table->bigInteger('numero_ficha'); 
+            $table->integer('status')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

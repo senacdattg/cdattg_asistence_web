@@ -265,28 +265,39 @@
                     </ul>
                 </li>
                 @endcan
-                {{-- @endif --}}
-                {{-- @if (auth()->user()->hasRole(['INSTRUCTOR']))
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-users"></i>
-                            <p>
-                                Asistencia
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('fichaCaracterizacion.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Asistencia</p>
-                                </a>
-                            </li>
+              
+                {{-- administrar caracterizacion de programas --}}
+                
+               @can('VER PROGRAMA DE CARACTERIZACION')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar programas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Programas</p>
+                            </a>
+                        </li>
+                        @can('CREAR PROGRAMA DE CARACTERIZACION')
 
-
-                        </ul>
-                    </li>
-                @endif --}}
+                        <li class="nav-item">
+                            <a href="{{ route('programaCaracterizacion.index') }}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear Programa</p>
+                            </a>
+                        </li>
+                        @endcan
+                    </ul>
+                </li>
+                @endcan
+                
+    
                 @haspermission('ASIGNAR PERMISOS')
                     {{-- @can('ASIGNAR PERMISOS') --}}
                     <li class="nav-item">

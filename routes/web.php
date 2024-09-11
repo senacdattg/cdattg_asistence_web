@@ -21,6 +21,7 @@ use App\Models\EntradaSalida;
 use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\PermisoController;
+use App\Http\Controllers\ProgramaCaracterizacionController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
@@ -50,6 +51,17 @@ Route::middleware('auth')->group(function () {
     route::middleware('can:EDITAR INSTRUCTOR')->group(function () {
         Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
     });
+
+
+    //rutas para ProgramaCaractizacionController
+
+    // Rutas para ProgramaCaracterizacionController
+    Route::resource('programaCaracterizacion', ProgramaCaracterizacionController::class);
+    route::middleware('can:EDITAR PROGRAMA CARACTERIZACION')->group(function () {
+        Route::get('/programa/caraterizacion', [ProgramaCaracterizacionController::class, 'index']); 
+                                                                                   
+    });
+
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);
