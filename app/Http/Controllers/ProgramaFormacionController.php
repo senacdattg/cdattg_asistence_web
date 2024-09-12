@@ -18,9 +18,6 @@ class ProgramaFormacionController extends Controller
         if(count($programas) == 0){
             $programas = null;
         }
-
-
-
         return view('programas.index', compact('programas'));
     }
 
@@ -94,5 +91,27 @@ class ProgramaFormacionController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Search for a specific resource in storage.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+        $programas = ProgramaFormacion::where('nombre', 'LIKE', "%{$query}%")
+            ->orWhereHas('sede', function($q) use ($query) {
+                $q->where('nombre', 'LIKE', "%{$query}%");
+            })
+            ->orWhereHas('tipoPrograma', function($q) use ($query) {
+                $q->where('nombre', 'LIKE', "%{$query}%");
+            })
+            ->get();
+
+        if(count($programas) == 0){
+            $programas = null;
+        }
+
+        return view('programas.index', compact('programas'));
     }
 }

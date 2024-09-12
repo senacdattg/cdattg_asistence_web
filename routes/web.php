@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/programa/index', [ProgramaFormacionController::class, 'index']); 
         Route::get('/programa/create', [ProgramaFormacionController::class, 'create']); 
         Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save'); 
+        Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');
        
                                                                                    
     });
