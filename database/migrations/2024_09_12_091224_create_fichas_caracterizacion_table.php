@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('fichas_caracterizacion', function (Blueprint $table) {
             $table->id();
             $table->foreignId('programa_formacion_id')->constrained('programas_formacion');
+            $table->foreignId('instructor_id')->constrained('instructors');
             $table->bigInteger('ficha');
             $table->timestamps();
         });

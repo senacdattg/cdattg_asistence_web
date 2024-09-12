@@ -22,6 +22,7 @@ use App\Models\FichaCaracterizacion;
 use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\PermisoController;
 use App\Http\Controllers\ProgramaCaracterizacionController;
+use App\Http\Controllers\ProgramaFormacionController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
@@ -56,9 +57,9 @@ Route::middleware('auth')->group(function () {
     //rutas para ProgramaCaractizacionController
 
     // Rutas para ProgramaCaracterizacionController
-    Route::resource('programaCaracterizacion', ProgramaCaracterizacionController::class);
+    Route::resource('programaCaracterizacion', ProgramaFormacionController::class);
     route::middleware('can:EDITAR PROGRAMA CARACTERIZACION')->group(function () {
-        Route::get('/programa/caraterizacion', [ProgramaCaracterizacionController::class, 'index']); 
+        Route::get('/programa/caraterizacion', [ProgramaFormacionController::class, 'index']); 
                                                                                    
     });
 

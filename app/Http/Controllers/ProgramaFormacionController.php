@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProgramaCaracterizacionController extends Controller
+class ProgramaFormacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('programasCaracterizacion.create'); 
+        return view('programas.create');
     }
 
     /**
