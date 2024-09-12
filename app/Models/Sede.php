@@ -39,4 +39,9 @@ class Sede extends Model
     public function regional(){
         return $this->belongsTo(Regional::class, 'regional_id');
     }
+
+    public function programasFormacion()
+    {
+        return $this->hasMany(ProgramaFormacion::class, 'sede_id');
+    }
 }

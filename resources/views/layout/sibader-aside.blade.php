@@ -281,18 +281,15 @@
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Programas</p>
+                                <p>Ver Programas</p>
                             </a>
                         </li>
-                        @can('CREAR PROGRAMA DE CARACTERIZACION')
-
                         <li class="nav-item">
-                            <a href="{{ route('programaCaracterizacion.index') }}" class="nav-link">
+                            <a href="{{ route('programaCaracterizacion.create') }}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear Programa</p>
                             </a>
                         </li>
-                        @endcan
                     </ul>
                 </li>
                 @endcan

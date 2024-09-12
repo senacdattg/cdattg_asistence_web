@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProgramaFormacion;
+use App\Models\Sede;
+use App\Models\TipoPrograma;
 use Illuminate\Http\Request;
 
 class ProgramaFormacionController extends Controller
@@ -11,7 +14,14 @@ class ProgramaFormacionController extends Controller
      */
     public function index()
     {
-        return view('programas.create');
+        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->get();
+        if(count($programas) == 0){
+            $programas = null;
+        }
+
+
+
+        return view('programas.index', compact('programas'));
     }
 
     /**
@@ -19,7 +29,19 @@ class ProgramaFormacionController extends Controller
      */
     public function create()
     {
-        //
+        $sedes = Sede::all();
+        $tipos = TipoPrograma::all();
+
+
+        if(count($sedes) == 0){
+            $sedes = null; 
+        }
+        
+        if(count($tipos) == 0){
+            $tipos = null; 
+        }
+
+        return view('programas.create', compact('sedes', 'tipos'));
     }
 
     /**
@@ -27,7 +49,19 @@ class ProgramaFormacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre_programa' => 'required|string|max:255|unique:programas_formacion,nombre',
+            'sede_id' => 'required|exists:sedes,id',
+            'tipo_programa_id' => 'required|exists:tipos_programas,id',
+        ]);
+
+        $programaFormacion = new ProgramaFormacion();
+        $programaFormacion->nombre = $request->input('nombre_programa');
+        $programaFormacion->sede_id = $request->input('sede_id');
+        $programaFormacion->tipo_programa_id = $request->input('tipo_programa_id');
+        $programaFormacion->save();
+
+        return redirect('programa/index')->with('success', 'Programa de formación creado exitosamente.');
     }
 
     /**
@@ -35,7 +69,7 @@ class ProgramaFormacionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('direccion');
             $table->foreignId('user_create_id')->constrained('users');
             $table->foreignId('user_edit_id')->constrained('users');
+            $table->foreignId('programa_formacion_id')->constrained('programas_formacion');
             $table->boolean('status')->default(1);
             $table->timestamps();
 

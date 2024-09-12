@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProgramaFormacion extends Model
 {
+    protected $table = 'programas_formacion';
     use HasFactory;
 
     public function ficha()
     {
-        return $this->hasMany(FichaCaracterizacion::class);
+        return $this->belongsTo(FichaCaracterizacion::class);
     }
 
     public function caracterizacionPrograma()
@@ -19,10 +20,12 @@ class ProgramaFormacion extends Model
         return $this->belongsTo(CaracterizacionPrograma::class);
     }
 
-    public function sedes()
+    public function sede()
     {
-        return $this->hasMany(Sede::class);
+        return $this->belongsTo(Sede::class);
     }
+
+   
 
     public function tipoPrograma()
     {

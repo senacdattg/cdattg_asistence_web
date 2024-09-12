@@ -58,8 +58,11 @@ Route::middleware('auth')->group(function () {
 
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaCaracterizacion', ProgramaFormacionController::class);
-    route::middleware('can:EDITAR PROGRAMA CARACTERIZACION')->group(function () {
-        Route::get('/programa/caraterizacion', [ProgramaFormacionController::class, 'index']); 
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/programa/index', [ProgramaFormacionController::class, 'index']); 
+        Route::get('/programa/create', [ProgramaFormacionController::class, 'create']); 
+        Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save'); 
+       
                                                                                    
     });
 
