@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('programas_formacion', function (Blueprint $table) {
+        Schema::create('jornadas_formacion', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('codigo')->unique();
-            $table->foreignId('tipo_programa_id')->constrained('tipos_programa');
-            $table->string('nombre');
-            $table->text('descripcion')->nullable();
-            $table->double('duracion'); // Duración en horas
+            $table->string('jornada'); 
             $table->timestamps();
         });
     }
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programas_formacion');
+        Schema::dropIfExists('jornadas_formacion');
     }
 };

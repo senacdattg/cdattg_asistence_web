@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('caracterizacion_programas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ficha_id')->constrained('fichas_caracterizacion'); 
-            $table->foreignId('instructor_id')->constrained('instructors'); 
-            $table->foreignId('programa_id')->constrained('programas_formacion'); 
+            $table->foreignId('ficha_id')->constrained('fichas_caracterizacion');
+            $table->foreignId('programa_formacion_id')->constrained('programas_formacion');
+            $table->foreignId('instructor_id')->constrained('instructors');
+            $table->foreignId('jornada_id')->constrained('jornadas_formacion'); 
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('caracterizacion_programas');
+        Schema::dropIfExists('programas_caracterizacion');
     }
 };
