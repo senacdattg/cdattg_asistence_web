@@ -24,4 +24,9 @@ class FichaCaracterizacion extends Model
     {
         return $this->belongsTo(ProgramaFormacion::class);
     }
+
+    public function caracterizacionPrograma()
+    {
+        return $this->belongsTo(CaracterizacionPrograma::class);
+    }
 }

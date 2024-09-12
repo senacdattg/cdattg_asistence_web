@@ -14,7 +14,19 @@ class ProgramaFormacion extends Model
         return $this->hasMany(FichaCaracterizacion::class);
     }
 
-    
+    public function caracterizacionPrograma()
+    {
+        return $this->belongsTo(CaracterizacionPrograma::class);
+    }
 
+    public function sedes()
+    {
+        return $this->hasMany(Sede::class);
+    }
+
+    public function tipoPrograma()
+    {
+        return $this->belongsTo(TipoPrograma::class);
+    }
 
 }
