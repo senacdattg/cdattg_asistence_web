@@ -112,7 +112,11 @@ class ProgramaFormacionController extends Controller
      */
     public function destroy(string $id)
     {
-        
+       
+        $programaFormacion = ProgramaFormacion::findOrFail($id);
+        $programaFormacion->delete();
+
+        return redirect('programa/index')->with('success', 'Programa de formación eliminado exitosamente.');
     }
 
     /**

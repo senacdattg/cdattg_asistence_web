@@ -29,7 +29,7 @@
                 <div class="card-header">
                     <form method="get" action="{{ route('programa.search') }}">
                         <div class="input-group">
-                            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o documento" value="{{ request()->get('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre de programa" value="{{ request()->get('search') }}">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i> Buscar
@@ -77,7 +77,7 @@
                                             <a href="/programa/{{$progrma->id}}/edit" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i> 
                                             </a>
-                                            <form action="" method="POST" style="display:inline;">
+                                            <form action="{{ route('programa.destroy', ['id' => $progrma->id]) }}" method="POST" style="display:inline;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este programa?')">
