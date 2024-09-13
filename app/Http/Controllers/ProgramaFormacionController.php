@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProgramaFormacion;
 use App\Models\Sede;
 use App\Models\TipoPrograma;
+use Database\Seeders\TiposProgramas;
 use Illuminate\Http\Request;
 
 class ProgramaFormacionController extends Controller
@@ -14,8 +15,8 @@ class ProgramaFormacionController extends Controller
      */
     public function index()
     {
-        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->get();
-        if(count($programas) == 0){
+        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->paginate(7);
+        if($programas == null){
             $programas = null;
         }
         return view('programas.index', compact('programas'));
@@ -74,7 +75,15 @@ class ProgramaFormacionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $programa = ProgramaFormacion::findOrFail($id);
+        $sedes = Sede::all();
+        $tipos = TipoPrograma::all(); 
+
+        if($programa == null){
+            $programa = null; 
+        }
+
+        return view('programas.edit', compact('programa', 'sedes', 'tipos'));
     }
 
     /**
@@ -82,7 +91,20 @@ class ProgramaFormacionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+   
+        $request->validate([
+            'nombre_programa' => 'required|string|max:255|unique:programas_formacion,nombre,' . $id,
+            'sede_id' => 'required|exists:sedes,id',
+            'tipo_programa_id' => 'required|exists:tipos_programas,id',
+        ]);
+
+        $programaFormacion = ProgramaFormacion::findOrFail($id);
+        $programaFormacion->nombre = $request->input('nombre_programa');
+        $programaFormacion->sede_id = $request->input('sede_id');
+        $programaFormacion->tipo_programa_id = $request->input('tipo_programa_id');
+        $programaFormacion->save();
+
+        return redirect('programa/index')->with('success', 'Programa de formación actualizado exitosamente.');
     }
 
     /**
@@ -90,7 +112,7 @@ class ProgramaFormacionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 
     /**

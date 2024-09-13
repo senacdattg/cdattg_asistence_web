@@ -16,4 +16,10 @@ class TipoPrograma extends Model
     {
         return $this->hasMany(ProgramaFormacion::class);
     }
+
+    public function programaFormacion()
+    {
+        return $this->belongsTo(ProgramaFormacion::class);
+    }
+
 }

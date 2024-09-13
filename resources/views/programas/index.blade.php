@@ -2,8 +2,8 @@
 @section('content')
     <div class="content-wrapper">
 
-        <section class="content-header">
-            <div class="container-fluid">
+        <section class="content-header mt-3">
+            <div class="container-fluid mt-3">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Programas de formación
@@ -69,11 +69,12 @@
                                         {{$progrma->sede->sede}}
                                     </td>
                                     <td>
+                                        @can('VER PROGRAMA DE CARACTERIZACION')
                                         <div class="btn-group" role="group" aria-label="Acciones" style="gap: 10px;">
                                             <a href="" class="btn btn-info btn-sm">
                                                 <i class="fas fa-eye"></i> 
                                             </a>
-                                            <a href="" class="btn btn-warning btn-sm">
+                                            <a href="/programa/{{$progrma->id}}/edit" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i> 
                                             </a>
                                             <form action="" method="POST" style="display:inline;">
@@ -84,6 +85,7 @@
                                                 </button>
                                             </form>
                                         </div>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
@@ -91,6 +93,10 @@
                     </table>
                 </div>
             </div>
+            <div class="card-footer clearfix">
+                {{ $programas->links() }}
+            </div>
+            
     </div>
 
 @endsection

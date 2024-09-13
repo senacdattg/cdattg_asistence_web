@@ -279,13 +279,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="/programa/index" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ver Programas</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('programaCaracterizacion.create') }}" class="nav-link">
+                            <a href="/programa/create" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear Programa</p>
                             </a>
@@ -293,6 +293,35 @@
                     </ul>
                 </li>
                 @endcan
+
+                {{-- caracterizacion --}}
+                @can('VER PROGRAMA DE CARACTERIZACION')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Caracterizacion
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver Fichas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/caracterizacion/create" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear Fichas</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+
+
                 
     
                 @haspermission('ASIGNAR PERMISOS')

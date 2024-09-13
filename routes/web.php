@@ -4,6 +4,7 @@ use App\Http\Controllers\AmbienteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
+use App\Http\Controllers\CaracterizacionController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
@@ -57,16 +58,22 @@ Route::middleware('auth')->group(function () {
     //rutas para ProgramaCaractizacionController
 
     // Rutas para ProgramaCaracterizacionController
-    Route::resource('programaCaracterizacion', ProgramaFormacionController::class);
+    Route::resource('programaFormacion', ProgramaFormacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
         Route::get('/programa/index', [ProgramaFormacionController::class, 'index']); 
         Route::get('/programa/create', [ProgramaFormacionController::class, 'create']); 
         Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save'); 
-        Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');
-       
-                                                                                   
+        Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');   
+        Route::get('/programa/{id}/edit', [ProgramaFormacionController::class, 'edit'])->name('programa.edit');
+        Route::post('/programa/{id}', [ProgramaFormacionController::class, 'update'])->name('programa.update');
+        Route::delete('/programa/{id}', [ProgramaFormacionController::class, 'destroy'])->name('programa.destroy');
     });
 
+    // Rutas para CaracterizacionController
+    Route::resource('caracterizacion', CaracterizacionController::class);
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
+    });
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);

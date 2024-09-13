@@ -76,6 +76,7 @@ return new class extends Migration
         $crearProgramaCaracterizacion = Permission::firstOrCreate(['name' => 'CREAR PROGRAMA DE CARACTERIZACION']);
         $editarProgramaCaracterizacion = Permission::firstOrCreate(['name' => 'EDITAR PROGRAMA DE CARACTERIZACION']);
         $eliminarProgramaCaracterizacion = Permission::firstOrCreate(['name' => 'ELIMINAR PROGRAMA DE CARACTERIZACION']);
+        $manipularCaracterizacion = Permission::findOrCreate(['name' => 'MANIPULAR CARACTERIZACION']); 
 
         // asignacion de permisos
         $superAdministrador->givePermissionTo(
@@ -112,6 +113,7 @@ return new class extends Migration
             $crearProgramaCaracterizacion,  
             $editarProgramaCaracterizacion,
             $eliminarProgramaCaracterizacion,
+            $manipularCaracterizacion,
         );
         $administrador->givePermissionTo(
             $crearFichaCaracterizacion,
