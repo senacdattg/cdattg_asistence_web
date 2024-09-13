@@ -1,0 +1,14 @@
+.select2-container {
+    width: 100% !important;
+}
+.select2-selection--single {
+    height: calc(1.5em + .75rem + 2px) !important;
+    padding: .375rem .75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+    border: 1px solid #ced4da !important;
+    border-radius: .25rem !important;
+}
+.select2-selection__arrow {
+    height: calc(1.5em + .75rem + 2px) !important;
+}

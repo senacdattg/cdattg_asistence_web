@@ -69,11 +69,24 @@ Route::middleware('auth')->group(function () {
         Route::delete('/programa/{id}', [ProgramaFormacionController::class, 'destroy'])->name('programa.destroy');
     });
 
-    // Rutas para CaracterizacionController
-    Route::resource('caracterizacion', CaracterizacionController::class);
+  
+    // Rutas para FichasCaracterizacionController
+    Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-        Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
+        Route::get('/fichaCaracterizacion/create', [FichaCaracterizacionController::class, 'create'])->name('fichaCaracterizacion.create');
+        Route::post('/fichaCaracterizacion/store', [FichaCaracterizacionController::class, 'store'])->name('fichaCaracterizacion.store');
+        Route::get('/fichaCaracterizacion/{id}/edit', [FichaCaracterizacionController::class, 'edit'])->name('ficha.edit');
+        Route::post('/fichaCaracterizacion/{id}', [FichaCaracterizacionController::class, 'update'])->name('ficha.update');
+        Route::delete('/fichaCaracterizacion/{id}', [FichaCaracterizacionController::class, 'destroy'])->name('ficha.destroy');
+        Route::get('/ficha/index', [FichaCaracterizacionController::class, 'index'])->name('ficha.index');
     });
+
+      // Rutas para CaracterizacionController
+      Route::resource('caracterizacion', CaracterizacionController::class);
+      route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+          Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
+          Route::post('/caracterizacion/store', [CaracterizacionController::class, 'store'])->name('caracterizacion.store');
+      });
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);
@@ -91,12 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('generarCSV/{ficha}', [EntradaSalidaController::class, 'generarCSV'])->name('entradaSalida.generarCSV');
 
 
-    // Rutas oara fucha de caracterizacion
-    Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
-    route::middleware('can:EDITAR FICHA DE CARACTERIZACION')->group(function () {
-        Route::post('updateInstructoresFichaCaracterizacion', [FichaCaracterizacionController::class, 'updateinstructoresFichaCaracterizacion'])->name('fichaCaracterizacion.updateinstructoresFichaCaracterizacion');
-        Route::put('cambiarEstadoFichaCaracterizacion/{fichaCaracterizacion}', [FichaCaracterizacionController::class, 'cambiarEstadoFichaCaracterizacion'])->name('fichaCaracterizacion.cambiarEstado');
-    });
+    
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');

@@ -8,16 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class FichaCaracterizacion extends Model
 {
     use HasFactory;
+    protected $table = 'fichas_caracterizacion';
     protected $fillable = [
         'programa_formacion_id',
-        'instructor_id',
-        'ficha',
-        
+        'ficha', 
     ];
 
     public function instructores()
     {
-        return $this->hasMany(Instructor::class);
+        return $this->hasMany(Instructor::class, 'instructor_id');
     }
 
     public function programaFormacion()
@@ -29,4 +28,6 @@ class FichaCaracterizacion extends Model
     {
         return $this->belongsTo(CaracterizacionPrograma::class);
     }
+
+
 }

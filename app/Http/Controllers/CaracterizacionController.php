@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaracterizacionPrograma;
+use App\Models\Instructor;
+use App\Models\ProgramaFormacion;
 use Illuminate\Http\Request;
 
 class CaracterizacionController extends Controller
@@ -19,7 +22,7 @@ class CaracterizacionController extends Controller
      */
     public function create()
     {
-        return view('caracterizacion.create'); 
+       
     }
 
     /**
@@ -27,7 +30,7 @@ class CaracterizacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
     }
 
     /**

@@ -30,8 +30,7 @@ class Instructor extends Model
     }
     public function fichas()
     {
-        return $this->belongsToMany(FichaCaracterizacion::class, 'ficha_caracterizacions_instructors', 'instructor_id', 'ficha_id')
-        ->withPivot('status')
-        ->withTimestamps();
+        return $this->hasMany(FichaCaracterizacion::class, 'instructor_id'); 
+       
     }
 }
