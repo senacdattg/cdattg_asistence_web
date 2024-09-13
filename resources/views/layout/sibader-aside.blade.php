@@ -306,7 +306,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/ficha/index" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ver Fichas</p>
                             </a>
@@ -321,6 +321,7 @@
                 </li>
                 @endcan
 
+                {{--caracterizacion de programas --}}
                 @can('VER PROGRAMA DE CARACTERIZACION')
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -338,7 +339,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('fichaCaracterizacion.index')}}" class="nav-link">
+                            <a href="{{route('caracterizacion.create')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear Caracterizacion</p>
                             </a>

@@ -22,7 +22,11 @@ class CaracterizacionController extends Controller
      */
     public function create()
     {
-       
+       return view('caracterizacion.create', [
+           'programas' => ProgramaFormacion::all(),
+           'instructores' => Instructor::all(),
+           'caracterizaciones' => CaracterizacionPrograma::all()
+       ]);
     }
 
     /**
