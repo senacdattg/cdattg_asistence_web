@@ -306,7 +306,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{route('ficha.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ver Fichas</p>
                             </a>
@@ -333,7 +333,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/ficha/index" class="nav-link">
+                            <a href="{{route('caracterizacion.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ver Caracterizacion</p>
                             </a>
@@ -348,9 +348,6 @@
                 </li>
                 @endcan
 
-
-                
-    
                 @haspermission('ASIGNAR PERMISOS')
                     {{-- @can('ASIGNAR PERMISOS') --}}
                     <li class="nav-item">

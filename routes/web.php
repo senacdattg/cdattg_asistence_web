@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
       // Rutas para CaracterizacionController
       Route::resource('caracterizacion', CaracterizacionController::class);
       route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+          Route::get('/caracterizacion/index', [CaracterizacionController::class, 'index'])->name('caracterizacion.index');
           Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
           Route::post('/caracterizacion/store', [CaracterizacionController::class, 'store'])->name('caracterizacion.store');
       });
