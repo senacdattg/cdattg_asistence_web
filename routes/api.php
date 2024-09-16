@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AmbienteController;
 use App\Http\Controllers\BloqueController;
+use App\Http\Controllers\CaracterizacionController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
@@ -37,6 +38,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('fichaCaracterizacion/apiIndex', [FichaCaracterizacionController::class, 'apiIndex']);
     Route::get('fichaCaracterizacion/apiShow', [FichaCaracterizacionController::class, 'apiShow']);
     Route::post('fichaCaracterizacion/apiStore', [FichaCaracterizacionController::class, 'apiStore']);
+
+    //http://127.0.0.1:8000/api/caracterizacion/byInstructor
+    Route::get('caracterizacion/byInstructor/{id}', [CaracterizacionController::class, 'CaracterizacionByInstructor']);
+
     // http://127.0.0.1:8000/api/fichaCaracterizacion/apiStore
     Route::get('entradaSalida/apiIndex', [EntradaSalidaController::class, 'apiIndex']);
     Route::post('entradaSalida/apiListarEntradaSalida', [EntradaSalidaController::class, 'apiListarEntradaSalida']);

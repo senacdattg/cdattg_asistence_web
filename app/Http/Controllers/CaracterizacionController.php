@@ -127,10 +127,20 @@ class CaracterizacionController extends Controller
     }
 
 
-    public function CaracterizacionByInstructor(String $id){
-        $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'jornada', 'sede')
-        ->where('instructor_id', $id)
-        ->get();
+    public function CaracterizacionByInstructor(String $id){ 
+        $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'instructor', 'jornada', 'sede')
+            ->where('instructor_id', $id)
+            ->get()
+            ->map(function ($caracterizacion) {
+                return [
+                    'id' => $caracterizacion->id,
+                    'ficha' => $caracterizacion->ficha->ficha ?? 'N/A',
+                    'programa_formacion' => $caracterizacion->programaFormacion->nombre ?? 'N/A',
+                    'instructor' => $caracterizacion->instructor->persona->primer_nombre ?? 'N/A',
+                    'jornada' => $caracterizacion->jornada->jornada ?? 'N/A',
+                    'sede' => $caracterizacion->sede->sede ?? 'N/A',
+                ];
+            });
 
         return response()->json($caracterizaciones);
     }
