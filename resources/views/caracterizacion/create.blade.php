@@ -20,14 +20,14 @@
                                 <div class="form-group">
                                     <label for="ficha_id">Ficha de Caracterización</label>
                                     <select name="ficha_id" class="form-control" id="sede_id" required>
+                                    @if(count($fichas) > 0)
+                                        @foreach($fichas as $ficha)
+                                            <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">No hay fichas disponibles</option>
+                                    @endif
                                        
-                                        @if(count($fichas) > 0)
-                                            @foreach($fichas as $ficha)
-                                                <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
-                                            @endforeach
-                                        @else
-                                            <option value="">No hay fichas disponibles</option>
-                                        @endif
                                     </select>
                                 </div>
                             </div>
