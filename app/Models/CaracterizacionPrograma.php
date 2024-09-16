@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,31 +8,30 @@ class CaracterizacionPrograma extends Model
 {
     use HasFactory;
 
-    protected $filler = [
-        'tipo_programa_id',
-        'sede_id',
-        'nombre',
-        'duracion',
-    ];
+    protected $table = 'caracterizacion_programas';
 
     public function ficha()
     {
-        return $this->hasOne(FichaCaracterizacion::class);
+        return $this->belongsTo(FichaCaracterizacion::class, 'ficha_id');
     }
 
-    public function instructores()
+    public function instructor()
     {
-        return $this->hasMany(Instructor::class);
+        return $this->belongsTo(Instructor::class, 'instructor_id');
     }
 
-    public function programasFormacion()
+    public function programaFormacion()
     {
-        return $this->hasMany(ProgramaFormacion::class);
+        return $this->belongsTo(ProgramaFormacion::class, 'programa_formacion_id');
     }
 
-    public function sedes()
+    public function jornada()
     {
-        return $this->hasMany(Sede::class);
+        return $this->belongsTo(JornadaFormacion::class, 'jornada_id');
     }
 
+    public function sede()
+    {
+        return $this->belongsTo(Sede::class, 'sede_id');
+    }
 }

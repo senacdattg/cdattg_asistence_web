@@ -32,4 +32,9 @@ class ProgramaFormacion extends Model
         return $this->belongsTo(TipoPrograma::class);
     }
 
+    public function caracterizacionProgramas()
+    {
+        return $this->hasMany(CaracterizacionPrograma::class, 'programa_formacion_id');
+    }
+
 }

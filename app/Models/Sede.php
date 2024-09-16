@@ -44,4 +44,9 @@ class Sede extends Model
     {
         return $this->hasMany(ProgramaFormacion::class, 'sede_id');
     }
+
+    public function caracterizacionProgramas()
+    {
+        return $this->hasMany(CaracterizacionPrograma::class, 'sede_id');
+    }
 }

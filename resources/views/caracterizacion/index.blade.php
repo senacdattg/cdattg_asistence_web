@@ -51,21 +51,24 @@
                                 <th class="text-center" style="width: 15%;">
                                     Jornada
                                 </th>
-                                <th class="text-center" style="width: 20%;">
+                                <th class="text-center" style="width: 16%;">
                                     Sede
                                 </th>
-                                <th class="text-center" style="width: 20%;">
+                                <th class="text-center" style="width: 16%;">
                                     Acciones
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                          
-                            <tr>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                                <td class="text-center"></td>
-                               
+                          @foreach ($caracteres as $caracter)
+                          <tr>
+                                <td class="text-center">{{$caracter->ficha->ficha}}</td>
+                                <td class="text-center">{{$caracter->programaFormacion->nombre}}</td>
+                                <td class="text-center">{{$caracter->instructor->persona->primer_nombre}}</td>
+                                <td class="text-center">{{$caracter->jornada->jornada}}</td>
+                                <td class="text-center">{{$caracter->sede->sede}}</td>
+                                
+                            
                                 <td class="text-center">
                                     @can('VER PROGRAMA DE CARACTERIZACION')
                                     <div class="btn-group d-flex justify-content-center" role="group" aria-label="Acciones" style="gap: 10px;">
@@ -86,6 +89,8 @@
                                     @endcan
                                 </td>
                             </tr>
+                          @endforeach
+                           
                          
                         </tbody>
                     </table>

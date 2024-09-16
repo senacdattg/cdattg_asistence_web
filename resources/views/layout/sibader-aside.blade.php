@@ -333,7 +333,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('caracterizacion.index')}}" class="nav-link">
+                            <a href="{{route('caracter.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Ver Caracterizacion</p>
                             </a>

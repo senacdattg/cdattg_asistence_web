@@ -27,6 +27,7 @@ use App\Http\Controllers\ProgramaFormacionController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
 use App\Http\Middleware\CorsMiddleware;
+use App\Models\CaracterizacionPrograma;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,7 +85,7 @@ Route::middleware('auth')->group(function () {
       // Rutas para CaracterizacionController
       Route::resource('caracterizacion', CaracterizacionController::class);
       route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-          Route::get('/caracterizacion/index', [CaracterizacionController::class, 'index'])->name('caracterizacion.index');
+          Route::get('/caracter/index', [CaracterizacionController::class, 'index'])->name('caracter.index'); 
           Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
           Route::post('/caracterizacion/store', [CaracterizacionController::class, 'store'])->name('caracterizacion.store');
       });

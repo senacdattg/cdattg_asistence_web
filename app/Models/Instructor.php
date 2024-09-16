@@ -33,4 +33,9 @@ class Instructor extends Model
         return $this->hasMany(FichaCaracterizacion::class, 'instructor_id'); 
        
     }
+
+    public function caracterizacionProgramas()
+    {
+        return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
+    }
 }

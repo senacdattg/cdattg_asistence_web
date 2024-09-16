@@ -16,4 +16,9 @@ class JornadaFormacion extends Model
         return $this->hasMany(CaracterizacionPrograma::class);
     }
 
+    public function caracterizacionProgramas()
+    {
+        return $this->hasMany(CaracterizacionPrograma::class, 'jornada_id');
+    }
+
 }

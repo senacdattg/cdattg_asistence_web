@@ -8,7 +8,7 @@ use App\Models\Instructor;
 use App\Models\JornadaFormacion;
 use App\Models\ProgramaFormacion;
 use App\Models\Sede;
-use Database\Seeders\JornadasFormacion;
+
 use Illuminate\Http\Request;
 
 class CaracterizacionController extends Controller
@@ -18,7 +18,9 @@ class CaracterizacionController extends Controller
      */
     public function index()
     {
-      echo "Hola mundo";
+        $caracteres = CaracterizacionPrograma::with('ficha', 'instructor', 'programaFormacion', 'jornada', 'sede')->get();
+
+        return view('caracterizacion.index', compact('caracteres'));
     }
 
     /**
