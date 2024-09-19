@@ -65,7 +65,7 @@ class FichaCaracterizacionController extends Controller
      */
     public function edit(string $id)
     {
-        $ficha = FichaCaracterizacion::findOrFail($id)->paginate(10);
+        $ficha = FichaCaracterizacion::findOrFail($id);
         $programas = ProgramaFormacion::orderBy('nombre', 'asc')->get();
 
         return view('fichas.edit', compact('ficha', 'programas'));

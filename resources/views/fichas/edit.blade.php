@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-left"></div>
-            {{ $programas->links() }}
+            {{-- {{ $programas->links() }} --}}
         </div>
     </section>
 </div>

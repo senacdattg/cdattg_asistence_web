@@ -207,7 +207,7 @@
                         <a href="#" class="nav-link">
                             <i class="fas fa-users"></i>
                             <p>
-                                Administrar instructores
+                                Administrar Personal
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
@@ -231,12 +231,18 @@
                                         <p>Importar CSV</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('instructor.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Crear Vigilante</p>
+                                    </a>
+                                </li>
                             @endcan
                         </ul>
                     </li>
                 @endcan
                 {{-- administrar fichas de caracrerización --}}
-                @can('VER FICHA DE CARACTERIZACION')
+                {{-- @can('VER FICHA DE CARACTERIZACION')
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -264,7 +270,7 @@
                         @endcan
                     </ul>
                 </li>
-                @endcan
+                @endcan --}}
               
                 {{-- administrar caracterizacion de programas --}}
                 
@@ -342,6 +348,32 @@
                             <a href="{{route('caracterizacion.create')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Crear Caracterizacion</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+                {{-- ADMMINISTRACION DE ASISTENCIAS --}}
+                @can('VER PROGRAMA DE CARACTERIZACION')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Asistencias
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consulta por Ficha</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consulta Personalizada</p>
                             </a>
                         </li>
                     </ul>
