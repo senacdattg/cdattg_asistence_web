@@ -17,7 +17,7 @@ class CaracterizacionPrograma extends Model
 
     public function instructor()
     {
-        return $this->belongsTo(Instructor::class, 'instructor_id');
+        return $this->belongsTo(Instructor::class, 'instructor_persona_id');
     }
 
     public function programaFormacion()
@@ -33,5 +33,15 @@ class CaracterizacionPrograma extends Model
     public function sede()
     {
         return $this->belongsTo(Sede::class, 'sede_id');
+    }
+
+    public function persona()
+    {
+        return $this->belongsTo(Persona::class, 'instructor_persona_id');
+    }
+
+    public function asistencias()
+    {
+        return $this->hasMany(AsistenciaAprendiz::class, 'caracterizacion_id');
     }
 }

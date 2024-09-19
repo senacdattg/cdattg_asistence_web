@@ -63,4 +63,10 @@ class Persona extends Model
     {
         return $this->hasOne(Instructor::class);
     }
+    
+    public function caracterizacionProgramas()
+    {
+        return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
+    }
+
 }

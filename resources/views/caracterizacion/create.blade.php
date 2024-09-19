@@ -49,12 +49,12 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="instructor_id">Instructor</label>
-                                    <select name="instructor_id" class="form-control" id="instructor_id" required>
+                                    <label for="instructor_persona_id">Instructor</label>
+                                    <select name="instructor_persona_id" class="form-control" id="instructor_persona_id" required>
                                        
                                         @if(count($instructores) > 0)
                                             @foreach($instructores as $instructor)
-                                                <option value="{{ $instructor->id }}">{{ $instructor->persona->primer_nombre }}</option>
+                                                <option value="{{ $instructor->persona_id }}">{{ $instructor->persona->primer_nombre }}</option>
                                             @endforeach
                                         @else
                                             <option value="">No hay instructores disponibles</option>

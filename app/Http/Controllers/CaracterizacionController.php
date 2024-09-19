@@ -6,10 +6,12 @@ use App\Models\CaracterizacionPrograma;
 use App\Models\FichaCaracterizacion;
 use App\Models\Instructor;
 use App\Models\JornadaFormacion;
+use App\Models\Persona;
 use App\Models\ProgramaFormacion;
 use App\Models\Sede;
-
+use Faker\Provider\ar_EG\Person;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CaracterizacionController extends Controller
 {
@@ -18,7 +20,7 @@ class CaracterizacionController extends Controller
      */
     public function index()
     {
-        $caracteres = CaracterizacionPrograma::with('ficha', 'instructor', 'programaFormacion', 'jornada', 'sede')->get();
+        $caracteres = CaracterizacionPrograma::with('ficha', 'persona', 'programaFormacion', 'jornada', 'sede')->get();
 
         return view('caracterizacion.index', compact('caracteres'));
     }
@@ -43,12 +45,11 @@ class CaracterizacionController extends Controller
     public function store(Request $request)
     {
 
-        
-
+      
     $request->validate([
         'ficha_id' => 'required|exists:fichas_caracterizacion,id',
         'programa_formacion_id' => 'required|exists:programas_formacion,id',
-        'instructor_id' => 'required|exists:instructors,id',
+        'instructor_persona_id' => 'required|exists:instructors,persona_id',
         'jornada_id' => 'required|exists:jornadas_formacion,id',
         'sede_id' => 'required|exists:sedes,id',
     ]);
@@ -56,7 +57,7 @@ class CaracterizacionController extends Controller
     $caracterizacion = new CaracterizacionPrograma();
     $caracterizacion->ficha_id = $request->input('ficha_id');
     $caracterizacion->programa_formacion_id = $request->input('programa_formacion_id');
-    $caracterizacion->instructor_id = $request->input('instructor_id');
+    $caracterizacion->instructor_persona_id = $request->input('instructor_persona_id');
     $caracterizacion->jornada_id = $request->input('jornada_id');
     $caracterizacion->sede_id = $request->input('sede_id');
     
@@ -128,19 +129,20 @@ class CaracterizacionController extends Controller
 
 
     public function CaracterizacionByInstructor(String $id){ 
-        $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'instructor', 'jornada', 'sede')
-            ->where('instructor_id', $id)
+        $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'persona', 'jornada', 'sede')
+            ->where('instructor_persona_id', $id)
             ->get()
             ->map(function ($caracterizacion) {
                 return [
                     'id' => $caracterizacion->id,
                     'ficha' => $caracterizacion->ficha->ficha ?? 'N/A',
                     'programa_formacion' => $caracterizacion->programaFormacion->nombre ?? 'N/A',
-                    'instructor' => $caracterizacion->instructor->persona->primer_nombre ?? 'N/A',
+                    'persona' => $caracterizacion->persona->primer_nombre ?? 'N/A',
                     'jornada' => $caracterizacion->jornada->jornada ?? 'N/A',
                     'sede' => $caracterizacion->sede->sede ?? 'N/A',
                 ];
             });
+
 
         return response()->json($caracterizaciones);
     }

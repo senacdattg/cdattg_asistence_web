@@ -36,6 +36,8 @@ class Instructor extends Model
 
     public function caracterizacionProgramas()
     {
-        return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
+        return $this->hasMany(CaracterizacionPrograma::class, 'instructor_persona_id');
     }
+
+    
 }
