@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AmbienteController;
+use App\Http\Controllers\AsistenciaAprendicesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
@@ -55,9 +56,18 @@ Route::middleware('auth')->group(function () {
         Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
     });
 
+    // Rutas para AsistenciaAprendizController
+    Route::resource('asistenciaAprendiz', AsistenciaAprendicesController::class);
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/asistencia/index', [AsistenciaAprendicesController::class, 'index'])->name('asistencia.index');
+        Route::post('/asistencia/ficha', [AsistenciaAprendicesController::class, 'getAttendanceByFicha'])->name('asistencia.getAttendanceByFicha');
+        Route::post('/asistencia/ficha/fecha', [AsistenciaAprendicesController::class, 'getAttendanceByDateAndFicha'])->name('asistencia.getAttendanceByDateAndFicha');
+        Route::post('/asistencia/ficha/documentos', [AsistenciaAprendicesController::class, 'getDocumentsByFicha'])->name('asistencia.getDocumentsByFicha');
+        Route::post('/asistencia/documento', [AsistenciaAprendicesController::class, 'getAttendanceByDocument'])->name('asistencia.getAttendanceByDocument');
+    });
+
 
     //rutas para ProgramaCaractizacionController
-
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaFormacion', ProgramaFormacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {

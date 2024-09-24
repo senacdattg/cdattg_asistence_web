@@ -24,4 +24,31 @@ class AsistenciaAprendiz extends Model
     {
         return $this->belongsTo(CaracterizacionPrograma::class, 'caracterizacion_id');
     }
+
+    public function ficha()
+    {
+        return $this->hasOneThrough(FichaCaracterizacion::class, CaracterizacionPrograma::class, 'id', 'id', 'caracterizacion_id', 'ficha_id');
+    }
+
+    public function instructor()
+    {
+        return $this->hasOneThrough(Instructor::class, CaracterizacionPrograma::class, 'id', 'id', 'caracterizacion_id', 'instructor_id');
+    }
+
+    public function programa (){
+        return $this->hasOneThrough(ProgramaFormacion::class, 'id', 'id', 'caracterizacion_id', 'programa_formacion_id'); 
+    }
+
+    public function jornada()
+    {
+        return $this->hasOneThrough(JornadaFormacion::class, 'id', 'id', 'caracterizacion_id', 'programa_id');
+    }
+
+    public function sede(){
+        return $this->hasOneThrough(Sede::class, 'id', 'id', 'caracterizacion_id', 'sede_id'); 
+    }
+
+    
+
+    
 }

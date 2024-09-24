@@ -39,9 +39,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // Guardar asistencia de aprendices
     Route::post('asistencia/store', [AsistenciaAprendicesController::class, 'store']);
     Route::post('asistencia/update', [AsistenciaAprendicesController::class, 'update']);
-    Route::get('asistencia/byCaracterizacion/{id}', [AsistenciaAprendicesController::class, 'byCaracterizacion']);
-
-
+    Route::post('asistencia/novedad', [AsistenciaAprendicesController::class, 'assistenceNovedad']);
 });
 
 
