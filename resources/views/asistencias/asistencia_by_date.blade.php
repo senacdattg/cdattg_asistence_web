@@ -44,6 +44,7 @@
                                         <th class="text-center">Documento</th>
                                         <th class="text-center">Entrada</th>
                                         <th class="text-center">Salida</th>
+                                        <th class="text-center">Novedad</th>
                                         <th class="text-center">Fecha</th>
                                     </tr>
                                 </thead>
@@ -56,6 +57,7 @@
                                         <td class="text-center">{{ $asistencia->numero_identificacion }}</td>
                                         <td class="text-center">{{ $asistencia->hora_ingreso }}</td>
                                         <td class="text-center">{{ $asistencia->hora_salida }}</td>
+                                        <td class="text-center">{{ $asistencia->novedad_salida }}</td>
                                         <td class="text-center">{{ $asistencia->created_at->format('Y-m-d') }}</td>
                                     @endforeach
                                 </tbody>

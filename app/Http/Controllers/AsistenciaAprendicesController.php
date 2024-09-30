@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use PHPUnit\Framework\Constraint\Count;
 
 class AsistenciaAprendicesController extends Controller
 {
@@ -143,10 +144,8 @@ class AsistenciaAprendicesController extends Controller
     
     public function update(Request $request)
     {
-        try {
+      
             $data = $request->all();
-            
-            Log::info('Datos de la solicitud HTTP para actualizar:', $data);
 
             if (!isset($data['caracterizacion_id']) || !isset($data['hora_salida']) || !isset($data['fecha'])) {
                 return response()->json(['message' => 'Datos incompletos'], 400);
@@ -159,33 +158,55 @@ class AsistenciaAprendicesController extends Controller
                 ->select('id', 'hora_salida')
                 ->get();
             
-          
-            Log::info('Asistencias encontradas:', ['asistencias' => $asistencias]);
 
-            if ($asistencias->isEmpty()) {
+            if (!$asistencias) {
                 return response()->json(['message' => 'Asistencias no encontradas'], 404);
             }
 
             foreach ($asistencias as $asistencia) {
-                $asistencia->hora_salida = $horaSalida;
+
+                if($asistencia->hora_salida == null){
+                    $asistencia->hora_salida = $horaSalida;
+                }
                 $asistencia->save();
             }
 
             return response()->json(['message' => 'Asistencias actualizadas con éxito'], 200);
-        } catch (Exception $e) {
-            
-            Log::error('Error actualizando asistencias:', ['error' => $e->getMessage()]);
-
-            return response()->json(['message' => 'Error actualizando asistencias', 'error' => $e->getMessage()], 500);
-        }
+        
     }
 
-    public function assistenceNovedad (Request $request){
-        $data = $request->all();
+    public function assistenceNovedad(Request $request)
+    {
+        if (!$request->has('caracterizacion_id') || !$request->has('numero_identificacion') || !$request->has('hora_entrada') || !$request->has('novedad')) {
+            return response()->json(['message' => 'Datos incompletos'], 400);
+        }
+   
+        $caracterizacion_id = $request->input('caracterizacion_id');
+        $numero_identificacion = $request->input('numero_identificacion');
+        $hora_ingreso_peticion = $request->input('hora_entrada');
+        $novedad_salida = $request->input('novedad');
 
-        Log::info('Datos de la solicitud HTTP para actualizar:', $data);
+        
+        $hora_ingreso = Carbon::parse($hora_ingreso_peticion)->format('H:i:s');
 
-        return response()->json(['message' => 'Novedad registrada con éxito'], 200);
+      
+        $asistencia = AsistenciaAprendiz::where('caracterizacion_id', $caracterizacion_id)
+            ->where('numero_identificacion', $numero_identificacion)
+            ->where('hora_ingreso', $hora_ingreso)
+            ->first();
+
+        if($asistencia){
+            $asistencia->hora_salida = Carbon::now();
+            $asistencia->novedad_salida = $novedad_salida;
+            $asistencia->save();
+
+            return response()->json(['message' => 'Solicitud de respuesta acepta'], 200);
+        }
+
+        if (!$asistencia) {
+            return response()->json(['message' => 'No se encontró asistencia'], 404);
+        }
+        
     }
     
    
