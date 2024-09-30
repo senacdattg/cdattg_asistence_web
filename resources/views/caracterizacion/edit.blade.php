@@ -53,11 +53,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="instructor_id">Instructor</label>
-                                    <select name="instructor_id" class="form-control" id="instructor_id" required>
+                                    <label for="instructor_persona_id">Instructor</label>
+                                    <select name="instructor_persona_id" class="form-control" id="instructor_persona_id" required>
                                         @if(isset($instructores) && count($instructores) > 0)
                                             @foreach($instructores as $instructor)
-                                                <option value="{{ $instructor->id }}" {{ (isset($caracterizacion) && $caracterizacion->instructor_id == $instructor->id) ? 'selected' : '' }}>
+                                                <option value="{{ $instructor->persona_id }}" {{ (isset($caracterizacion) && $caracterizacion->instructor_persona_id == $instructor->persona_id) ? 'selected' : '' }}>
                                                     {{ $instructor->persona->primer_nombre }}
                                                 </option>
                                             @endforeach

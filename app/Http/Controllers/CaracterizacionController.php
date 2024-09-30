@@ -95,10 +95,11 @@ class CaracterizacionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+     
         $request->validate([
             'ficha_id' => 'required|exists:fichas_caracterizacion,id',
             'programa_formacion_id' => 'required|exists:programas_formacion,id',
-            'instructor_id' => 'required|exists:instructors,id',
+            'instructor_persona_id' => 'required|exists:instructors,persona_id',
             'jornada_id' => 'required|exists:jornadas_formacion,id',
             'sede_id' => 'required|exists:sedes,id',
         ]);
@@ -106,7 +107,7 @@ class CaracterizacionController extends Controller
         $caracterizacion = CaracterizacionPrograma::findOrFail($id);
         $caracterizacion->ficha_id = $request->input('ficha_id');
         $caracterizacion->programa_formacion_id = $request->input('programa_formacion_id');
-        $caracterizacion->instructor_id = $request->input('instructor_id');
+        $caracterizacion->instructor_persona_id = $request->input('instructor_persona_id');
         $caracterizacion->jornada_id = $request->input('jornada_id');
         $caracterizacion->sede_id = $request->input('sede_id');
 

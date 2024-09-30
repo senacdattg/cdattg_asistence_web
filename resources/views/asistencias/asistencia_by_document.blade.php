@@ -39,6 +39,7 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Ficha</th>
+                                        <th class="text-center">Instructor</th>
                                         <th class="text-center">Nombres</th>
                                         <th class="text-center">Apellidos</th>
                                         <th class="text-center">Documento</th>
@@ -52,6 +53,7 @@
                                     @foreach($asistencias as $asistencia)
                                     <tr></tr>
                                         <td class="text-center">{{ $asistencia->caracterizacion->ficha->ficha }}</td>
+                                        <td class="text-center">{{ $asistencia->caracterizacion->persona->primer_nombre }}</td>
                                         <td class="text-center">{{ $asistencia->nombres }}</td>
                                         <td class="text-center">{{ $asistencia->apellidos }}</td>
                                         <td class="text-center">{{ $asistencia->numero_identificacion }}</td>

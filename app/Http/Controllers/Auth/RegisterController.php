@@ -12,6 +12,7 @@ class RegisterController extends Controller
     {
         $this->middleware('guest');
     }
+    
     public function create(Request $request)
     {
         $data = $request->validate([
