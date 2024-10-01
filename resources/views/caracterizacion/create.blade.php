@@ -1,4 +1,3 @@
-
 @extends('layout.master-layout')
 @section('content')
 <div class="content-wrapper">
@@ -8,7 +7,6 @@
                 <div class="card-body">
                     <a class="btn btn-warning btn-sm" href="{{route('caracterizacion.index')}}">
                         <i class="fas fa-arrow-left"></i>
-                        </i>
                         Volver
                     </a>
                 </div>
@@ -19,7 +17,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="ficha_id">Ficha de Caracterización</label>
-                                    <select name="ficha_id" class="form-control" id="sede_id" required>
+                                    <select name="ficha_id" class="form-control select2" id="ficha_id" required>
                                     @if(count($fichas) > 0)
                                         @foreach($fichas as $ficha)
                                             <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
@@ -27,14 +25,13 @@
                                     @else
                                         <option value="">No hay fichas disponibles</option>
                                     @endif
-                                       
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="programa_formacion_id">Programa de formación</label>
-                                    <select name="programa_formacion_id" class="form-control" id="programa_id" required>
+                                    <select name="programa_formacion_id" class="form-control select2" id="programa_formacion_id" required>
                                         @if(count($programas) > 0)
                                             @foreach($programas as $programa)
                                                 <option value="{{ $programa->id }}">{{ $programa->nombre }}</option>
@@ -50,8 +47,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="instructor_persona_id">Instructor</label>
-                                    <select name="instructor_persona_id" class="form-control" id="instructor_persona_id" required>
-                                       
+                                    <select name="instructor_persona_id" class="form-control select2" id="instructor_persona_id" required>
                                         @if(count($instructores) > 0)
                                             @foreach($instructores as $instructor)
                                                 <option value="{{ $instructor->persona_id }}">{{ $instructor->persona->primer_nombre }}</option>
@@ -65,8 +61,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="jornada_id">Jornada de formación</label>
-                                    <select name="jornada_id" class="form-control" id="jornada_id" required>
-                                      
+                                    <select name="jornada_id" class="form-control select2" id="jornada_id" required>
                                         @if(count($jornadas) > 0)
                                             @foreach($jornadas as $jornada)
                                                 <option value="{{ $jornada->id }}">{{ $jornada->jornada }}</option>
@@ -82,8 +77,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sede_id">Sede</label>
-                                    <select name="sede_id" class="form-control" id="sede_id" required>
-                                      
+                                    <select name="sede_id" class="form-control select2" id="sede_id" required>
                                         @if(count($sedes) > 0)
                                             @foreach($sedes as $sede)
                                                 <option value="{{ $sede->id }}">{{ $sede->sede }}</option>
@@ -94,16 +88,22 @@
                                     </select>
                                 </div>
                             </div>
-                            
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
                 </div>
-
             </div>
         </div>
     </section>
 </div>
+
+<!-- Inicializar Select2 -->
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Seleccione una opción",
+            allowClear: true
+        });
+    });
+</script>
 @endsection
-
-

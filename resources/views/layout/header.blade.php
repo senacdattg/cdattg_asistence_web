@@ -14,6 +14,14 @@
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
 
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css?v=3.2.0">
+   <!-- Incluir CSS de Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- Incluir jQuery (si no está ya incluido) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Incluir JS de Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <body class="hold-transition sidebar-mini">
