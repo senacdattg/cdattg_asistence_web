@@ -40,6 +40,10 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('asistencia/store', [AsistenciaAprendicesController::class, 'store']);
     Route::post('asistencia/update', [AsistenciaAprendicesController::class, 'update']);
     Route::post('asistencia/novedad', [AsistenciaAprendicesController::class, 'assistenceNovedad']);
+    Route::get('asistencia/getFicha/{ficha}/{jornada}', [AsistenciaAprendicesController::class, 'getList']);
+    Route::post('asistencia/updateExitAsistence', [AsistenciaAprendicesController::class, 'updateExitAsistence']);
+    Route::post('asistencia/updateEntraceAsistence', [AsistenciaAprendicesController::class, 'updateEntraceAsistence']);
+    
 });
 
 
