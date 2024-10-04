@@ -207,14 +207,16 @@ class AsistenciaAprendicesController extends Controller
             })->whereHas('jornada', function ($query) use ($jornada) {
                 $query->where('jornada', $jornada);
             });
-        })->get();
+        })->whereDate('created_at', $fechaActual)->get();
+
+        Log::info('Asistencias: ' . $asistencias);
 
         foreach ($asistencias as $asistencia){
 
             $hourEnter = Carbon::parse($asistencia->hora_ingreso)->format('H:i:s');
-            $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d');
+            $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
 
-            if($this->morning($horaEjecucion, $jornada) === true  && $this->morning( $hourEnter, $jornada) === true && $dateEnter === $fechaActual){
+            if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
                 return response()->json(['asistencias' => $asistencias], 200);
             }; 
 
@@ -376,8 +378,6 @@ class AsistenciaAprendicesController extends Controller
             return response()->json(['message' => 'Novedad de entrada Actualizada'], 200);
         }
         
-       
-
         if (!$asistencia) {
             return response()->json(['message' => 'Asistencia no encontrada'], 404);
         }
@@ -413,7 +413,6 @@ class AsistenciaAprendicesController extends Controller
     private function nightAsistence($horaIngreso, $actualHour){
         $horaInicio = Carbon::createFromTime(17, 50, 0); 
         $horaFin = Carbon::createFromTime(23, 10, 0);
-    
         $horaIngreso = Carbon::parse($horaIngreso);
 
         if ($horaIngreso->between($horaInicio, $horaFin) && $actualHour->between($horaInicio, $horaFin)) {

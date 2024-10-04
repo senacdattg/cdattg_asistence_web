@@ -47,8 +47,5 @@ class AsistenciaAprendiz extends Model
     public function sede(){
         return $this->hasOneThrough(Sede::class, 'id', 'id', 'caracterizacion_id', 'sede_id'); 
     }
-
-    
-
     
 }
