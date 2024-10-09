@@ -38,10 +38,6 @@ class Persona extends Model
             $persona->segundo_nombre = strtoupper($persona->segundo_nombre);
             $persona->primer_apellido = strtoupper($persona->primer_apellido);
             $persona->segundo_apellido = strtoupper($persona->segundo_apellido);
-
-
-
-
         });
     }
 
