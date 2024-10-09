@@ -34,21 +34,15 @@
                 {{-- <div class="container"> --}}
                 <div class="container-fluid ">
                     <div class="row">
-                        <div class="col-md-3">
-
+                        <div class="col-md-12">
                             <div class="card card-primary card-outline carne">
                                 <div class="card-body box-profile">
-                                    <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle"
-                                            src="{{ asset('dist/img/LogoSena.jpeg') }}" alt="User profile picture">
-                                    </div>
                                     <h3 class="profile-username text-center">
                                         {{ $persona->primer_nombre }}
                                         {{ $persona->segundo_nombre }}
                                         {{ $persona->primer_apellido }}
                                         {{ $persona->segundo_apellido }}
                                     </h3>
-                                    <p class="h4 text-muted text-center">Información Básica</p>
 
                                     <p class="text-muted"><strong>Tipo de documento:</strong>
                                         {{ $persona->tipoDocumento->name }}</p>
@@ -84,48 +78,9 @@
                                     @endif
                                 </div>
                             </div>
-
                         </div>
-                        {{-- mas información --}}
-                        <div class="col-md-9">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            @if ($persona->instructor)
-                                                <caption><strong>Fichas de caracterización</strong></caption>
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">#</th>
-                                                            <th scope="col">Nombre de curso</th>
-                                                            <th scope="col">Ficha de caracterización</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php $i = 1; ?>
-
-                                                        @foreach ($persona->instructor->fichas as $fichaCaracterizacion)
-                                                            <tr>
-                                                                <td>{{ $i++ }}</td>
-                                                                <td>
-                                                                    {{ $fichaCaracterizacion->nombre_curso }}
-                                                                </td>
-                                                                <td>
-                                                                    {{ $fichaCaracterizacion->ficha }}
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
+                       
+                       
                     </div>
 
                 </div>

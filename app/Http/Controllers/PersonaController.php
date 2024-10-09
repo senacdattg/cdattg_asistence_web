@@ -103,6 +103,7 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
+        //dd($persona);
         if (Auth::user()->id != $persona->id){
             return redirect()->back()->with('error', 'No tiene permitido realizar esta acción!');
         }
