@@ -20,10 +20,11 @@ class CaracterizacionController extends Controller
      */
     public function index()
     {
-        $caracteres = CaracterizacionPrograma::with('ficha', 'persona', 'programaFormacion', 'jornada', 'sede')->get();
+        $caracteres = CaracterizacionPrograma::with('ficha')->get();
 
         return view('caracterizacion.index', compact('caracteres'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,11 +33,28 @@ class CaracterizacionController extends Controller
     {
        return view('caracterizacion.create', [
            'fichas' => FichaCaracterizacion::all(),
-           'programas' => ProgramaFormacion::all(),
-           'instructores' => Instructor::all(), 
-           'jornadas' => JornadaFormacion::all(), 
-           'sedes' => Sede::all(), 
        ]);
+    }
+
+    public function getCaracterByFicha(Request $request) {
+        $request->validate([
+            'ficha_id' => 'required|integer|exists:fichas_caracterizacion,id',
+        ]);
+
+        $fichaId = $request->input('ficha_id');
+
+    
+        $ficha = FichaCaracterizacion::with(['programaFormacion'])->find($fichaId);
+        $sedePrograma = $ficha->programaFormacion->sede_id; 
+        $sede = Sede::find($sedePrograma); 
+        $instructors = Instructor::all(); 
+        $jornadas = JornadaFormacion::all();
+
+       
+
+        return view('caracterizacion.caracterizacion', compact('ficha', 'sede', 'instructors', 'jornadas')); 
+
+        
     }
 
     /**
@@ -44,26 +62,24 @@ class CaracterizacionController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'ficha_id' => 'required|exists:fichas_caracterizacion,id',
+            'programa_formacion_id' => 'required|exists:programas_formacion,id',
+            'instructor_persona_id' => 'required|exists:instructors,persona_id',
+            'jornada_id' => 'required|exists:jornadas_formacion,id',
+            'sede_id' => 'required|exists:sedes,id',
+        ]);
 
-      
-    $request->validate([
-        'ficha_id' => 'required|exists:fichas_caracterizacion,id',
-        'programa_formacion_id' => 'required|exists:programas_formacion,id',
-        'instructor_persona_id' => 'required|exists:instructors,persona_id',
-        'jornada_id' => 'required|exists:jornadas_formacion,id',
-        'sede_id' => 'required|exists:sedes,id',
-    ]);
+        $caracterizacion = new CaracterizacionPrograma();
+        $caracterizacion->ficha_id = $request->input('ficha_id');
+        $caracterizacion->programa_formacion_id = $request->input('programa_formacion_id');
+        $caracterizacion->instructor_persona_id = $request->input('instructor_persona_id');
+        $caracterizacion->jornada_id = $request->input('jornada_id');
+        $caracterizacion->sede_id = $request->input('sede_id');
+        
+        $caracterizacion->save();
 
-    $caracterizacion = new CaracterizacionPrograma();
-    $caracterizacion->ficha_id = $request->input('ficha_id');
-    $caracterizacion->programa_formacion_id = $request->input('programa_formacion_id');
-    $caracterizacion->instructor_persona_id = $request->input('instructor_persona_id');
-    $caracterizacion->jornada_id = $request->input('jornada_id');
-    $caracterizacion->sede_id = $request->input('sede_id');
-    
-    $caracterizacion->save();
-
-    return redirect()->route('caracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
+        return redirect()->route('caracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
     }
 
     /**

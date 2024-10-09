@@ -29,5 +29,7 @@ class FichaCaracterizacion extends Model
         return $this->hasMany(CaracterizacionPrograma::class, 'ficha_id');
     }
 
+  
+
 
 }

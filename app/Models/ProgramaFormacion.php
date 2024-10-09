@@ -25,8 +25,6 @@ class ProgramaFormacion extends Model
         return $this->belongsTo(Sede::class);
     }
 
-   
-
     public function tipoPrograma()
     {
         return $this->belongsTo(TipoPrograma::class);
