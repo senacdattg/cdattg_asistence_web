@@ -49,7 +49,7 @@
                                         <th class="text-center">Novedad Salida</th>
                                         <th class="text-center">Fecha</th>
                                     </tr>
-                                </thead>
+                                </thead> 
                                 <tbody>
                                     @foreach($asistencias as $asistencia)
                                     <tr></tr>
