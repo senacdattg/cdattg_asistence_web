@@ -11,7 +11,7 @@
                     </a>
                 </div>
                 <div class="card-body"></div>
-                    <form action="{{route('caracterizacion.ficha')}}" method="post">
+                    <form action="{{route('caracterizacion.store')}}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -33,14 +33,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="sede_text">Sede</label>
-                                    <input type="hidden" name="sede_id" id="sede_id" value="{{$ficha->id}}">
+                                    <input type="hidden" name="sede_id" id="sede_id" value="{{$sede->id}}">
                                     <input type="text" id="sede_text" class="form-control" value="{{$sede->sede}}" readonly disabled>
                                 </div>
                             </div> 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="jorna_id">Jornada de formación</label>
-                                    <select name="jorna_id"  class="form-control" id="jorna_id" required>
+                                    <label for="jornada_id">Jornada de formación</label>
+                                    <select name="jornada_id"  class="form-control" id="jornada_id" required>
                                         <option value="">Seleccione una jornada</option>
                                         @if(count($jornadas) > 0)
                                             @foreach($jornadas as $jornada)

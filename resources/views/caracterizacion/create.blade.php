@@ -40,7 +40,6 @@
         </div>
     </section>
 </div>
-
 <script>
     $(document).ready(function() {
         $('#ficha_id').select2({
