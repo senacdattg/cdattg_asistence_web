@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
     route::middleware('can:CREAR INSTRUCTOR')->group(function(){
         route::get('createImportarCSV', [InstructorController::class, 'createImportarCSV'])->name('instructor.createImportarCSV');
         route::post('storeImportarCSV', [InstructorController::class, 'storeImportarCSV'])->name('instructor.storeImportarCSV');
+        Route::post('instructor/store', [InstructorController::class, 'store'])->name('instructor.store');
     });
     // Rutas para entrada y salida
     Route::resource('entradaSalida', EntradaSalidaController::class);
