@@ -156,13 +156,17 @@ class CaracterizacionController extends Controller
                     'id' => $caracterizacion->id,
                     'ficha' => $caracterizacion->ficha->ficha ?? 'N/A',
                     'programa_formacion' => $caracterizacion->programaFormacion->nombre ?? 'N/A',
-                    'persona' => $caracterizacion->persona->primer_nombre ?? 'N/A',
+                    'persona' => $caracterizacion->persona->primer_nombre ?? '' .' '. $caracterizacion->persona->segundo_nombre  ?? '' . ' ' . $caracterizacion->persona->primer_apellido ?? ''.' '. $caracterizacion->persona->segundo_apellido ?? '',
                     'jornada' => $caracterizacion->jornada->jornada ?? 'N/A',
                     'sede' => $caracterizacion->sede->sede ?? 'N/A',
                 ];
             });
 
+        if ($caracterizaciones->isNotEmpty()) {
+            return response()->json($caracterizaciones, 200);
+        } else {
+            return response()->json(['message' => 'No se encontraron caracterizaciones.'], 404);
+        }
 
-        return response()->json($caracterizaciones);
     }
 }
