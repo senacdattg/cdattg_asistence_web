@@ -380,6 +380,30 @@
                 </li>
                 @endcan
 
+                {{-- ADMINISTRACIÓN DE CARNETS QR --}}
+
+                @can('VER PROGRAMA DE CARACTERIZACION')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Carnet
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('carnet.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear Carnet</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+
+                {{-- FIN ADMINISTRACIÓN CARNET QR --}}
+
                 @haspermission('ASIGNAR PERMISOS')
                     {{-- @can('ASIGNAR PERMISOS') --}}
                     <li class="nav-item">

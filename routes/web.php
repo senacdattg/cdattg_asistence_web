@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\CaracterizacionController;
+use App\Http\Controllers\CarnetController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
@@ -104,6 +105,14 @@ Route::middleware('auth')->group(function () {
           Route::post('/caracterizacion/{id}', [CaracterizacionController::class, 'update'])->name('caracterizacion.update');
           
       });
+
+      Route::resource('carnet', CarnetController::class);
+      route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function (){
+        Route::get('/', [CarnetController::class, 'index'])->name('carnet.index');
+        Route::post('/process', [CarnetController::class, 'processCsv'])->name('carnet.process');
+        Route::post('/carnet/send-all', [CarnetController::class, 'sendAll'])->name('carnet.sendAll');
+      }); 
+      
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);
