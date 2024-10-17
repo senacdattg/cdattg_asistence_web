@@ -46,6 +46,8 @@ class CaracterizacionController extends Controller
     
         $ficha = FichaCaracterizacion::with(['programaFormacion'])->find($fichaId);
         $sedePrograma = $ficha->programaFormacion->sede_id; 
+
+        
         $sede = Sede::find($sedePrograma); 
         $instructors = Instructor::all(); 
         $jornadas = JornadaFormacion::all();
@@ -64,16 +66,16 @@ class CaracterizacionController extends Controller
     {
         $request->validate([
             'ficha_id' => 'required|exists:fichas_caracterizacion,id',
-            'programa_formacion_id' => 'required|exists:programas_formacion,id',
-            'instructor_persona_id' => 'required|exists:instructors,persona_id',
-            'jornada_id' => 'required|exists:jornadas_formacion,id',
+            'programa_id' => 'required|exists:programas_formacion,id',
             'sede_id' => 'required|exists:sedes,id',
+            'jornada_id' => 'required|exists:jornadas_formacion,id',
+            'persona_id' => 'required|exists:instructors,persona_id',
         ]);
-
+        
         $caracterizacion = new CaracterizacionPrograma();
         $caracterizacion->ficha_id = $request->input('ficha_id');
-        $caracterizacion->programa_formacion_id = $request->input('programa_formacion_id');
-        $caracterizacion->instructor_persona_id = $request->input('instructor_persona_id');
+        $caracterizacion->programa_formacion_id = $request->input('programa_id');
+        $caracterizacion->instructor_persona_id = $request->input('persona_id');
         $caracterizacion->jornada_id = $request->input('jornada_id');
         $caracterizacion->sede_id = $request->input('sede_id');
         
@@ -154,13 +156,17 @@ class CaracterizacionController extends Controller
                     'id' => $caracterizacion->id,
                     'ficha' => $caracterizacion->ficha->ficha ?? 'N/A',
                     'programa_formacion' => $caracterizacion->programaFormacion->nombre ?? 'N/A',
-                    'persona' => $caracterizacion->persona->primer_nombre ?? 'N/A',
+                    'persona' => $caracterizacion->persona->primer_nombre ?? '' .' '. $caracterizacion->persona->segundo_nombre  ?? '' . ' ' . $caracterizacion->persona->primer_apellido ?? ''.' '. $caracterizacion->persona->segundo_apellido ?? '',
                     'jornada' => $caracterizacion->jornada->jornada ?? 'N/A',
                     'sede' => $caracterizacion->sede->sede ?? 'N/A',
                 ];
             });
 
+        if ($caracterizaciones->isNotEmpty()) {
+            return response()->json($caracterizaciones, 200);
+        } else {
+            return response()->json(['message' => 'No se encontraron caracterizaciones.'], 404);
+        }
 
-        return response()->json($caracterizaciones);
     }
 }

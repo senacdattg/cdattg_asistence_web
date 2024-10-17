@@ -74,47 +74,53 @@ class InstructorController extends Controller
      */
     public function store(StoreInstructorRequest $request)
     {
+        //dd($request);
         $fechaNacimiento = $request->fecha_de_nacimiento;
         // @dd($fechaNacimiento);
-        try {
+      
             DB::beginTransaction();
             // Crear Persona
-            $persona = Persona::create([
-                'tipo_documento' => $request->input('tipo_documento'),
-                'numero_documento' => $request->input('numero_documento'),
-                'primer_nombre' => $request->input('primer_nombre'),
-                'segundo_nombre' => $request->input('segundo_nombre'),
-                'primer_apellido' => $request->input('primer_apellido'),
-                'segundo_apellido' => $request->input('segundo_apellido'),
-                'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
-                'genero' => $request->input('genero'),
-                'email' => $request->input('email'),
-            ]);
+            $persona = new Persona();
+            $persona->tipo_documento = $request->input('tipo_documento');
+            $persona->numero_documento = $request->input('numero_documento');
+            $persona->primer_nombre = $request->input('primer_nombre');
+            $persona->segundo_nombre = $request->input('segundo_nombre');
+            $persona->primer_apellido = $request->input('primer_apellido');
+            $persona->segundo_apellido = $request->input('segundo_apellido');
+            $persona->fecha_de_nacimiento = $request->input('fecha_de_nacimiento');
+            $persona->genero = $request->input('genero');
+            $persona->email = $request->input('email');
+            $persona->save();
 
-            $instructor = Instructor::create([
-                'persona_id' => $persona->id,
-                'regional_id' => $request->regional_id,
-            ]);
+            
+            $instructor = new Instructor();
+            $instructor->persona_id = $persona->id;
+            $instructor->regional_id = $request->input('regional_id');
+            $instructor->save();
+            
+            
             // Crear Usuario asociado a la Persona
-            $user = User::create([
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('numero_documento')),
-                'persona_id' => $persona->id,
-            ]);
+            $user = new User();
+            $user->email = $request->input('email');
+            $user->password = Hash::make($request->input('numero_documento'));
+            $user->persona_id = $persona->id;
+            $user->roll_id = 3; 
+            $user->save();
             $user->assignRole('INSTRUCTOR');
+           
             DB::commit();
             return redirect()->route('instructor.index')->with('success', '¡Registro Exitoso!');
-        } catch (QueryException $e) {
+       
             // Manejar excepciones de la base de datos
             // @dd($e);
-            DB::rollBack();
-            return redirect()->back()->withInput()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.' . $e->getMessage());
-        }
-        // catch (\Exception $e) {
-        //     // Manejar otras excepciones
-        //     @dd($e);
-        //     return redirect()->back()->withErrors(['error' => 'Se produjo un error. Por favor, inténtelo de nuevo.']);
-        // }
+
+            if (!$persona || !$instructor || !$user) {
+                DB::rollBack();
+                return redirect()->back()->withInput()->with('error', 'Error al guardar los datos. Por favor, inténtelo de nuevo.');
+            }
+            
+        
+       
     }
 
     /**
@@ -175,6 +181,7 @@ class InstructorController extends Controller
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('numero_documento')),
             ]);
+
             DB::commit();
             return redirect()->route('instructor.index')->with('success', '¡Actualización Exitosa!');
         } catch (QueryException $e) {

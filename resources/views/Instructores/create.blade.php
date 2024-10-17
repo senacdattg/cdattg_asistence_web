@@ -33,7 +33,6 @@
                     </div>
                     <form action="{{ route('instructor.store') }}" method="post">
                         @csrf
-
                         {{-- Tipo de Documento y Número de Documento --}}
                         <div class="card mb-3">
                             <div class="card-body">
