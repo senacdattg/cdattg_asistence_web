@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AmbienteController;
+use App\Http\Controllers\AsistenceQr;
+use App\Http\Controllers\AsistenceQrController;
 use App\Http\Controllers\AsistenciaAprendicesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
@@ -66,6 +68,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/asistencia/ficha/documentos', [AsistenciaAprendicesController::class, 'getDocumentsByFicha'])->name('asistencia.getDocumentsByFicha');
         Route::post('/asistencia/documento', [AsistenciaAprendicesController::class, 'getAttendanceByDocument'])->name('asistencia.getAttendanceByDocument');
     });
+
+    //TOMA DE ASISTENCIA CON QR WEB
+    Route::resource('asistenciaAprendiz', AsistenceQrController::class);
+    route::middleware('can:TOMAR ASISTENCIA')->group(function () {
+        Route::get('asistence/web', [AsistenceQrController::class, 'index'])->name('asietence.web'); 
+    }); 
 
 
     //rutas para ProgramaCaractizacionController

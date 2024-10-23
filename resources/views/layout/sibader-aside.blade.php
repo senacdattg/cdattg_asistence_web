@@ -401,6 +401,28 @@
                     </ul>
                 </li>
                 @endcan
+                @can('TOMAR ASISTENCIA')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Gestionar Asistencia
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('asietence.web')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Tomar asistencia</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <div style="height: 70vh">
+
+                    </div>
+                </li>
+                @endcan
 
                 {{-- FIN ADMINISTRACIÓN CARNET QR --}}
 
