@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaracterizacionPrograma;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AsistenceQrController extends Controller
 {
@@ -11,6 +13,13 @@ class AsistenceQrController extends Controller
      */
     public function index()
     {
+        $user = Auth::user(); 
+        $id_person = $user->persona_id; 
+
+        $caracterización = CaracterizacionPrograma::where('instructor_persona_id', $id_person)->get(); 
+
+        dd($caracterización); 
+
         return view('qr_asistence.index'); 
     }
 
@@ -27,7 +36,7 @@ class AsistenceQrController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**

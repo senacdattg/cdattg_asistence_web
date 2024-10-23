@@ -19,12 +19,9 @@
 
 
 <script src="../../plugins/jquery/jquery.min.js"></script>
-
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-
 <script src="../../dist/js/adminlte.min.js?v=3.2.0"></script>
 
 @include('layout.alertas')
