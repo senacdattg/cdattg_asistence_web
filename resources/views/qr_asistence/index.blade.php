@@ -16,7 +16,6 @@
                             <h3 class="text-center">N° Ficha: {{$caracterizacion->ficha->ficha}}</h3>
                         </div> 
                     </div>
-                   
                 </div>
             </div>
             <div class="card-body">
@@ -27,8 +26,9 @@
                 </div>
                 <form id="asistencia-form" action="{{route('asistence.store')}}" method="POST">
                     @csrf
+                    <input type="hidden" name="caracterizacion_id" value="{{$caracterizacion->id}}">
                     <div class="card">
-                        <ul id="asistencia-list"></ul>
+                        <ul name="asistencia_web" id="asistencia-list"></ul>
                     </div>
                     <button type="submit" class="btn btn-primary mt-3">Guardar Asistencia</button>
                 </form>
@@ -58,24 +58,32 @@
 
                 // Dividir el texto escaneado por el delimitador "|"
                 let parts = decodedText.split('|');
-                let nombre = parts[0] ? parts[0].trim() : 'N/A';
-                let apellidos = parts[1] ? parts[1].trim() : 'N/A';
-                let identificacion = parts[2] ? parts[2].trim() : 'N/A';
+                let nombre = parts[0] ? parts[0].trim() : '';
+                let apellidos = parts[1] ? parts[1].trim() : '';
+                let identificacion = parts[2] ? parts[2].trim() : '';
+                let horaIngreso = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
+                
                 // Mostrar los valores en la lista
                 let listItem = document.createElement('li');
                 listItem.innerHTML = `
-                    <strong>Nombre:</strong> ${nombre} <br>
+                    <strong>Nombres:</strong> ${nombre} <br>
                     <strong>Apellidos:</strong> ${apellidos} <br>
                     <strong>Identificación:</strong> ${identificacion}
+                    <br><strong>Hora de Ingreso:</strong> ${horaIngreso}
                 `;
                 asistenciaList.appendChild(listItem);
 
-                // Añadir un campo oculto al formulario con el valor escaneado
+                // Añadir un campo oculto al formulario con el valor escaneado y la hora de ingreso
                 let input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'asistencia[]';
-                input.value = decodedText;
+                input.value = JSON.stringify({
+                    nombres: nombre,
+                    apellidos: apellidos,
+                    identificacion: identificacion,
+                    hora_ingreso: horaIngreso
+                });
                 document.getElementById('asistencia-form').appendChild(input);
             }
         }

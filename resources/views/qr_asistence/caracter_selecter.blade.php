@@ -28,7 +28,7 @@
             <div class="row">
                 @foreach($caracterizaciones as $caracterizacion)
                     <div class="col-md-4">
-                        <div class="card">
+                        <div class="card" style="height: 90%">
                             <div class="card-header">
                                 <h3 class="card-title"><b>N° ficha:</b> {{ $caracterizacion->ficha->ficha }}</h3>
                             </div>
