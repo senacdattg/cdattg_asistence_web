@@ -13,15 +13,27 @@ class AsistenceQrController extends Controller
      */
     public function index()
     {
+
         $user = Auth::user(); 
         $id_person = $user->persona_id; 
-
-        $caracterización = CaracterizacionPrograma::where('instructor_persona_id', $id_person)->get(); 
-
-        dd($caracterización); 
-
-        return view('qr_asistence.index'); 
+      
+        $caracterizaciones = CaracterizacionPrograma::where('instructor_persona_id', $id_person)->get(); 
+        
+        return view('qr_asistence.caracter_selecter', compact('caracterizaciones')); 
+       
     }
+
+    public function caracterSelected( $id )
+    {
+        $caracterizacion_id = $id; 
+        $caracterizacion = CaracterizacionPrograma::find($caracterizacion_id);
+        
+
+        return view('qr_asistence.index', compact('caracterizacion'));
+        
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.

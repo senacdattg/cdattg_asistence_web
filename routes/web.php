@@ -72,8 +72,9 @@ Route::middleware('auth')->group(function () {
     //TOMA DE ASISTENCIA CON QR WEB
     Route::resource('asistenciaAprendiz', AsistenceQrController::class);
     route::middleware('can:TOMAR ASISTENCIA')->group(function () {
-        Route::get('asistence/web', [AsistenceQrController::class, 'index'])->name('asietence.web');
+        Route::get('asistence/web', [AsistenceQrController::class, 'index'])->name('asistence.web');
         Route::post('/asistence/store', [AsistenceQrController::class, 'store'])->name('asistence.store');
+        Route::get('asistece/caracterSelected/{id}', [AsistenceQrController::class, 'caracterSelected'])->name('asistence.caracterSelected');
     }); 
 
 

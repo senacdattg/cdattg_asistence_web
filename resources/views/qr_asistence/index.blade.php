@@ -5,10 +5,18 @@
         <div class="card">
             <div class="card-header">
                 <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('verificarLogin') }}">
-                        <i class="fas fa-arrow-left"></i>
-                        Volver
-                    </a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn btn-warning btn-sm" href="{{ route('verificarLogin') }}">
+                                <i class="fas fa-arrow-left"></i>
+                                Volver
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <h3 class="text-center">N° Ficha: {{$caracterizacion->ficha->ficha}}</h3>
+                        </div> 
+                    </div>
+                   
                 </div>
             </div>
             <div class="card-body">
