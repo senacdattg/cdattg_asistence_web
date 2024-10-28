@@ -1,50 +1,176 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Carnet Digital SENA</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Carnet Digital SENA</title>
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: normal;
+            src: url({{ storage_path('fonts/Poppins-Regular.ttf') }}) format('truetype');
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .card {
+            width: 440px;
+            height: 560px;
+            background-color: #e1efda;
+            border-radius: 10px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .header-green {
+            height: 80px;
+            background-color: #4ef84e;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 70px;
+            height: auto;
+        }
+
+        .logo-text {
+            font-size: 12px;
+            color: #333333;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .aprendiz-container {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 140px;
+            height: 130px;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .aprendiz-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-container {
+            padding: 20px;
+            margin-top: 100px;
+            text-align: center;
+        }
+
+        .aprendiz-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .separator {
+            border: none;
+            height: 2px;
+            background-color: #39ff14;
+            margin: 10px 0;
+        }
+
+        .cedula,
+        .ficha,
+        .programa {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .nombre {
+            font-weight: bold;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .programa {
+            font-size: 12px;
+        }
+
+        .qr-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background-color: rgba(78, 248, 78, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .qr {
+            width: 120px;
+            height: 120px;
+        }
+
+        .qr-unavailable {
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f3f4f6; font-family: 'Arial', sans-serif;">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f3f4f6;">
-        <tr>
-            <td align="center" style="padding: 20px;">
-                <table cellpadding="0" cellspacing="0" border="0" width="340" style="background: linear-gradient(184deg, #4ef84e 0%, #4ef84e 15%, rgba(225, 239, 218, 0.9) 35%, #e1efda 40%, #e1efda 100%); border-radius: 10px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);">
-                    <tr>
-                        <td style="padding: 15px;">
-                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
-                                <tr>
-                                    <td width="80" valign="top">
-                                        <img src="{{ $message->embed(public_path('img/sena-logo.png')) }}" alt="Logo SENA" width="70" style="display: block; margin-bottom: 5px;">
-                                        <p style="font-size: 12px; color: #333333; margin: 0; font-weight: 600; text-align: center;">Regional Guaviare</p>
-                                    </td>
-                                    <td align="right" valign="top">
-                                        <img src="{{ $message->embed('data:image/jpeg;base64,' . $photo) }}" alt="Foto del aprendiz" style="width: 100%; height: 100%; object-fit: cover;">
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 20px;">
-                            <h2 style="font-weight: 600; font-size: 18px; text-align: center; margin-bottom: 10px;">APRENDIZ</h2>
-                            <hr style="border: none; height: 2px; background-color: #39ff14; margin-bottom: 10px;">
-                            <p style="font-weight: 600; font-size: 18px; text-align: center; margin-bottom: 10px;">{{ $aprendiz }}</p>
-                            <p style="font-size: 14px; margin-bottom: 5px;"><strong>CC:</strong> {{ $documento }}</p>
-                            <p style="font-size: 14px; margin-bottom: 5px;"><strong>Ficha:</strong> {{ $ficha }}</p>
-                            <p style="font-size: 12px; margin-bottom: 5px;"><strong>Programa:</strong> {{ $programa }}</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding-bottom: 20px;">
-                            <div style="width: 150px; height: 150px; background-color: rgba(78, 248, 78, 0.2); display: flex; justify-content: center; align-items: center;">
-                                {!! $qr_code !!}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
+<body>
+    <div class="card">
+        <div class="header-green"></div>
+        <div class="logo-container">
+            <img src="{{ public_path('img/sena-logo.png') }}" alt="Logo SENA" class="logo">
+            <div class="logo-text">Regional Guaviare</div>
+        </div>
+        <div class="aprendiz-container">
+            @if (isset($photo))
+                <img src="data:image/jpeg;base64,{{ $photo }}" alt="Foto del Aprendiz" class="aprendiz-img">
+            @else
+                <img src="{{ public_path('img/default-photo.jpg') }}" alt="Foto por defecto" class="aprendiz-img">
+            @endif
+        </div>
+        <div class="info-container">
+            <h2 class="aprendiz-title">Aprendiz</h2>
+            <hr class="separator">
+            @isset($aprendiz)
+                <p class="nombre">{{ $aprendiz }}</p>
+            @endisset
+            @isset($documento)
+                <p class="cedula">CC: {{ $documento }}</p>
+            @endisset
+            @isset($ficha)
+                <p class="ficha">Ficha: {{ $ficha }}</p>
+            @endisset
+            @isset($programa)
+                <p class="programa">{{ $programa }}</p>
+            @endisset
+        </div>
+        <div class="qr-container">
+            @if (!empty($qr_code) && filter_var($qr_code, FILTER_VALIDATE_URL) || strpos($qr_code, 'data:image') === 0)
+                <img src="{{ $qr_code }}" alt="QR Code" class="qr">
+            @else
+                <img src="{{ public_path('img/qr-placeholder.png') }}" alt="QR Code por defecto" class="qr">
+            @endif
+        </div>
+    </div>
 </body>
+
 </html>

@@ -10,25 +10,27 @@ class CarnetMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $carnetData;
+    public $carnet;
+    public $pdfPath;
+    public $imagePath;
 
-    public function __construct($carnetData)
+    public function __construct($carnet, $pdfPath, $imagePath = null)
     {
-        $this->carnetData = $carnetData;
+        $this->carnet = $carnet;
+        $this->pdfPath = $pdfPath;
+        $this->imagePath = $imagePath;
     }
 
     public function build()
     {
-        return $this->view('carnet.carnet')
-                    ->with([
-                        'aprendiz' => $this->carnetData['aprendiz'],
-                        'documento' => $this->carnetData['documento'],
-                        'correo' => $this->carnetData['correo'],
-                        'ficha' => $this->carnetData['ficha'],
-                        'programa' => $this->carnetData['programa'],
-                        'photo' => $this->carnetData['photo'],
-                        'qr_code' => $this->carnetData['qr_code'],
-                    ]);
-                    
+        $mail = $this->view('emails.carnet')
+                     ->subject('Tu Carnet Digital')
+                     ->attach($this->pdfPath);
+
+        if ($this->imagePath && file_exists($this->imagePath)) {
+            $mail->attach($this->imagePath);
+        }
+
+        return $mail;
     }
 }

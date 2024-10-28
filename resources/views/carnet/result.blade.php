@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -95,13 +96,14 @@
         }
 
         .separator {
+            margin-top: 5px;
             border: none;
             height: 2px;
             background-color: #39ff14;
         }
 
 
-        
+
         .cedula,
         .ficha,
         .programa {
@@ -160,7 +162,6 @@
             max-height: 90%;
             overflow-y: auto;
         }
-
     </style>
 </head>
 
@@ -224,48 +225,155 @@
                 </template>
             </div>
         </div>
-
         <div class="text-center mt-4">
             <a href="{{ route('carnet.index') }}"
                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline inline-block">
                 Volver al inicio
             </a>
         </div>
-        <div class="text-center mt-8">
-            <form action="{{ route('carnet.sendAll') }}" method="POST">
+        <div class="text-center mt-8" x-show="selectedCarnet === null">
+            <form action="{{ route('carnet.sendAll') }}" method="POST" x-data="{ processing: false }"
+                @submit.prevent="handleSubmit($event)">
                 @csrf
-                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Enviar todos los carnets por correo
+                <button type="submit" :disabled="processing"
+                    class="relative bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50 disabled:cursor-not-allowed">
+                    <span x-show="!processing">Enviar todos los carnets por correo</span>
+                    <span x-show="processing" class="flex items-center justify-center">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Procesando...
+                    </span>
                 </button>
+                <!-- Contenedor para las imágenes capturadas -->
+                <div id="capturedImagesInputs"></div>
             </form>
         </div>
     </div>
-
     <script>
         function carnetApp() {
             return {
                 carnets: @json($carnets),
-                selectedCarnet: null
+                selectedCarnet: null,
+                capturedImages: [],
+
+                async captureCarnet(index) {
+                    const carnet = this.carnets[index];
+                    const captureArea = document.getElementById('carnet-capture-area');
+
+                    // Limpiar el área de captura
+                    captureArea.innerHTML = '';
+
+                    // Crear y añadir el carnet al área de captura
+                    const carnetElement = document.createElement('div');
+                    carnetElement.className = 'card mx-auto';
+                    carnetElement.innerHTML = `
+                <div class="logo-container">
+                    <img src="{{ asset('img/sena-logo.png') }}" alt="Logo" class="logo">
+                    <span class="logo-text">Regional Guaviare</span>
+                </div>
+                <div class="aprendiz-container">
+                    ${carnet.photo ? `<img src="data:image/jpeg;base64,${carnet.photo}" alt="Foto de ${carnet.aprendiz}" class="aprendiz-img">` : ''}
+                </div>
+                <div class="info-container">
+                    <h2 class="aprendiz-title">APRENDIZ</h2>
+                    <hr class="separator">
+                    <p class="nombre">${carnet.aprendiz}</p>
+                    <p class="cedula"><strong>CC:</strong> ${carnet.documento}</p>
+                    <p class="ficha"><strong>Ficha:</strong> ${carnet.ficha}</p>
+                    <p class="programa"><strong>Programa:</strong> ${carnet.programa}</p>
+                </div>
+                <div class="qr-container">
+                    <div class="qr">${carnet.qr_code}</div>
+                </div>
+            `;
+                    captureArea.appendChild(carnetElement);
+
+                    // Esperar a que las imágenes se carguen
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Aumentado a 1 segundo para mejor carga
+
+                    try {
+                        const canvas = await html2canvas(carnetElement, {
+                            logging: false,
+                            useCORS: true,
+                            allowTaint: true,
+                            scale: 3, // Aumentado para mejor calidad
+                            imageTimeout: 2000, // Aumentado el tiempo de espera para imágenes
+                            backgroundColor: '#ffffff',
+                            pixelRatio: window.devicePixelRatio * 2
+                        });
+
+                        // Convertir a PNG con máxima calidad
+                        return canvas.toDataURL('image/png', 1.0);
+                    } catch (error) {
+                        console.error('Error capturando carnet:', error);
+                        return null;
+                    } finally {
+                        captureArea.innerHTML = '';
+                    }
+                },
+
+                async captureAllCarnets() {
+                    const capturedImagesContainer = document.getElementById('capturedImagesInputs');
+                    capturedImagesContainer.innerHTML = '';
+
+                    for (let i = 0; i < this.carnets.length; i++) {
+                        try {
+                            const imageData = await this.captureCarnet(i);
+                            if (imageData) {
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = `capturedImages[${i}]`;
+                                input.value = imageData;
+                                capturedImagesContainer.appendChild(input);
+                            }
+                        } catch (error) {
+                            console.error(`Error capturando carnet ${i}:`, error);
+                        }
+                    }
+                },
+
+                async handleSubmit(event) {
+                    const form = event.target;
+                    this.processing = true;
+
+                    try {
+                        await this.captureAllCarnets();
+                        form.submit();
+                    } catch (error) {
+                        console.error('Error en el proceso de envío:', error);
+                        alert('Hubo un error al procesar los carnets. Por favor, intente nuevamente.');
+                        this.processing = false;
+                    }
+                }
             }
         }
     </script>
+
+    <!-- Área de captura oculta -->
+    <div id="carnet-capture-area" style="position: absolute; left: -9999px; top: -9999px;"></div>
 </body>
 
 </html>
 
-@if(session('success'))
+@if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
 @endif
 
-@if(session('warning'))
+@if (session('warning'))
     <div class="alert alert-warning">
         {{ session('warning') }}
     </div>
 @endif
 
-@if(session('error'))
+@if (session('error'))
     <div class="alert alert-danger">
         {{ session('error') }}
     </div>
