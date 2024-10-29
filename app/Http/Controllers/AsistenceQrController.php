@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AsistenciaAprendiz;
+use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr\Cast\String_;
 
 class AsistenceQrController extends Controller
 {
@@ -55,12 +57,13 @@ class AsistenceQrController extends Controller
     public function store(Request $request)
     {
        $data = $request->all(); 
-
-        dd($data);
+      
+      
        foreach( $data['asistencia'] as $asistence ){
 
         $asistenceData = json_decode($asistence, true);
-        
+        Log::info($asistenceData);
+       
         $asistencia = AsistenciaAprendiz::create([
             'caracterizacion_id' => $data['caracterizacion_id'], 
             'nombres' => $asistenceData['nombres'], 
@@ -68,9 +71,15 @@ class AsistenceQrController extends Controller
             'numero_identificacion' => $asistenceData['identificacion'], 
             'hora_ingreso' => $asistenceData['hora_ingreso'],
         ]); 
+        
        }
+
        
-       dd($asistencia); 
+        if (!empty($asistencia) || $asistencia !== null) {
+            return back()->with('success', 'Asistencia registrada exitosamente.');
+        } else {
+            return back()->with('error', 'Error al registrar la asistencia.');
+        }
 
     }
 
@@ -80,6 +89,44 @@ class AsistenceQrController extends Controller
     public function show(string $id)
     {
         //
+    }
+
+
+    public function getAsistenceWebList (String $ficha, String $jornada) {
+
+        $horaEjecucion = Carbon::now()->format('H:i:s');
+        $fechaActual = Carbon::now()->format('Y-m-d');
+
+        $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($ficha, $jornada) {
+            $query->whereHas('ficha', function ($query) use ($ficha) {
+                $query->where('ficha', $ficha);
+            })->whereHas('jornada', function ($query) use ($jornada) {
+                $query->where('jornada', $jornada);
+            });
+        })->whereDate('created_at', $fechaActual)->get();
+
+        foreach ($asistencias as $asistencia){
+
+            $hourEnter = Carbon::parse($asistencia->hora_ingreso)->format('H:i:s');
+            $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
+
+            if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
+                return view('qr_asistence.showList', compact('asistencias'));
+            }; 
+
+            if($this->afternoon($horaEjecucion, $jornada) == true && $this->afternoon($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
+                return view('qr_asistence.showList', compact('asistencias'));
+            }
+
+            if($this->night($horaEjecucion, $jornada) == true && $this->night($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
+                return view('qr_asistence.showList', compact('asistencias'));
+            }
+
+            if ($asistencias->isEmpty() || $asistencias === null) {
+                return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
+            }
+
+        }
     }
 
 

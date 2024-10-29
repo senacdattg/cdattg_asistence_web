@@ -19,6 +19,30 @@
                 </div>
             </div>
             <div class="card-body">
+                @if(session('success'))
+                    <div class="alert alert-success" id="success-alert">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger" id="error-alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <script>
+                    setTimeout(() => {
+                        let successAlert = document.getElementById('success-alert');
+                        if (successAlert) {
+                            successAlert.style.display = 'none';
+                        }
+                        let errorAlert = document.getElementById('error-alert');
+                        if (errorAlert) {
+                            errorAlert.style.display = 'none';
+                        }
+                    }, 3000);
+                </script>
                 <div class="qr-result" id="qr-result"></div>
                 <h3>Tomar asistencia</h3>
                 <div style="display: flex; justify-content: center;">
@@ -58,16 +82,15 @@
 
                 // Dividir el texto escaneado por el delimitador "|"
                 let parts = decodedText.split('|');
-                let nombre = parts[0] ? parts[0].trim() : '';
+                let nombres = parts[0] ? parts[0].trim() : '';
                 let apellidos = parts[1] ? parts[1].trim() : '';
                 let identificacion = parts[2] ? parts[2].trim() : '';
                 let horaIngreso = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-                
                 // Mostrar los valores en la lista
                 let listItem = document.createElement('li');
                 listItem.innerHTML = `
-                    <strong>Nombres:</strong> ${nombre} <br>
+                    <strong>Nombres:</strong> ${nombres} <br>
                     <strong>Apellidos:</strong> ${apellidos} <br>
                     <strong>Identificación:</strong> ${identificacion}
                     <br><strong>Hora de Ingreso:</strong> ${horaIngreso}
@@ -79,7 +102,7 @@
                 input.type = 'hidden';
                 input.name = 'asistencia[]';
                 input.value = JSON.stringify({
-                    nombres: nombre,
+                    nombres: nombres,
                     apellidos: apellidos,
                     identificacion: identificacion,
                     hora_ingreso: horaIngreso

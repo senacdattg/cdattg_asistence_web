@@ -75,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('asistence/web', [AsistenceQrController::class, 'index'])->name('asistence.web');
         Route::post('/asistence/store', [AsistenceQrController::class, 'store'])->name('asistence.store');
         Route::get('asistece/caracterSelected/{id}', [AsistenceQrController::class, 'caracterSelected'])->name('asistence.caracterSelected');
+        Route::get('/asistence/web/list/{ficha}/{jornada}', [AsistenceQrController::class, 'getAsistenceWebList'])->name('asistence.weblist');
     }); 
 
 

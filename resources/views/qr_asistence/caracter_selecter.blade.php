@@ -23,8 +23,20 @@
             </div>
         </div>
     </section>
+    @if (session('error'))
+        <div class="alert alert-danger" id="error-message">
+            {{ session('error') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                document.getElementById('error-message').style.display = 'none';
+            }, 3000);
+        </script>
+    @endif
+
     <section class="content">
         <div class="container-fluid">
+
             <div class="row">
                 @foreach($caracterizaciones as $caracterizacion)
                     <div class="col-md-4">
@@ -44,7 +56,7 @@
                                         <a href="{{ route('asistence.caracterSelected', ['id' => $caracterizacion->id]) }}" class="btn btn-primary">Asistencia</a>
                                     </div>  
                                     <div class="col-md-6">
-                                        <a href="" class="btn btn-success">Novedades</a>
+                                        <a href="{{ route('asistence.weblist', ['ficha' => $caracterizacion->ficha->ficha, 'jornada' => $caracterizacion->jornada->jornada]) }}" class="btn btn-success">Novedades</a>
                                     </div>
                                 </div>
                             </div>
