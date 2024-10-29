@@ -111,15 +111,24 @@ class AsistenceQrController extends Controller
             $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
 
             if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return view('qr_asistence.showList', compact('asistencias'));
+                if ($asistencias->isEmpty() || $asistencias === null) {
+                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
+                }
+                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
             }; 
 
             if($this->afternoon($horaEjecucion, $jornada) == true && $this->afternoon($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return view('qr_asistence.showList', compact('asistencias'));
+                if ($asistencias->isEmpty() || $asistencias === null) {
+                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
+                }
+                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
             }
 
             if($this->night($horaEjecucion, $jornada) == true && $this->night($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return view('qr_asistence.showList', compact('asistencias'));
+                if ($asistencias->isEmpty() || $asistencias === null) {
+                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
+                }
+                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
             }
 
             if ($asistencias->isEmpty() || $asistencias === null) {
