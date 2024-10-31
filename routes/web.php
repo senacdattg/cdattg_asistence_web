@@ -76,10 +76,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/asistence/store', [AsistenceQrController::class, 'store'])->name('asistence.store');
         Route::get('asistece/caracterSelected/{id}', [AsistenceQrController::class, 'caracterSelected'])->name('asistence.caracterSelected');
         Route::get('/asistence/web/list/{ficha}/{jornada}', [AsistenceQrController::class, 'getAsistenceWebList'])->name('asistence.weblist');
+        Route::get('/asistence/exit/{identificacion}/{ingreso}/{fecha}', [AsistenceQrController::class, 'redirectAprenticeExit'])->name('asistence.webexit');
+        Route::get('/asistence/entrance/{identificacion}/{ingreso}/{fecha}', [AsistenceQrController::class, 'redirectAprenticeEntrance'])->name('asistence.webentrance');
+        Route::get('/asistence/exitFormation/{caracterizacion_id}', [AsistenceQrController::class, 'exitFormationAsistenceWeb'])->name('asistence.exitFormation');
+        Route::post('/asistence/setNewExit', [AsistenceQrController::class, 'setNewExitAsistenceWeb'])->name('asistence.setNewExit');
+        Route::post('/asistence/setNewEntrance', [AsistenceQrController::class, 'setNewEntranceAsistenceWeb'])->name('asistence.setNewEntrance');
     }); 
 
 
-    //rutas para ProgramaCaractizacionController
+    //rutas para ProgramaCaractizacionControllerasistence.webexit
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaFormacion', ProgramaFormacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {

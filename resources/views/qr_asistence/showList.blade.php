@@ -14,11 +14,12 @@
             </div>
         @endif
         <header>
-            <a href="{{ url()->previous() }}" class="btn btn-success btn-sm mr-2 mb-3">
+            <a href="{{ route('asistence.web') }}" class="btn btn-success btn-sm mr-2 mb-3">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
             <div class="row">
             <div class="col-md-6 d-flex align-items-center jusitfy-content-start">
+                
                 <h5>Lista de Aprendices</h5>
             </div>
             <div class="col-md-6 d-flex align-items-center justify-content-end">
@@ -37,6 +38,7 @@
                                 <th class="text-center" style="width: 10%; text-align: center;">Apellidos</th>
                                 <th class="text-center" style="width: 10%; text-align: center;">N° identificación</th>
                                 <th class="text-center" style="width: 10%; text-align: center;">Hora ingreso</th>
+                                <th class="text-center" style="width: 10%; text-align: center;">Hora salida</th>
                                 <th class="text-center" style="width: 10%; text-align: center;">Novedad entrada</th>
                                 <th class="text-center" style="width: 10%; text-align: center;">Novedad salida</th>
                                 <th class="text-center" style="width: 10%; text-align: center;">Fecha de asistencia</th>
@@ -52,21 +54,22 @@
                                     <td>{{ $asistencia->apellidos }}</td>
                                     <td>{{ $asistencia->numero_identificacion }}</td>
                                     <td>{{ $asistencia->hora_ingreso }}</td>
+                                    <td>{{ $asistencia->hora_salida }}</td>
                                     <td>{{ $asistencia->novedad_entrada }}</td>
                                     <td>{{ $asistencia->novedad_salida }}</td>
                                     <td>{{ $asistencia->created_at }}</td>
                                     
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button class="btn btn-primary btn-sm" style="font-size: 12px; margin-right: 2%">Novedad Entrada</button>
-                                            <button class="btn btn-danger btn-sm" style="font-size: 12px; margin-right: 2%">Novedad Salida</button>
+                                            <a href="{{ route('asistence.webentrance', ['identificacion' => $asistencia->numero_identificacion, 'ingreso' => $asistencia->hora_ingreso, 'fecha' => $asistencia->created_at]) }}" class="btn btn-primary btn-sm" style="font-size: 12px; margin-right: 2%">Novedad Entrada</a>
+                                            <a href="{{ route('asistence.webexit', ['identificacion' => $asistencia->numero_identificacion, 'ingreso' => $asistencia->hora_ingreso, 'fecha' => $asistencia->created_at]) }}" class="btn btn-danger btn-sm" style="font-size: 12px; margin-right: 2%">Novedad Salida</a>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
+                </div> 
             </div>
            
         </section>

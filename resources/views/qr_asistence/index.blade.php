@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <a class="btn btn-warning btn-sm" href="{{ route('verificarLogin') }}">
+                            <a class="btn btn-warning btn-sm" href="{{ route('asistence.web') }}">
                                 <i class="fas fa-arrow-left"></i>
                                 Volver
                             </a>
@@ -54,7 +54,16 @@
                     <div class="card">
                         <ul name="asistencia_web" id="asistencia-list"></ul>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3">Guardar Asistencia</button>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-primary">Guardar Asistencia</button>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <a class="btn btn-danger" href="{{ route('asistence.exitFormation', ['caracterizacion_id' => $caracterizacion->id]) }}">
+                            Finalizar Formación
+                        </a>
+                    </div>
+                </div>
                 </form>
             </div>
         </div>

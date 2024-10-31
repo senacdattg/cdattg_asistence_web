@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AsistenciaAprendiz;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr\Cast\String_;
+
 
 class AsistenceQrController extends Controller
 {
@@ -41,15 +41,7 @@ class AsistenceQrController extends Controller
         
     }
 
-    
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -81,14 +73,6 @@ class AsistenceQrController extends Controller
             return back()->with('error', 'Error al registrar la asistencia.');
         }
 
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
 
@@ -139,7 +123,7 @@ class AsistenceQrController extends Controller
     }
 
 
-    ///***** METODOS QUE PERMITEN OBTENES LA LISTA DE ASISTENCIA POR HORARIO Y JORNADA    **** */
+    ///***** METODOS QUE PERMITEN OBTENER LA LISTA DE ASISTENCIA POR HORARIO Y JORNADA    **** */
 
     public function morning($ingreso, $jornada)
     {
@@ -185,27 +169,113 @@ class AsistenceQrController extends Controller
         return false;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    /*** METODOS PARA REDIRIGIR A FORMULARIO DE ENTRADA Y SALIDA DE LA ASISTENCIA WEB */
+
+    public function redirectAprenticeExit (String $identificacion , String $ingreso , String $fecha) {
+
+        $fecha = Carbon::parse($fecha)->format('Y-m-d');
+        $asistencia = AsistenciaAprendiz::where('numero_identificacion', $identificacion)
+            ->where('hora_ingreso', $ingreso)
+            ->whereDate('created_at', $fecha)
+            ->first();
+
+    
+        if (!$asistencia) {
+            return back()->with('error', 'No se encontró asistencia con los datos proporcionados.');
+        }
+
+        return view('qr_asistence.newExitAsistence', compact('asistencia')); 
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function redirectAprenticeEntrance (String $identificacion , String $ingreso , String $fecha) {
+       
+        $fecha = Carbon::parse($fecha)->format('Y-m-d');
+        $asistencia = AsistenciaAprendiz::where('numero_identificacion', $identificacion)
+            ->where('hora_ingreso', $ingreso)
+            ->whereDate('created_at', $fecha)
+            ->first();
+
+        if (!$asistencia) {
+            return back()->with('error', 'No se encontró asistencia con los datos proporcionados.');
+        }
+       
+        return view('qr_asistence.newEntranceAsistence', compact('asistencia'));
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+
+    /**** METODOS PARA SALIDDA DE FROMACIÓN Y ACTUALIZACION DE NOVEDADES DE ENTRADA Y SALIDA */
+
+    public function exitFormationAsistenceWeb(String $caracterizacion_id) {
+        $fechaActual = Carbon::now()->format('Y-m-d');
+
+        $asistencias = AsistenciaAprendiz::where('caracterizacion_id', $caracterizacion_id)
+            ->whereDate('created_at', $fechaActual)
+            ->get();
+        
+        if ($asistencias->isEmpty() || $asistencias === null) { 
+            return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
+        }
+
+        foreach ($asistencias as $asistencia) {
+            $asistencia->update([
+                'hora_salida' => Carbon::now()->format('H:i:s')
+            ]);
+        }
+
+        return back()->with('success', 'Hora de salida actualizada exitosamente.');
     }
+
+
+    public function setNewExitAsistenceWeb(Request $request) {
+        $data = $request->all(); 
+
+
+        $request->validate([
+            'identificacion' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'novedad' => 'required|string|max:255',
+        ]);
+
+        $fechaEjecucion = Carbon::now()->format('Y-m-d');
+
+        $asistencia = AsistenciaAprendiz::where('numero_identificacion', $data['identificacion'])
+            ->whereDate('created_at', $fechaEjecucion)
+            ->first();
+
+        $asistencia->update([
+            'hora_salida' =>  Carbon::now()->format('H:i:s'),
+            'novedad_salida' => $data['novedad']
+        ]);
+
+        return back()->with('success', 'Novedad de salida actualizada exitosamente.');
+
+        
+    }
+
+    public function setNewEntranceAsistenceWeb(Request $request) {
+        $data = $request->all(); 
+        $request->validate([
+            'identificacion' => 'required|string|max:255',
+            'nombres' => 'required|string|max:255',
+            'apellidos' => 'required|string|max:255',
+            'novedad' => 'required|string|max:255',
+        ]);
+
+        $fechaEjecucion = Carbon::now()->format('Y-m-d');
+
+        $asistencia = AsistenciaAprendiz::where('numero_identificacion', $data['identificacion'])
+            ->whereDate('created_at', $fechaEjecucion)
+            ->first();
+
+        $asistencia->update([
+            'novedad_entrada' => $data['novedad']
+        ]);
+
+        return back()->with('success', 'Novedad de entrada actualizada exitosamente.');
+    }
+
+    
+
 }

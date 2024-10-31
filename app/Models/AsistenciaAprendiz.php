@@ -17,6 +17,9 @@ class AsistenciaAprendiz extends Model
         'apellidos',
         'numero_identificacion',
         'hora_ingreso',
+        'hora_salida',
+        'novedad_entrada', 
+        'novedad_salida'
     ];
     
 
