@@ -32,7 +32,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="ficha">Número de Ficha:</label>
-                                    <select name="ficha" id="ficha" class="form-control">
+                                    <select name="ficha" id="ficha_id" class="form-control ficha_id">
                                         <option value="">Seleccione una ficha</option>
                                         @foreach($fichas as $ficha)
                                         <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
@@ -46,6 +46,7 @@
                 </div>
             </div>
         </div>
+       
     </section>
     <section class="content"></section>
         <div class="container-fluid">
@@ -60,7 +61,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="ficha">Número de Ficha:</label>
-                                    <select name="ficha" id="ficha" class="form-control">
+                                    <select name="ficha" id="ficha" class="form-control ficha_id">
                                         <option value="">Seleccione una ficha</option>
                                         @foreach($fichas as $ficha)
                                             <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
@@ -99,7 +100,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-12">
                                         <label for="ficha">Número de Ficha:</label>
-                                        <select name="ficha" id="ficha" class="form-control">
+                                        <select name="ficha" id="ficha_id" class="form-control ficha_id">
                                             <option value="">Seleccione una ficha</option>
                                             @foreach($fichas as $ficha)
                                                 <option value="{{ $ficha->id }}">{{ $ficha->ficha }}</option>
@@ -116,4 +117,59 @@
         </div>
     </section>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.ficha_id').select2({
+            tags: true,
+            placeholder: 'Selecciona o escribe un número',
+            allowClear: true,
+            createTag: function(params) {
+                var term = $.trim(params.term);
+                if (term === '') {
+                    return null;
+                }
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true // add additional parameters
+                };
+            }
+        });
+
+        $('.ficha_id').on('select2:open', function() {
+            $('#input-group').show();
+        });
+
+     
+        $('#ficha_input').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.ficha_id').val(null).trigger('change'); // Clear the select2 value
+            $('.ficha_id option').each(function() {
+                var optionText = $(this).text().toLowerCase();
+                if (optionText.includes(searchTerm)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        });
+
+        $('#ficha_input').on('keypress', function(e) {
+            if (e.which == 13) { 
+                var newFicha = $(this).val();
+                if (newFicha) {
+                    var select = $('.ficha_id');
+                    if (select.find("option[value='" + newFicha + "']").length) {
+                        select.val(newFicha).trigger('change');
+                    } else {
+                        var newOption = new Option(newFicha, newFicha, true, true);
+                        select.append(newOption).trigger('change');
+                    }
+                    $(this).val(''); 
+                }
+                e.preventDefault(); 
+            }
+        });
+    });
+</script>
 @endsection

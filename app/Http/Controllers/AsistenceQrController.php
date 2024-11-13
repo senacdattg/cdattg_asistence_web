@@ -50,6 +50,9 @@ class AsistenceQrController extends Controller
     {
        $data = $request->all(); 
       
+       if(!$data){
+        return back()->with('Error', 'No hay datos registrados.');
+       }
       
        foreach( $data['asistencia'] as $asistence ){
 

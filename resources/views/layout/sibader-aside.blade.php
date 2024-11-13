@@ -353,8 +353,8 @@
                     </ul>
                 </li>
                 @endcan
-                {{-- ADMMINISTRACION DE ASISTENCIAS --}}
-                @can('VER PROGRAMA DE CARACTERIZACION')
+                {{-- ADMMINISTRACION DE ASISTENCIAS PARA ADMINISTRADOR --}}
+                @can('VER PROGRAMA DE CARACTERIZACION' )
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -379,6 +379,36 @@
                     </ul>
                 </li>
                 @endcan
+                {{-- FIN ADMMINISTRACION DE ASISTENCIAS PARA ADMINISTRADOR --}}
+
+                {{-- INICIO ADMMINISTRACION DE ASISTENCIAS PARA INSTRUCTORES --}}
+                @can('TOMAR ASISTENCIA')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Asistencias
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('asistencia.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consultas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Consulta Personalizada</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+                {{-- FIN ADMMINISTRACION DE ASISTENCIAS PARA INSTRUCTORES --}}
+
 
                 {{-- ADMINISTRACIÓN DE CARNETS QR --}}
 
@@ -406,7 +436,7 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Gestionar Asistencia
+                            Tomar Asistencia
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -414,7 +444,7 @@
                         <li class="nav-item">
                             <a href="{{route('asistence.web')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Tomar asistencia</p>
+                                <p>asistencia</p>
                             </a>
                         </li>
                     </ul>
