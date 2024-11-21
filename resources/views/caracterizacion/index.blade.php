@@ -20,6 +20,16 @@
                 </div>
             </div>
         </section>
+        @if (session('success'))
+            <div class="alert alert-danger" id="error-message">
+                {{ session('success') }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    document.getElementById('error-message').style.display = 'none';
+                }, 3000);
+            </script>
+         @endif
 
         <section class="content">
             <div class="card">
@@ -78,13 +88,10 @@
                                         <a href="{{route('caracterizacion.edit', $caracter->id)}}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> 
                                         </a>
-                                        <form action="{{route('caracterizacion.destroy', $caracter->id)}}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este programa?')">
-                                                <i class="fas fa-trash"></i> 
-                                            </button>
-                                        </form>
+                                        <a href="{{route('caracterizacion.destroy', $caracter->id)}}" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i> 
+                                        </a>
+                                      
                                     </div>
                                     @endcan
                                 </td>
