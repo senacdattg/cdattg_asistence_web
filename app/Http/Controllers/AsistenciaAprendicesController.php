@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\Exists;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 use PhpParser\Node\Expr\Cast\String_;
 use PHPUnit\Framework\Constraint\Count;
@@ -110,27 +111,39 @@ class AsistenciaAprendicesController extends Controller
   
     public function store(Request $request)
     {
-        try {
-         
             $data = $request->all();
-            foreach ($data['attendance'] as $attendance) {
-                $horaIngreso = Carbon::parse($attendance['hora_ingreso'])->format('Y-m-d H:i:s');
-
-                AsistenciaAprendiz::create([
-                    'caracterizacion_id' => $data['caracterizacion_id'],
-                    'nombres' => $attendance['nombres'],
-                    'apellidos' => $attendance['apellidos'],
-                    'numero_identificacion' => $attendance['numero_identificacion'],
-                    'hora_ingreso' => $horaIngreso,
-                ]);
+      
+            if (isset($data['attendance']) ) {
+               
+                foreach ($data['attendance'] as $attendance) {
+                    $horaIngreso = Carbon::parse($attendance['hora_ingreso'])->format('Y-m-d H:i:s');
+    
+                    AsistenciaAprendiz::create([
+                        'caracterizacion_id' => $data['caracterizacion_id'],
+                        'nombres' => $attendance['nombres'],
+                        'apellidos' => $attendance['apellidos'],
+                        'numero_identificacion' => $attendance['numero_identificacion'],
+                        'hora_ingreso' => $horaIngreso,
+                    ]);
+                }
+                return response()->json(['message' => 'Lista de asistencia guardada con éxito'], 200);
+            }else {
+                if($data != null){
+                    Log::info('Data: '.json_encode($data));
+                    $horaIngreso = Carbon::parse($data['hora_ingreso'])->format('Y-m-d H:i:s');
+                    AsistenciaAprendiz::create([
+                        'caracterizacion_id' => $data['caracterizacion_id'],
+                        'nombres' => $data['nombres'],
+                        'apellidos' => $data['apellidos'],
+                        'numero_identificacion' => $data['numero_identificacion'],
+                        'hora_ingreso' => $horaIngreso,
+                    ]);
+                    return response()->json(['message' => 'Asistencia guardada con éxito'], 200);
+                }else {
+                    return response()->json(['message' => 'Datos incompletos'], 400);
+                }
             }
-
-            return response()->json(['message' => 'Lista de asistencia guardada con éxito'], 200);
-        } catch (Exception $e) {
-            Log::error('Error saving attendance:', ['error' => $e->getMessage()]);
-
-            return response()->json(['message' => 'Error saving attendance', 'error' => $e->getMessage()], 500);
-        }
+            return response()->json(['message' => 'Error saving attendance'], 500);
     }
 
     
