@@ -140,7 +140,7 @@ class CaracterizacionController extends Controller
     public function destroy(string $id)
     {
 
-        $caracterizacion = CaracterizacionPrograma::findOrFail($id);
+        $caracterizacion = CaracterizacionPrograma::where('id', $id);
         $caracterizacion->delete();
 
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización eliminada exitosamente.');
