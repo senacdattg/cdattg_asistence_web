@@ -10,8 +10,15 @@ use Illuminate\Http\Request;
 
 class ProgramaFormacionController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
+     * Muestra una lista paginada de programas de formación.
+     *
+     * Este método recupera una lista de programas de formación desde la base de datos,
+     * incluyendo las relaciones con 'sede' y 'tipoPrograma', y los pagina en grupos de 7.
+     * Luego, pasa esta lista a la vista 'programas.index'.
+     *
+     * @return \Illuminate\View\View La vista que muestra la lista de programas de formación.
      */
     public function index()
     {
@@ -22,8 +29,14 @@ class ProgramaFormacionController extends Controller
         return view('programas.index', compact('programas'));
     }
 
+  
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo programa de formación.
+     *
+     * Este método obtiene todas las sedes y tipos de programas disponibles.
+     * Si no hay sedes o tipos de programas, se asigna null a las variables correspondientes.
+     *
+     * @return \Illuminate\View\View La vista del formulario de creación de programas de formación.
      */
     public function create()
     {
@@ -42,8 +55,15 @@ class ProgramaFormacionController extends Controller
         return view('programas.create', compact('sedes', 'tipos'));
     }
 
+ 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo programa de formación en la base de datos.
+     *
+     * Valida los datos de entrada del formulario y crea un nuevo registro
+     * en la tabla 'programas_formacion' con los datos proporcionados.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos del formulario.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la página de índice de programas con un mensaje de éxito.
      */
     public function store(Request $request)
     {
@@ -62,16 +82,13 @@ class ProgramaFormacionController extends Controller
         return redirect('programa/index')->with('success', 'Programa de formación creado exitosamente.');
     }
 
+  
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario de edición para un programa de formación específico.
+     *
+     * @param string $id El ID del programa de formación a editar.
+     * @return \Illuminate\View\View La vista del formulario de edición con los datos del programa, sedes y tipos de programa.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra el programa de formación con el ID proporcionado.
      */
     public function edit(string $id)
     {
@@ -86,8 +103,16 @@ class ProgramaFormacionController extends Controller
         return view('programas.edit', compact('programa', 'sedes', 'tipos'));
     }
 
+   
     /**
-     * Update the specified resource in storage.
+     * Actualiza un programa de formación existente.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos del formulario.
+     * @param string $id El ID del programa de formación que se va a actualizar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la página de índice de programas con un mensaje de éxito.
+     *
+     * @throws \Illuminate\Validation\ValidationException Si la validación de los datos falla.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra el programa de formación con el ID proporcionado.
      */
     public function update(Request $request, string $id)
     {
@@ -107,8 +132,12 @@ class ProgramaFormacionController extends Controller
         return redirect('programa/index')->with('success', 'Programa de formación actualizado exitosamente.');
     }
 
+ 
     /**
-     * Remove the specified resource from storage.
+     * Elimina un programa de formación especificado por su ID.
+     *
+     * @param string $id El ID del programa de formación a eliminar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la página de índice de programas con un mensaje de éxito.
      */
     public function destroy(string $id)
     {
@@ -119,8 +148,17 @@ class ProgramaFormacionController extends Controller
         return redirect('programa/index')->with('success', 'Programa de formación eliminado exitosamente.');
     }
 
+  
     /**
-     * Search for a specific resource in storage.
+     * Busca programas de formación basados en el término de búsqueda proporcionado.
+     *
+     * Este método toma una solicitud HTTP que contiene un término de búsqueda y busca
+     * programas de formación cuyo nombre coincida con el término de búsqueda. También
+     * busca programas de formación que estén asociados con sedes o tipos de programas
+     * cuyo nombre coincida con el término de búsqueda.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene el término de búsqueda.
+     * @return \Illuminate\View\View La vista que muestra los programas de formación encontrados.
      */
     public function search(Request $request)
     {

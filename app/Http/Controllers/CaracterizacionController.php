@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Log;
 
 class CaracterizacionController extends Controller
 {
+  
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los caracteres con sus fichas asociadas.
+     *
+     * Este método recupera todos los registros de la tabla `CaracterizacionPrograma` 
+     * junto con sus relaciones `ficha` y los pasa a la vista `caracterizacion.index`.
+     *
+     * @return \Illuminate\View\View La vista que muestra la lista de caracteres.
      */
     public function index()
     {
@@ -26,8 +32,11 @@ class CaracterizacionController extends Controller
     }
 
 
+   
     /**
-     * Show the form for creating a new resource.
+     * Muestra la vista para crear una nueva caracterización.
+     *
+     * @return \Illuminate\View\View La vista de creación de caracterización con todas las fichas de caracterización.
      */
     public function create()
     {
@@ -36,6 +45,14 @@ class CaracterizacionController extends Controller
        ]);
     }
 
+    /**
+     * Obtiene la caracterización por ficha.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene el ID de la ficha.
+     * @return \Illuminate\View\View La vista de caracterización con los datos de la ficha, sede, instructores y jornadas.
+     *
+     * @throws \Illuminate\Validation\ValidationException Si la validación del ID de la ficha falla.
+     */
     public function getCaracterByFicha(Request $request) {
         $request->validate([
             'ficha_id' => 'required|integer|exists:fichas_caracterizacion,id',
@@ -59,8 +76,17 @@ class CaracterizacionController extends Controller
         
     }
 
+   
     /**
-     * Store a newly created resource in storage.
+     * Almacena una nueva caracterización en la base de datos.
+     *
+     * Este método valida los datos de entrada y crea una nueva instancia de 
+     * CaracterizacionPrograma con los datos proporcionados. Luego guarda la 
+     * instancia en la base de datos y redirige al usuario al índice de 
+     * caracterizaciones con un mensaje de éxito.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos de entrada.
+     * @return \Illuminate\Http\RedirectResponse Redirección a la ruta de índice de caracterizaciones con un mensaje de éxito.
      */
     public function store(Request $request)
     {
@@ -84,16 +110,15 @@ class CaracterizacionController extends Controller
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+  
 
     /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario de edición para una caracterización específica.
+     *
+     * @param string $id El ID de la caracterización a editar.
+     * @return \Illuminate\View\View La vista del formulario de edición con los datos necesarios.
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra la caracterización con el ID proporcionado.
      */
     public function edit(string $id)
     {
@@ -108,8 +133,16 @@ class CaracterizacionController extends Controller
         ]);
     }
 
+   
     /**
-     * Update the specified resource in storage.
+     * Actualiza una caracterización existente en la base de datos.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos de la caracterización a actualizar.
+     * @param string $id El ID de la caracterización que se va a actualizar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la ruta de índice de caracterización con un mensaje de éxito.
+     *
+     * @throws \Illuminate\Validation\ValidationException Si la validación de los datos de la solicitud falla.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra la caracterización con el ID proporcionado.
      */
     public function update(Request $request, string $id)
     {
@@ -134,8 +167,12 @@ class CaracterizacionController extends Controller
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización actualizada exitosamente.');
     }
 
+  
     /**
-     * Remove the specified resource from storage.
+     * Elimina una caracterización específica basada en el ID proporcionado.
+     *
+     * @param string $id El ID de la caracterización a eliminar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la ruta de índice de caracterización con un mensaje de éxito.
      */
     public function destroy(string $id)
     {
@@ -147,6 +184,18 @@ class CaracterizacionController extends Controller
     }
 
 
+    /**
+     * Obtiene las caracterizaciones asociadas a un instructor específico.
+     *
+     * @param string $id El ID del instructor.
+     * @return \Illuminate\Http\JsonResponse Una respuesta JSON con las caracterizaciones encontradas o un mensaje de error si no se encuentran.
+     *
+     * Este método realiza una consulta a la base de datos para obtener las caracterizaciones que están asociadas al instructor cuyo ID se proporciona como parámetro.
+     * Utiliza relaciones Eloquent para incluir datos de las tablas relacionadas: ficha, programa de formación, persona, jornada y sede.
+     * Luego, mapea los resultados para devolver solo los campos necesarios en la respuesta JSON.
+     * Si se encuentran caracterizaciones, se devuelve una respuesta JSON con un código de estado 200.
+     * Si no se encuentran caracterizaciones, se devuelve una respuesta JSON con un mensaje de error y un código de estado 404.
+     */
     public function CaracterizacionByInstructor(String $id){ 
         $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'persona', 'jornada', 'sede')
             ->where('instructor_persona_id', $id)

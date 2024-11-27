@@ -8,21 +8,30 @@ use Illuminate\Http\Request;
 
 class FichaCaracterizacionController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todas las fichas de caracterización.
+     *
+     * Este método recupera todas las fichas de caracterización junto con su
+     * relación 'programaFormacion' y las pasa a la vista 'fichas.index'.
+     *
+     * @return \Illuminate\View\View La vista que muestra la lista de fichas de caracterización.
      */
     public function index()
     {
         
         $fichas = FichaCaracterizacion::with('programaFormacion')->get();
-
-        //dd($fichas)
-     
         return view('fichas.index', compact('fichas'));
     }
 
+  
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear una nueva ficha de caracterización.
+     *
+     * Obtiene una lista de programas de formación ordenados alfabéticamente por nombre
+     * y los pasa a la vista 'fichas.create'.
+     *
+     * @return \Illuminate\View\View La vista para crear una nueva ficha de caracterización con los programas de formación.
      */
     public function create()
     {
@@ -32,8 +41,15 @@ class FichaCaracterizacionController extends Controller
         return view('fichas.create', compact('programas')); 
     }
 
+  
     /**
-     * Store a newly created resource in storage.
+     * Almacena una nueva ficha de caracterización en la base de datos.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos de la ficha.
+     * 
+     * @return \Illuminate\Http\RedirectResponse Redirige a la ruta 'fichaCaracterizacion.index' con un mensaje de éxito.
+     * 
+     * @throws \Illuminate\Validation\ValidationException Si la validación de los datos falla.
      */
     public function store(Request $request)
     {
@@ -52,16 +68,12 @@ class FichaCaracterizacionController extends Controller
         return redirect()->route('fichaCaracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
     }
 
+  
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Muestra el formulario de edición para una ficha de caracterización específica.
+     *
+     * @param string $id El ID de la ficha de caracterización a editar.
+     * @return \Illuminate\View\View La vista del formulario de edición con la ficha de caracterización y los programas de formación.
      */
     public function edit(string $id)
     {
@@ -71,8 +83,16 @@ class FichaCaracterizacionController extends Controller
         return view('fichas.edit', compact('ficha', 'programas'));
     }
 
+   
     /**
-     * Update the specified resource in storage.
+     * Actualiza una ficha de caracterización existente.
+     *
+     * @param \Illuminate\Http\Request $request La solicitud HTTP que contiene los datos de la ficha a actualizar.
+     * @param string $id El ID de la ficha de caracterización que se va a actualizar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la lista de fichas de caracterización con un mensaje de éxito.
+     *
+     * @throws \Illuminate\Validation\ValidationException Si la validación de los datos falla.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException Si no se encuentra la ficha de caracterización con el ID proporcionado.
      */
     public function update(Request $request, string $id)
     {
@@ -90,8 +110,12 @@ class FichaCaracterizacionController extends Controller
         return redirect()->route('fichaCaracterizacion.index')->with('success', 'Caracterización actualizada exitosamente.');
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Elimina una ficha de caracterización específica.
+     *
+     * @param string $id El ID de la ficha de caracterización a eliminar.
+     * @return \Illuminate\Http\RedirectResponse Redirige a la lista de fichas de caracterización con un mensaje de éxito.
      */
     public function destroy(string $id)
     {
