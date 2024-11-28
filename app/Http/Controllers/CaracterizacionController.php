@@ -27,9 +27,7 @@ class CaracterizacionController extends Controller
     public function index()
     {
         $caracteres = CaracterizacionPrograma::with('ficha')->get();
-
-        dd($caracteres);
-
+        
         return view('caracterizacion.index', compact('caracteres'));
     }
 
