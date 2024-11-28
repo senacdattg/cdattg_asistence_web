@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Persona;
+use App\Models\persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
