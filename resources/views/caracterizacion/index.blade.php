@@ -75,7 +75,7 @@
                                 <td class="text-center">{{$caracter->ficha->ficha}}</td>
                                 <td class="text-center">{{$caracter->programaFormacion->nombre}}</td>
                                 <td class="text-center">{{$caracter->persona->primer_nombre }} {{$caracter->persona->primer_apellido ?? ''}}</td>
-                                <td class="text-center">{{$caracter->jornada->jornada}}</td>
+                                <td class="text-center">{{$caracter->jornada->Jornada}}</td>
                                 <td class="text-center">{{$caracter->sede->sede}}</td>
                                 
                             
