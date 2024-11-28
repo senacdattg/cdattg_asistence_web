@@ -112,12 +112,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('jornada', JornadaController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-        Route::get('/jornada/index', [JornadaController::class, 'index'])->name('jornada.index');
-        Route::get('/jornada/create', [JornadaController::class, 'create'])->name('jornada.create');
-        Route::post('/jornada/store', [JornadaController::class, 'store'])->name('jornada.store');
-        Route::get('/jornada/{id}/edit', [JornadaController::class, 'edit'])->name('jornada.edit');
-        Route::post('/jornada/{id}', [JornadaController::class, 'update'])->name('jornada.update');
-        Route::delete('/jornada/{id}', [JornadaController::class, 'destroy'])->name('jornada.destroy');
+        Route::get('/jornada/{id}/destroy', [JornadaController::class, 'destroy'])->name('jornada.destroy');
+        Route::post('jornada/{id}/update', [JornadaController::class, 'update'])->name('jornada.update');
+
     });
 
   
