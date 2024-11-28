@@ -14,6 +14,7 @@ use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstructorController;
+use App\Http\Controllers\JornadaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\MunicipioController;
@@ -105,6 +106,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/programa/{id}/edit', [ProgramaFormacionController::class, 'edit'])->name('programa.edit');
         Route::post('/programa/{id}', [ProgramaFormacionController::class, 'update'])->name('programa.update');
         Route::delete('/programa/{id}', [ProgramaFormacionController::class, 'destroy'])->name('programa.destroy');
+    });
+
+    /** RUTAS PARA JornadaController */
+
+    Route::resource('jornada', JornadaController::class);
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/jornada/index', [JornadaController::class, 'index'])->name('jornada.index');
+        Route::get('/jornada/create', [JornadaController::class, 'create'])->name('jornada.create');
+        Route::post('/jornada/store', [JornadaController::class, 'store'])->name('jornada.store');
+        Route::get('/jornada/{id}/edit', [JornadaController::class, 'edit'])->name('jornada.edit');
+        Route::post('/jornada/{id}', [JornadaController::class, 'update'])->name('jornada.update');
+        Route::delete('/jornada/{id}', [JornadaController::class, 'destroy'])->name('jornada.destroy');
     });
 
   

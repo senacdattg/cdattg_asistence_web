@@ -241,6 +241,33 @@
                         </ul>
                     </li>
                 @endcan
+                {{-- ADMINISTRAR JORNADAS DE FORMACION --}}
+                @can('VER PROGRAMA DE CARACTERIZACION')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Administrar Jornadas
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{route('jornada.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Ver Jornadas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Crear Jornada</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                @endcan
+                {{-- FIN DE ADMINISTRAR JORNADAS DE FORMACIÓN --}}
                 {{-- administrar fichas de caracrerización --}}
                 {{-- @can('VER FICHA DE CARACTERIZACION')
 
