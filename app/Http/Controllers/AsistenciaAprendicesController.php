@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AsistenciaAprendiz;
 use App\Models\FichaCaracterizacion;
+use App\Models\JornadaFormacion;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class AsistenciaAprendicesController extends Controller
             
             $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($fichaId) {
                 $query->where('ficha_id', $fichaId);
-            })->get();
+            })->orderBy('id', 'desc')->get();
 
             if ($asistencias->isEmpty()) {
                 return response()->json(['message' => 'No se encontraron asistencias para la ficha proporcionada'], 404);
@@ -89,10 +90,9 @@ class AsistenciaAprendicesController extends Controller
          }
             $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($ficha) {
                 $query->where('ficha_id', $ficha);
-            })->whereBetween('created_at', [$fecha_inicio, $fecha_fin])
+            })->whereBetween('created_at', [$fecha_inicio, $fecha_fin])->orderBy('created_at', 'desc')
             ->get();
         if ($asistencias->isEmpty()) {
-            
             return response()->json(['message' => 'No se encontraron asistencias para la ficha y fechas proporcionadas'], 404);
         }
 
@@ -323,9 +323,19 @@ class AsistenciaAprendicesController extends Controller
     public function getList(String $ficha, String $jornada)
     {
 
-        $horaEjecucion = Carbon::now()->format('H:i:s');
-        //$horaEjecucion = "23:10:00";
+        $horaEjecucion = Carbon::now()->format('H:i:s'); 
         $fechaActual = Carbon::now()->format('Y-m-d');
+
+        $obJornada = JornadaFormacion::where('jornada', $jornada)->first();
+
+        Log::info('Jornada: '.json_encode($obJornada));
+        
+        $h1Ini = Carbon::parse($obJornada->hora_inicio)->format('H'); 
+        $m1Ini = Carbon::parse($obJornada->hora_inicio)->format('i');
+
+        $h2Ini = Carbon::parse($obJornada->hora_fin)->format('H');
+        $m2Fin = Carbon::parse($obJornada->hora_fin)->format('i');
+
 
         $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($ficha, $jornada) {
             $query->whereHas('ficha', function ($query) use ($ficha) {
@@ -343,12 +353,14 @@ class AsistenciaAprendicesController extends Controller
             $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
 
 
-            // if($this->validateHour($horaEjecucion, $jornada, 23 , 00 , 24 , 00) == true){
-            //     return response()->json(['asistencias' => $asistencias], 200);
-            // }; 
+
+
+            if($this->validateHour($horaEjecucion, $jornada, $h1Ini , $m1Ini , $h2Ini , $m2Fin) == true && $dateEnter == $fechaActual){
+                return response()->json(['asistencias' => $asistencias], 200);
+            }; 
             
 
-            if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
+           /* if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
                 return response()->json(['asistencias' => $asistencias], 200);
             }; 
 
@@ -360,7 +372,7 @@ class AsistenciaAprendicesController extends Controller
                 return response()->json(['asistencias' => $asistencias], 200);
             }
 
-            return response()->json(['message' => 'No se encontraron asistencias para la ficha y jornada proporcionadas'], 404);
+            return response()->json(['message' => 'No se encontraron asistencias para la ficha y jornada proporcionadas'], 404);*/
 
         }
 
@@ -373,10 +385,7 @@ class AsistenciaAprendicesController extends Controller
     {
         $horaInicio = Carbon::createFromTime($hora1, $min1 , 0); 
         $horaFin = Carbon::createFromTime($hora2, $min2, 0); 
-        //$morning = 'Mañana'; 
-        // $file=fopen("111.txt","w+");
-        // fwrite($file,"Erley");
-        // fclose($file);
+      
 
         $horaIngreso = Carbon::parse($ingreso);
 

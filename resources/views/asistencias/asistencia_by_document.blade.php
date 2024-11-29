@@ -30,7 +30,7 @@
                                     <h3 class="card-title">Listado de Asistencias</h3>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="" class="btn btn-primary float-right">Descargar Reporte</a>
+                                    {{-- <a href="" class="btn btn-primary float-right">Descargar Reporte</a> --}}
                                 </div>
                             </div>
                         </div>
