@@ -22,7 +22,7 @@ class ProgramaFormacionController extends Controller
      */
     public function index()
     {
-        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->paginate(7);
+        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->orderBy('id', 'desc')->paginate(7);
         if($programas == null){
             $programas = null;
         }

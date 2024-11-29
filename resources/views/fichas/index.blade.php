@@ -63,7 +63,7 @@
                             <tr>
                                 <td class="text-center">{{$ficha->id}}</td>
                                 <td class="text-center">{{$ficha->ficha}}</td>
-                                <td class="text-center">{{$ficha->programaFormacion->nombre}}</td>
+                                <td class="text-center">{{$ficha->programaFormacion->nombre ?? 'N/A' }}</td>
                                
                                 <td class="text-center">
                                     @can('VER PROGRAMA DE CARACTERIZACION')

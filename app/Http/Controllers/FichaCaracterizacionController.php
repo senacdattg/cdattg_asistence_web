@@ -20,7 +20,7 @@ class FichaCaracterizacionController extends Controller
     public function index()
     {
         
-        $fichas = FichaCaracterizacion::with('programaFormacion')->get();
+        $fichas = FichaCaracterizacion::with('programaFormacion')->orderBy('id', 'desc')->get();
         return view('fichas.index', compact('fichas'));
     }
 

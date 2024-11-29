@@ -201,7 +201,7 @@
                 @endcan
 
                 {{-- administrar instructores --}}
-                @can('VER INSTRUCTOR')
+                @can('VER PROGRAMA DE CARACTERIZACION')
 
                     <li class="nav-item">
                         <a href="#" class="nav-link">
@@ -218,7 +218,7 @@
                                     <p>Instructores</p>
                                 </a>
                             </li>
-                            @can('CREAR INSTRUCTOR')
+                            @can('VER PROGRAMA DE CARACTERIZACION')
                                 <li class="nav-item">
                                     <a href="{{ route('instructor.create') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
