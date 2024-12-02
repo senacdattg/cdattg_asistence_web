@@ -139,6 +139,7 @@ Route::middleware('auth')->group(function () {
           Route::get('/caracterizacion/{id}/edit', [CaracterizacionController::class, 'edit'])->name('caracterizacion.edit');
           Route::get('/caracterizacion/destroy/{id}', [CaracterizacionController::class, 'destroy'])->name('caracterizacion.destroy');
           Route::post('/caracterizacion/{id}', [CaracterizacionController::class, 'update'])->name('caracterizacion.update');
+        Route::get('/caracterizacion/{id}/show', [CaracterizacionController::class, 'show'])->name('caracterizacion.show');
           
       });
 

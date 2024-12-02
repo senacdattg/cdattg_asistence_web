@@ -95,26 +95,30 @@ class AsistenceQrController extends Controller
     }
 
 
+  
     /**
-     * Muestra la lista de asistencia de los aprendices.
+     * Obtiene la lista de asistencias web para una ficha y jornada específicas.
      *
-     * @param string $ficha El número de la ficha de caracterización.
-     * @param string $jornada La jornada de la ficha de caracterización.
-     * @return \Illuminate\View\View La vista de la lista de asistencia.
+     * @param String $ficha El identificador de la ficha.
+     * @param String $jornada El identificador de la jornada.
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View Redirige de vuelta con un mensaje de error o muestra la vista con la lista de asistencias.
      */
     public function getAsistenceWebList (String $ficha, String $jornada) {
 
+        // Obtiene la hora y fecha actual
         $horaEjecucion = Carbon::now()->format('H:i:s');
         $fechaActual = Carbon::now()->format('Y-m-d');
 
+        // Obtiene la jornada de formación basada en el identificador de jornada
         $obJornada = JornadaFormacion::where('jornada', $jornada)->first();
 
+        // Formatea las horas de inicio y fin de la jornada
         $hI = Carbon::parse($obJornada->hora_inicio)->format('H'); 
         $mI = Carbon::parse($obJornada->hora_inicio)->format('i');
-
         $h2I = Carbon::parse($obJornada->hora_fin)->format('H');
         $m2F = Carbon::parse($obJornada->hora_fin)->format('i');
        
+        // Obtiene las asistencias de los aprendices para la ficha y jornada especificadas en la fecha actual
         $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($ficha, $jornada) {
             $query->whereHas('ficha', function ($query) use ($ficha) {
                 $query->where('ficha', $ficha);
@@ -123,44 +127,25 @@ class AsistenceQrController extends Controller
             });
         })->whereDate('created_at', $fechaActual)->get();
 
+        // Itera sobre las asistencias obtenidas
         foreach ($asistencias as $asistencia){
              
+            // Formatea la hora y fecha de ingreso de la asistencia
             $hourEnter = Carbon::parse($asistencia->hora_ingreso)->format('H:i:s');
-          
             $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
 
+            // Valida si la hora de ejecución está dentro del rango de la jornada y si la fecha de ingreso es la actual
             if($this->validateHour($horaEjecucion, $jornada , $hI , $mI , $h2I , $m2F) == true  && $dateEnter == $fechaActual){
                 if ($asistencias->isEmpty() || $asistencias === null) {
                     return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
                 }
                 return view('qr_asistence.showList', compact('asistencias', 'ficha'));
-            }; 
-
-            /*if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                if ($asistencias->isEmpty() || $asistencias === null) {
-                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
-                }
-                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
-            }; 
-
-            if($this->afternoon($horaEjecucion, $jornada) == true && $this->afternoon($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                if ($asistencias->isEmpty() || $asistencias === null) {
-                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
-                }
-                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
             }
 
-            if($this->night($horaEjecucion, $jornada) == true && $this->night($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                if ($asistencias->isEmpty() || $asistencias === null) {
-                    return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
-                }
-                return view('qr_asistence.showList', compact('asistencias', 'ficha'));
-            }*/
-
+            // Si no se encontraron asistencias, redirige de vuelta con un mensaje de error
             if ($asistencias->isEmpty() || $asistencias === null) {
                 return back()->with('error', 'No se encontraron asistencias para la ficha y jornada proporcionadas');
             }
-
         }
     }
 

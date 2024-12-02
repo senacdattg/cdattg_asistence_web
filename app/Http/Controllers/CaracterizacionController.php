@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AsistenciaAprendiz;
 use App\Models\CaracterizacionPrograma;
 use App\Models\FichaCaracterizacion;
 use App\Models\Instructor;
@@ -166,7 +167,8 @@ class CaracterizacionController extends Controller
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización actualizada exitosamente.');
     }
 
-  
+
+     
     /**
      * Elimina una caracterización específica basada en el ID proporcionado.
      *
@@ -177,9 +179,17 @@ class CaracterizacionController extends Controller
     {
 
         $caracterizacion = CaracterizacionPrograma::where('id', $id);
+
+        $asistencias = AsistenciaAprendiz::where('caracterizacion_id', $id)->get();
+
+        if( count($asistencias) > 0){
+            return redirect()->route('caracterizacion.index')->with('error', 'No se puede eliminar la caracterización porque tiene asistencias asociadas.');
+        }
+
         $caracterizacion->delete();
 
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización eliminada exitosamente.');
+
     }
 
 

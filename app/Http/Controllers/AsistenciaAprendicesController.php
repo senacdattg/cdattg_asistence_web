@@ -305,38 +305,32 @@ class AsistenciaAprendicesController extends Controller
         
     }
 
+   
     /**
-     * Recupera una lista de registros de asistencia para aprendices basada en la ficha y jornada proporcionadas.
+     * Obtiene la lista de asistencias para una ficha y jornada específicas.
      *
-     * @param String $ficha El identificador de la ficha.
-     * @param String $jornada El identificador de la jornada.
-     * @return \Illuminate\Http\JsonResponse Una respuesta JSON que contiene los registros de asistencia o un mensaje de error.
-     *
-     * El método realiza los siguientes pasos:
-     * 1. Obtiene la hora y fecha actual de ejecución.
-     * 2. Recupera los registros de asistencia para la ficha y jornada dadas en la fecha actual.
-     * 3. Itera a través de los registros de asistencia y verifica si coinciden con la hora y jornada actuales.
-     * 4. Devuelve los registros de asistencia si coinciden con los criterios, de lo contrario, devuelve un mensaje de error.
-     *
-     * Nota: El método utiliza funciones auxiliares morning(), afternoon() y night() para validar la hora y la jornada.
+     * @param string $ficha El ID de la ficha.
+     * @param string $jornada La jornada de formación.
+     * @return \Illuminate\Http\JsonResponse Una respuesta JSON con las asistencias encontradas o un mensaje de error.
      */
     public function getList(String $ficha, String $jornada)
     {
-
+        // Obtiene la hora y fecha actual
         $horaEjecucion = Carbon::now()->format('H:i:s'); 
         $fechaActual = Carbon::now()->format('Y-m-d');
 
+        // Obtiene la jornada de formación correspondiente
         $obJornada = JornadaFormacion::where('jornada', $jornada)->first();
 
         Log::info('Jornada: '.json_encode($obJornada));
         
+        // Formatea las horas de inicio y fin de la jornada
         $h1Ini = Carbon::parse($obJornada->hora_inicio)->format('H'); 
         $m1Ini = Carbon::parse($obJornada->hora_inicio)->format('i');
-
         $h2Ini = Carbon::parse($obJornada->hora_fin)->format('H');
         $m2Fin = Carbon::parse($obJornada->hora_fin)->format('i');
 
-
+        // Obtiene las asistencias para la ficha y jornada especificadas en la fecha actual
         $asistencias = AsistenciaAprendiz::whereHas('caracterizacion', function ($query) use ($ficha, $jornada) {
             $query->whereHas('ficha', function ($query) use ($ficha) {
                 $query->where('ficha', $ficha);
@@ -345,40 +339,18 @@ class AsistenciaAprendicesController extends Controller
             });
         })->whereDate('created_at', $fechaActual)->get();
 
-        
-
+        // Recorre las asistencias y verifica si la hora de ingreso está dentro del rango de la jornada
         foreach ($asistencias as $asistencia){
-
             $hourEnter = Carbon::parse($asistencia->hora_ingreso)->format('H:i:s');
-            $dateEnter =  carbon::parse($asistencia->created_at)->format('Y-m-d'); 
-
-
-
+            $dateEnter = Carbon::parse($asistencia->created_at)->format('Y-m-d'); 
 
             if($this->validateHour($horaEjecucion, $jornada, $h1Ini , $m1Ini , $h2Ini , $m2Fin) == true && $dateEnter == $fechaActual){
                 return response()->json(['asistencias' => $asistencias], 200);
-            }; 
-            
-
-           /* if($this->morning($horaEjecucion, $jornada) == true  && $this->morning( $hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return response()->json(['asistencias' => $asistencias], 200);
-            }; 
-
-            if($this->afternoon($horaEjecucion, $jornada) == true && $this->afternoon($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return response()->json(['asistencias' => $asistencias], 200);
             }
-
-            if($this->night($horaEjecucion, $jornada) == true && $this->night($hourEnter, $jornada) == true && $dateEnter == $fechaActual){
-                return response()->json(['asistencias' => $asistencias], 200);
-            }
-
-            return response()->json(['message' => 'No se encontraron asistencias para la ficha y jornada proporcionadas'], 404);*/
-
         }
 
+        // Si no se encontraron asistencias, devuelve un mensaje de error
         return response()->json(['message' => 'No se encontraron asistencias para la ficha y jornada proporcionadas'], 404);
-
-
     }
 
     public function validateHour($ingreso, $jornada, $hora1, $min1, $hora2, $min2)
