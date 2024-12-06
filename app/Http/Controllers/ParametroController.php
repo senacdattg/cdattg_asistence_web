@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\parametro;
+use App\Models\Parametro;
 use App\Http\Requests\StoreparametroRequest;
 use App\Http\Requests\UpdateparametroRequest;
 use Illuminate\Http\Request;
