@@ -92,17 +92,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/asistence/exitFormation/{caracterizacion_id}', [AsistenceQrController::class, 'exitFormationAsistenceWeb'])->name('asistence.exitFormation');
         Route::post('/asistence/setNewExit', [AsistenceQrController::class, 'setNewExitAsistenceWeb'])->name('asistence.setNewExit');
         Route::post('/asistence/setNewEntrance', [AsistenceQrController::class, 'setNewEntranceAsistenceWeb'])->name('asistence.setNewEntrance');
-    }); 
+    });
 
 
     //rutas para ProgramaCaractizacionControllerasistence.webexit
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaFormacion', ProgramaFormacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-        Route::get('/programa/index', [ProgramaFormacionController::class, 'index']); 
-        Route::get('/programa/create', [ProgramaFormacionController::class, 'create']); 
-        Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save'); 
-        Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');   
+        Route::get('/programa/index', [ProgramaFormacionController::class, 'index']);
+        Route::get('/programa/create', [ProgramaFormacionController::class, 'create']);
+        Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save');
+        Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');
         Route::get('/programa/{id}/edit', [ProgramaFormacionController::class, 'edit'])->name('programa.edit');
         Route::post('/programa/{id}', [ProgramaFormacionController::class, 'update'])->name('programa.update');
         Route::delete('/programa/{id}', [ProgramaFormacionController::class, 'destroy'])->name('programa.destroy');
@@ -114,10 +114,9 @@ Route::middleware('auth')->group(function () {
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
         Route::get('/jornada/{id}/destroy', [JornadaController::class, 'destroy'])->name('jornada.destroy');
         Route::post('jornada/{id}/update', [JornadaController::class, 'update'])->name('jornada.update');
-
     });
 
-  
+
     // Rutas para FichasCaracterizacionController
     Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
@@ -129,34 +128,34 @@ Route::middleware('auth')->group(function () {
         Route::get('/ficha/index', [FichaCaracterizacionController::class, 'index'])->name('ficha.index');
     });
 
-      // Rutas para CaracterizacionController
-      Route::resource('caracterizacion', CaracterizacionController::class);
-      route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-          Route::get('/caracter/index', [CaracterizacionController::class, 'index'])->name('caracter.index'); 
-          Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
-          Route::post('/caracterizacion/ficha', [CaracterizacionController::class, 'getCaracterByFicha'])->name('caracterizacion.ficha'); 
-          Route::post('/caracterizacion/store', [CaracterizacionController::class, 'store'])->name('caracterizacion.store');
-          Route::get('/caracterizacion/{id}/edit', [CaracterizacionController::class, 'edit'])->name('caracterizacion.edit');
-          Route::get('/caracterizacion/destroy/{id}', [CaracterizacionController::class, 'destroy'])->name('caracterizacion.destroy');
-          Route::post('/caracterizacion/{id}', [CaracterizacionController::class, 'update'])->name('caracterizacion.update');
+    // Rutas para CaracterizacionController
+    Route::resource('caracterizacion', CaracterizacionController::class);
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/caracter/index', [CaracterizacionController::class, 'index'])->name('caracter.index');
+        Route::get('/caracterizacion/create', [CaracterizacionController::class, 'create'])->name('caracterizacion.create');
+        Route::post('/caracterizacion/ficha', [CaracterizacionController::class, 'getCaracterByFicha'])->name('caracterizacion.ficha');
+        Route::post('/caracterizacion/store', [CaracterizacionController::class, 'store'])->name('caracterizacion.store');
+        Route::get('/caracterizacion/{id}/edit', [CaracterizacionController::class, 'edit'])->name('caracterizacion.edit');
+        Route::get('/caracterizacion/destroy/{id}', [CaracterizacionController::class, 'destroy'])->name('caracterizacion.destroy');
+        Route::post('/caracterizacion/{id}', [CaracterizacionController::class, 'update'])->name('caracterizacion.update');
         Route::get('/caracterizacion/{id}/show', [CaracterizacionController::class, 'show'])->name('caracterizacion.show');
-          
-      });
+    });
 
-      Route::resource('carnet', CarnetController::class);
-      route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function (){
+    Route::resource('carnet', CarnetController::class);
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
         Route::get('/', [CarnetController::class, 'index'])->name('carnet.index');
         Route::post('/process', [CarnetController::class, 'processCsv'])->name('carnet.process');
         Route::post('/carnet/send-all', [CarnetController::class, 'sendAll'])->name('carnet.sendAll');
-      }); 
-      
+    });
+
 
     //Rutas para instructores
     Route::resource('instructor', InstructorController::class);
-    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function(){
+    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
         route::get('createImportarCSV', [InstructorController::class, 'createImportarCSV'])->name('instructor.createImportarCSV');
         route::post('storeImportarCSV', [InstructorController::class, 'storeImportarCSV'])->name('instructor.storeImportarCSV');
         Route::post('instructor/store', [InstructorController::class, 'store'])->name('instructor.store');
+        Route::get('instructor/delete/{id}', [InstructorController::class, 'deleteWithoudUser'])->name('instructor.deleteWithoudUser');
     });
     // Rutas para entrada y salida
     Route::resource('entradaSalida', EntradaSalidaController::class);
@@ -168,12 +167,12 @@ Route::middleware('auth')->group(function () {
     Route::get('generarCSV/{ficha}', [EntradaSalidaController::class, 'generarCSV'])->name('entradaSalida.generarCSV');
 
 
-    
+
     // Ruta para sedes
     Route::resource('sede', SedeController::class);
     Route::get('/cargarSedesByMunicipio/{municipio_id}', [SedeController::class, 'cargarSedesByMunicipio'])->name('sede.cargarSedesByMunicipio');
     Route::get('/cargarSedesByRegional/{regional_id}', [SedeController::class, 'cargarSedesByRegional'])->name('sede.cargarSedesByRegional');
-    route::middleware('can:EDITAR SEDE')->group(function(){
+    route::middleware('can:EDITAR SEDE')->group(function () {
         Route::put('sedeUpdateStatus/{sede}', [SedeController::class, 'cambiarEstadoSede'])->name('sede.cambiarEstado');
     });
 
@@ -203,7 +202,7 @@ Route::middleware('auth')->group(function () {
 
     // rutas para parametros
     Route::resource('parametro', ParametroController::class);
-    route::middleware('can:EDITAR PARAMETRO')->group( function(){
+    route::middleware('can:EDITAR PARAMETRO')->group(function () {
 
         Route::put('/parametro/{parametro}/cambiar-estado', [ParametroController::class, 'cambiarEstado'])->name('parametro.cambiarEstado');
     });
@@ -211,7 +210,7 @@ Route::middleware('auth')->group(function () {
 
     // rutas para temas
     Route::resource('tema', TemaController::class);
-    route::middleware('can:EDITAR TEMA')->group(function(){
+    route::middleware('can:EDITAR TEMA')->group(function () {
 
         Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
         Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
@@ -219,7 +218,7 @@ Route::middleware('auth')->group(function () {
     });
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);
-    route::middleware('can:EDITAR REGIONAL')->group(function(){
+    route::middleware('can:EDITAR REGIONAL')->group(function () {
         Route::put('regionalUpdateStatus/{regional}', [RegionalController::class, 'cambiarEstadoRegional'])->name('regional.cambiarEstado');
     });
     // rutas para los permisos

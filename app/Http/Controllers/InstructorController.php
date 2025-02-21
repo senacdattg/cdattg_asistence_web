@@ -41,12 +41,26 @@ class InstructorController extends Controller
         $instructores = Instructor::whereHas('persona', function ($query) use ($search) {
             if ($search) {
                 $query->where('primer_nombre', 'like', "%{$search}%")
-                ->orWhere('segundo_nombre', 'like', "%{$search}%")
-                ->orWhere('primer_apellido', 'like', "%{$search}%")
-                ->orWhere('segundo_apellido', 'like', "%{$search}%")
-                ->orWhere('numero_documento', 'like', "%{$search}%");
+                    ->orWhere('segundo_nombre', 'like', "%{$search}%")
+                    ->orWhere('primer_apellido', 'like', "%{$search}%")
+                    ->orWhere('segundo_apellido', 'like', "%{$search}%")
+                    ->orWhere('numero_documento', 'like', "%{$search}%");
             }
-        })->paginate(10);
+        })->orderBy('id', 'desc')
+            ->paginate(10);
+
+        $personasSinUsuario = DB::table('personas')
+            ->leftJoin('users', 'personas.id', '=', 'users.persona_id')
+            ->whereNull('users.id')
+            ->select('personas.id', 'personas.primer_nombre', 'personas.primer_apellido', 'personas.numero_documento', 'personas.email')
+            ->get();
+
+        // dd($personasSinUsuario);
+
+        if ($personasSinUsuario->count() > 0) {
+            return view('Instructores.error', compact('personasSinUsuario'))->with('error', 'Existen personas sin usuario asociado. Por favor, cree un usuario para cada persona.');
+        }
+
         return view('Instructores.index', compact('instructores'));
     }
 
@@ -77,50 +91,47 @@ class InstructorController extends Controller
         //dd($request);
         $fechaNacimiento = $request->fecha_de_nacimiento;
         // @dd($fechaNacimiento);
-      
-            DB::beginTransaction();
-            // Crear Persona
-            $persona = new Persona();
-            $persona->tipo_documento = $request->input('tipo_documento');
-            $persona->numero_documento = $request->input('numero_documento');
-            $persona->primer_nombre = $request->input('primer_nombre');
-            $persona->segundo_nombre = $request->input('segundo_nombre');
-            $persona->primer_apellido = $request->input('primer_apellido');
-            $persona->segundo_apellido = $request->input('segundo_apellido');
-            $persona->fecha_de_nacimiento = $request->input('fecha_de_nacimiento');
-            $persona->genero = $request->input('genero');
-            $persona->email = $request->input('email');
-            $persona->save();
 
-            
-            $instructor = new Instructor();
-            $instructor->persona_id = $persona->id;
-            $instructor->regional_id = $request->input('regional_id');
-            $instructor->save();
-            
-            
-            // Crear Usuario asociado a la Persona
-            $user = new User();
-            $user->email = $request->input('email');
-            $user->password = Hash::make($request->input('numero_documento'));
-            $user->persona_id = $persona->id;
-            $user->roll_id = 3; 
-            $user->save();
-            $user->assignRole('INSTRUCTOR');
-           
-            DB::commit();
-            return redirect()->route('instructor.index')->with('success', '¡Registro Exitoso!');
-       
-            // Manejar excepciones de la base de datos
-            // @dd($e);
+        DB::beginTransaction();
+        // Crear Persona
+        $persona = new Persona();
+        $persona->tipo_documento = $request->input('tipo_documento');
+        $persona->numero_documento = $request->input('numero_documento');
+        $persona->primer_nombre = $request->input('primer_nombre');
+        $persona->segundo_nombre = $request->input('segundo_nombre');
+        $persona->primer_apellido = $request->input('primer_apellido');
+        $persona->segundo_apellido = $request->input('segundo_apellido');
+        $persona->fecha_de_nacimiento = $request->input('fecha_de_nacimiento');
+        $persona->genero = $request->input('genero');
+        $persona->email = $request->input('email');
+        $persona->save();
 
-            if (!$persona || !$instructor || !$user) {
-                DB::rollBack();
-                return redirect()->back()->withInput()->with('error', 'Error al guardar los datos. Por favor, inténtelo de nuevo.');
-            }
-            
-        
-       
+
+        $instructor = new Instructor();
+        $instructor->persona_id = $persona->id;
+        $instructor->regional_id = $request->input('regional_id');
+        $instructor->save();
+
+
+        // Crear Usuario asociado a la Persona
+        $user = new User();
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('numero_documento'));
+        $user->persona_id = $persona->id;
+        $user->roll_id = 3;
+        $user->save();
+        $user->assignRole('INSTRUCTOR');
+
+        DB::commit();
+        return redirect()->route('instructor.index')->with('success', '¡Registro Exitoso!');
+
+        // Manejar excepciones de la base de datos
+        // @dd($e);
+
+        if (!$persona || !$instructor || !$user) {
+            DB::rollBack();
+            return redirect()->back()->withInput()->with('error', 'Error al guardar los datos. Por favor, inténtelo de nuevo.');
+        }
     }
 
     /**
@@ -382,4 +393,15 @@ class InstructorController extends Controller
     }
 
 
+    public function deleteWithoudUser($id)
+    {
+        $instructor = Instructor::where('persona_id', $id)->delete();
+        $persona = Persona::where('id', $id)->delete();
+
+        if ($instructor && $persona) {
+            return redirect()->back()->with('success', '¡Registro eliminado exitosamente!');
+        } else {
+            return redirect()->back()->with('error', '¡Error al eliminar el registro!');
+        }
+    }
 }

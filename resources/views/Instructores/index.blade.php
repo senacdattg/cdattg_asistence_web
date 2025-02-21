@@ -6,10 +6,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Instructores
-
-
-                        </h1>
+                        <h1>Instructores</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -23,13 +20,21 @@
                 </div>
             </div>
         </section>
-
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <section class="content">
             <div class="card">
                 <div class="card-header">
                     <form method="GET" action="{{ route('instructor.index') }}">
                         <div class="input-group input-group-sm">
-                            <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o documento" value="{{ request()->input('search') }}">
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Buscar por nombre o documento" value="{{ request()->input('search') }}">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i> Buscar
@@ -139,7 +144,7 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="4">No hay instructores registradas</td>
+                                    <td colspan="4">No hay instructores registrados</td>
                                 </tr>
                             @endforelse
                         </tbody>

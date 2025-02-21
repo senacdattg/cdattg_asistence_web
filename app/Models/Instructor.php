@@ -30,8 +30,7 @@ class Instructor extends Model
     }
     public function fichas()
     {
-        return $this->hasMany(FichaCaracterizacion::class, 'instructor_id'); 
-       
+        return $this->hasMany(FichaCaracterizacion::class, 'instructor_id');
     }
 
     public function caracterizacionProgramas()
@@ -39,5 +38,9 @@ class Instructor extends Model
         return $this->hasMany(CaracterizacionPrograma::class, 'instructor_persona_id');
     }
 
-    
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'persona_id');
+    }
 }

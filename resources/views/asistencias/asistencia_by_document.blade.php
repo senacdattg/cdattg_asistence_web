@@ -38,6 +38,7 @@
                             <table id="asistenciasTable" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
+                                        <th class="text-center">Fecha</th>
                                         <th class="text-center">Ficha</th>
                                         <th class="text-center">Instructor</th>
                                         <th class="text-center">Nombres</th>
@@ -47,22 +48,24 @@
                                         <th class="text-center">Salida</th>
                                         <th class="text-center">Novedad Entrada</th>
                                         <th class="text-center">Novedad Salida</th>
-                                        <th class="text-center">Fecha</th>
                                     </tr>
-                                </thead> 
+                                </thead>
                                 <tbody>
-                                    @foreach($asistencias as $asistencia)
-                                    <tr></tr>
-                                        <td class="text-center">{{ $asistencia->caracterizacion->ficha->ficha }}</td>
-                                        <td class="text-center">{{ $asistencia->caracterizacion->persona->primer_nombre }}</td>
-                                        <td class="text-center">{{ $asistencia->nombres }}</td>
-                                        <td class="text-center">{{ $asistencia->apellidos }}</td>
-                                        <td class="text-center">{{ $asistencia->numero_identificacion }}</td>
-                                        <td class="text-center">{{ $asistencia->hora_ingreso }}</td>
-                                        <td class="text-center">{{ $asistencia->hora_salida }}</td>
-                                        <td class="text-center">{{ $asistencia->novedad_entrada }}</td>
-                                        <td class="text-center">{{ $asistencia->novedad_salida }}</td>
-                                        <td class="text-center">{{ $asistencia->created_at->format('Y-m-d') }}</td>
+                                    @foreach ($asistencias as $asistencia)
+                                        <tr>
+                                            <td class="text-center">{{ $asistencia->created_at->format('Y-m-d') }}</td>
+                                            <td class="text-center">{{ $asistencia->caracterizacion->ficha->ficha }}</td>
+                                            <td class="text-center">
+                                                {{ $asistencia->caracterizacion->persona->primer_nombre }}</td>
+                                            <td class="text-center">{{ $asistencia->nombres }}</td>
+                                            <td class="text-center">{{ $asistencia->apellidos }}</td>
+                                            <td class="text-center">{{ $asistencia->numero_identificacion }}</td>
+                                            <td class="text-center">{{ $asistencia->hora_ingreso }}</td>
+                                            <td class="text-center">{{ $asistencia->hora_salida }}</td>
+                                            <td class="text-center">{{ $asistencia->novedad_entrada }}</td>
+                                            <td class="text-center">{{ $asistencia->novedad_salida }}</td>
+
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -71,7 +74,7 @@
                 </div>
             </div>
         </div>
-        
-    </section>
+
+        </section>
     </div>
 @endsection

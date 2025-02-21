@@ -34,7 +34,7 @@ class Persona extends Model
     {
         parent::boot();
 
-        static::saving(function ($persona){
+        static::saving(function ($persona) {
             $persona->primer_nombre = strtoupper($persona->primer_nombre);
             $persona->segundo_nombre = strtoupper($persona->segundo_nombre);
             $persona->primer_apellido = strtoupper($persona->primer_apellido);
@@ -60,10 +60,9 @@ class Persona extends Model
     {
         return $this->hasOne(Instructor::class);
     }
-    
+
     public function caracterizacionProgramas()
     {
         return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
     }
-
 }
