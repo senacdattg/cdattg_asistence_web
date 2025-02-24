@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class FichaCaracterizacionController extends Controller
 {
-    
+
     /**
      * Muestra una lista de todas las fichas de caracterización.
      *
@@ -19,12 +19,12 @@ class FichaCaracterizacionController extends Controller
      */
     public function index()
     {
-        
-        $fichas = FichaCaracterizacion::with('programaFormacion')->orderBy('id', 'desc')->get();
+
+        $fichas = FichaCaracterizacion::with('programaFormacion')->orderBy('id', 'desc')->paginate(10);
         return view('fichas.index', compact('fichas'));
     }
 
-  
+
     /**
      * Muestra el formulario para crear una nueva ficha de caracterización.
      *
@@ -35,13 +35,13 @@ class FichaCaracterizacionController extends Controller
      */
     public function create()
     {
-      
+
         $programas = ProgramaFormacion::orderBy('nombre', 'asc')->get();
-       
-        return view('fichas.create', compact('programas')); 
+
+        return view('fichas.create', compact('programas'));
     }
 
-  
+
     /**
      * Almacena una nueva ficha de caracterización en la base de datos.
      *
@@ -55,20 +55,22 @@ class FichaCaracterizacionController extends Controller
     {
         $request->validate([
             'programa_id' => 'required|exists:programas_formacion,id',
-            'numero_ficha' => 'required|numeric|unique:fichas_caracterizacion,ficha',
+            'numero_ficha' => 'required|numeric|unique:fichas_caracterizacion,ficha|min:1',
         ]);
+
 
         $ficha = new FichaCaracterizacion();
         $ficha->programa_formacion_id = $request->input('programa_id');
         $ficha->ficha = $request->input('numero_ficha');
 
-    
-        $ficha->save();
+        if ($ficha->save()) {
+            return redirect()->route('fichaCaracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
+        }
 
-        return redirect()->route('fichaCaracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
+        return back()->with('error', 'Ocurrió un error al crear la caracterización.');
     }
 
-  
+
     /**
      * Muestra el formulario de edición para una ficha de caracterización específica.
      *
@@ -83,7 +85,7 @@ class FichaCaracterizacionController extends Controller
         return view('fichas.edit', compact('ficha', 'programas'));
     }
 
-   
+
     /**
      * Actualiza una ficha de caracterización existente.
      *
@@ -122,6 +124,6 @@ class FichaCaracterizacionController extends Controller
         $ficha = FichaCaracterizacion::findOrFail($id);
         $ficha->delete();
 
-        return redirect()->route('fichaCaracterizacion.index')->with('success', 'Caracterización eliminada exitosamente.');
+        return redirect()->route('fichaCaracterizacion.index')->with('success', 'Ficha eliminada exitosamente.');
     }
 }
