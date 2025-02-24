@@ -6,11 +6,13 @@ use App\Models\ProgramaFormacion;
 use App\Models\Sede;
 use App\Models\TipoPrograma;
 use Database\Seeders\TiposProgramas;
+use Hamcrest\Type\IsNumeric;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\IsFalse;
 
 class ProgramaFormacionController extends Controller
 {
-    
+
     /**
      * Muestra una lista paginada de programas de formación.
      *
@@ -22,14 +24,17 @@ class ProgramaFormacionController extends Controller
      */
     public function index()
     {
-        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->orderBy('id', 'desc')->paginate(7);
-        if($programas == null){
+        $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->orderBy('id', 'desc')->paginate(6);
+
+        if (count($programas) == 0) {
             $programas = null;
         }
+
+
         return view('programas.index', compact('programas'));
     }
 
-  
+
     /**
      * Muestra el formulario para crear un nuevo programa de formación.
      *
@@ -44,18 +49,18 @@ class ProgramaFormacionController extends Controller
         $tipos = TipoPrograma::all();
 
 
-        if(count($sedes) == 0){
-            $sedes = null; 
+        if (count($sedes) == 0) {
+            $sedes = null;
         }
-        
-        if(count($tipos) == 0){
-            $tipos = null; 
+
+        if (count($tipos) == 0) {
+            $tipos = null;
         }
 
         return view('programas.create', compact('sedes', 'tipos'));
     }
 
- 
+
     /**
      * Almacena un nuevo programa de formación en la base de datos.
      *
@@ -77,12 +82,18 @@ class ProgramaFormacionController extends Controller
         $programaFormacion->nombre = $request->input('nombre_programa');
         $programaFormacion->sede_id = $request->input('sede_id');
         $programaFormacion->tipo_programa_id = $request->input('tipo_programa_id');
-        $programaFormacion->save();
 
-        return redirect('programa/index')->with('success', 'Programa de formación creado exitosamente.');
+        if (is_numeric($programaFormacion->nombre)) return back()->with('error', 'Error al crear el programa de formación.');
+
+
+        if ($programaFormacion->save()) {
+            return redirect()->route('programa.index')->with('success', 'Programa de formación creado exitosamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al crear el programa de formación.');
+        }
     }
 
-  
+
     /**
      * Muestra el formulario de edición para un programa de formación específico.
      *
@@ -94,16 +105,16 @@ class ProgramaFormacionController extends Controller
     {
         $programa = ProgramaFormacion::findOrFail($id);
         $sedes = Sede::all();
-        $tipos = TipoPrograma::all(); 
+        $tipos = TipoPrograma::all();
 
-        if($programa == null){
-            $programa = null; 
+        if ($programa == null) {
+            $programa = null;
         }
 
         return view('programas.edit', compact('programa', 'sedes', 'tipos'));
     }
 
-   
+
     /**
      * Actualiza un programa de formación existente.
      *
@@ -116,7 +127,7 @@ class ProgramaFormacionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-   
+
         $request->validate([
             'nombre_programa' => 'required|string|max:255|unique:programas_formacion,nombre,' . $id,
             'sede_id' => 'required|exists:sedes,id',
@@ -132,7 +143,7 @@ class ProgramaFormacionController extends Controller
         return redirect('programa/index')->with('success', 'Programa de formación actualizado exitosamente.');
     }
 
- 
+
     /**
      * Elimina un programa de formación especificado por su ID.
      *
@@ -141,14 +152,14 @@ class ProgramaFormacionController extends Controller
      */
     public function destroy(string $id)
     {
-       
+
         $programaFormacion = ProgramaFormacion::findOrFail($id);
         $programaFormacion->delete();
 
         return redirect('programa/index')->with('success', 'Programa de formación eliminado exitosamente.');
     }
 
-  
+
     /**
      * Busca programas de formación basados en el término de búsqueda proporcionado.
      *
@@ -162,18 +173,19 @@ class ProgramaFormacionController extends Controller
      */
     public function search(Request $request)
     {
+
         $query = $request->input('search');
         $programas = ProgramaFormacion::where('nombre', 'LIKE', "%{$query}%")
-            ->orWhereHas('sede', function($q) use ($query) {
+            ->orWhereHas('sede', function ($q) use ($query) {
                 $q->where('nombre', 'LIKE', "%{$query}%");
             })
-            ->orWhereHas('tipoPrograma', function($q) use ($query) {
+            ->orWhereHas('tipoPrograma', function ($q) use ($query) {
                 $q->where('nombre', 'LIKE', "%{$query}%");
             })
-            ->get();
+            ->paginate(7);
 
-        if(count($programas) == 0){
-            $programas = null;
+        if (count($programas) == 0) {
+            return redirect()->route('programa.index')->with('error', 'No se encontraron programas de formación.');
         }
 
         return view('programas.index', compact('programas'));

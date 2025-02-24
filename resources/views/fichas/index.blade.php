@@ -28,13 +28,22 @@
                 </button>
             </div>
         @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <section class="content">
             <div class="card" style="margin: 0 auto;">
                 <div class="card-header">
-                    <form method="get" action="">
+                    <form method="get" action={{ route('ficha.search') }}>
+
                         <div class="input-group">
                             <input type="text" name="search" class="form-control"
-                                placeholder="Buscar por nombre de programa" value="{{ request()->get('search') }}">
+                                placeholder="Buscar por número deficha " value="{{ request()->get('search') }}">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fas fa-search"></i> Buscar

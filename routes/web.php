@@ -99,7 +99,7 @@ Route::middleware('auth')->group(function () {
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaFormacion', ProgramaFormacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
-        Route::get('/programa/index', [ProgramaFormacionController::class, 'index']);
+        Route::get('/programa/index', [ProgramaFormacionController::class, 'index'])->name('programa.index');
         Route::get('/programa/create', [ProgramaFormacionController::class, 'create']);
         Route::post('/programa/store', [ProgramaFormacionController::class, 'store'])->name('programa.save');
         Route::get('/programa/search', [ProgramaFormacionController::class, 'search'])->name('programa.search');
@@ -120,12 +120,13 @@ Route::middleware('auth')->group(function () {
     // Rutas para FichasCaracterizacionController
     Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
     route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+        Route::get('/ficha/index', [FichaCaracterizacionController::class, 'index'])->name('ficha.index');
+        Route::get('/ficha/search', [FichaCaracterizacionController::class, 'search'])->name('ficha.search');
         Route::get('/fichaCaracterizacion/create', [FichaCaracterizacionController::class, 'create'])->name('fichaCaracterizacion.create');
         Route::post('/fichaCaracterizacion/store', [FichaCaracterizacionController::class, 'store'])->name('fichaCaracterizacion.store');
         Route::get('/fichaCaracterizacion/{id}/edit', [FichaCaracterizacionController::class, 'edit'])->name('ficha.edit');
         Route::post('/fichaCaracterizacion/{id}', [FichaCaracterizacionController::class, 'update'])->name('ficha.update');
         Route::delete('/fichaCaracterizacion/{id}', [FichaCaracterizacionController::class, 'destroy'])->name('ficha.destroy');
-        Route::get('/ficha/index', [FichaCaracterizacionController::class, 'index'])->name('ficha.index');
     });
 
     // Rutas para CaracterizacionController

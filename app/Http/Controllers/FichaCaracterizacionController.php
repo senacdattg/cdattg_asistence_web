@@ -126,4 +126,24 @@ class FichaCaracterizacionController extends Controller
 
         return redirect()->route('fichaCaracterizacion.index')->with('success', 'Ficha eliminada exitosamente.');
     }
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+
+        $query = $request->input('search');
+        $fichas = FichaCaracterizacion::with('programaFormacion')->where('ficha', 'LIKE', "{$query}%")
+            ->orWhere('ficha', 'LIKE', "%{$query}")
+            ->orWhere('ficha', 'LIKE', "%{$query}%")
+            ->orderBy('id', 'desc')
+            ->paginate(7);
+
+        if (count($fichas) == 0) {
+            return back()->with('error', 'No se encontraron resultados.');
+        }
+
+        return view('fichas.index', compact('fichas'));
+    }
 }
