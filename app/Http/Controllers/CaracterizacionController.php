@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class CaracterizacionController extends Controller
 {
-  
+
     /**
      * Muestra una lista de todos los caracteres con sus fichas asociadas.
      *
@@ -27,12 +27,12 @@ class CaracterizacionController extends Controller
      */
     public function index()
     {
-        $caracteres = CaracterizacionPrograma::with('ficha')->orderBy('id', 'desc')->get();
+        $caracteres = CaracterizacionPrograma::with('ficha')->orderBy('id', 'desc')->paginate(7);
         return view('caracterizacion.index', compact('caracteres'));
     }
 
 
-   
+
     /**
      * Muestra la vista para crear una nueva caracterización.
      *
@@ -40,10 +40,12 @@ class CaracterizacionController extends Controller
      */
     public function create()
     {
-       return view('caracterizacion.create', [
-           'fichas' => FichaCaracterizacion::all(),
-       ]);
+        return view('caracterizacion.create', [
+            'fichas' => FichaCaracterizacion::all(),
+        ]);
     }
+
+
 
     /**
      * Obtiene la caracterización por ficha.
@@ -53,30 +55,29 @@ class CaracterizacionController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException Si la validación del ID de la ficha falla.
      */
-    public function getCaracterByFicha(Request $request) {
+    public function getCaracterByFicha(Request $request)
+    {
         $request->validate([
             'ficha_id' => 'required|integer|exists:fichas_caracterizacion,id',
         ]);
 
         $fichaId = $request->input('ficha_id');
 
-    
-        $ficha = FichaCaracterizacion::with(['programaFormacion'])->find($fichaId);
-        $sedePrograma = $ficha->programaFormacion->sede_id; 
 
-        
-        $sede = Sede::find($sedePrograma); 
-        $instructors = Instructor::all(); 
+        $ficha = FichaCaracterizacion::with(['programaFormacion'])->find($fichaId);
+        $sedePrograma = $ficha->programaFormacion->sede_id;
+
+
+        $sede = Sede::find($sedePrograma);
+        $instructors = Instructor::all();
         $jornadas = JornadaFormacion::all();
 
-       
 
-        return view('caracterizacion.caracterizacion', compact('ficha', 'sede', 'instructors', 'jornadas')); 
 
-        
+        return view('caracterizacion.caracterizacion', compact('ficha', 'sede', 'instructors', 'jornadas'));
     }
 
-   
+
     /**
      * Almacena una nueva caracterización en la base de datos.
      *
@@ -97,20 +98,20 @@ class CaracterizacionController extends Controller
             'jornada_id' => 'required|exists:jornadas_formacion,id',
             'persona_id' => 'required|exists:instructors,persona_id',
         ]);
-        
+
         $caracterizacion = new CaracterizacionPrograma();
         $caracterizacion->ficha_id = $request->input('ficha_id');
         $caracterizacion->programa_formacion_id = $request->input('programa_id');
         $caracterizacion->instructor_persona_id = $request->input('persona_id');
         $caracterizacion->jornada_id = $request->input('jornada_id');
         $caracterizacion->sede_id = $request->input('sede_id');
-        
+
         $caracterizacion->save();
 
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización creada exitosamente.');
     }
 
-  
+
 
     /**
      * Muestra el formulario de edición para una caracterización específica.
@@ -133,7 +134,7 @@ class CaracterizacionController extends Controller
         ]);
     }
 
-   
+
     /**
      * Actualiza una caracterización existente en la base de datos.
      *
@@ -146,7 +147,7 @@ class CaracterizacionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-     
+
         $request->validate([
             'ficha_id' => 'required|exists:fichas_caracterizacion,id',
             'programa_formacion_id' => 'required|exists:programas_formacion,id',
@@ -168,7 +169,7 @@ class CaracterizacionController extends Controller
     }
 
 
-     
+
     /**
      * Elimina una caracterización específica basada en el ID proporcionado.
      *
@@ -182,14 +183,13 @@ class CaracterizacionController extends Controller
 
         $asistencias = AsistenciaAprendiz::where('caracterizacion_id', $id)->get();
 
-        if( count($asistencias) > 0){
+        if (count($asistencias) > 0) {
             return redirect()->route('caracterizacion.index')->with('error', 'No se puede eliminar la caracterización porque tiene asistencias asociadas.');
         }
 
         $caracterizacion->delete();
 
         return redirect()->route('caracterizacion.index')->with('success', 'Caracterización eliminada exitosamente.');
-
     }
 
 
@@ -205,7 +205,8 @@ class CaracterizacionController extends Controller
      * Si se encuentran caracterizaciones, se devuelve una respuesta JSON con un código de estado 200.
      * Si no se encuentran caracterizaciones, se devuelve una respuesta JSON con un mensaje de error y un código de estado 404.
      */
-    public function CaracterizacionByInstructor(String $id){ 
+    public function CaracterizacionByInstructor(String $id)
+    {
         $caracterizaciones = CaracterizacionPrograma::with('ficha', 'programaFormacion', 'persona', 'jornada', 'sede')
             ->where('instructor_persona_id', $id)
             ->get()
@@ -214,7 +215,7 @@ class CaracterizacionController extends Controller
                     'id' => $caracterizacion->id,
                     'ficha' => $caracterizacion->ficha->ficha ?? 'N/A',
                     'programa_formacion' => $caracterizacion->programaFormacion->nombre ?? 'N/A',
-                    'persona' => $caracterizacion->persona->primer_nombre ?? '' .' '. $caracterizacion->persona->segundo_nombre  ?? '' . ' ' . $caracterizacion->persona->primer_apellido ?? ''.' '. $caracterizacion->persona->segundo_apellido ?? '',
+                    'persona' => $caracterizacion->persona->primer_nombre ?? '' . ' ' . $caracterizacion->persona->segundo_nombre  ?? '' . ' ' . $caracterizacion->persona->primer_apellido ?? '' . ' ' . $caracterizacion->persona->segundo_apellido ?? '',
                     'jornada' => $caracterizacion->jornada->jornada ?? 'N/A',
                     'sede' => $caracterizacion->sede->sede ?? 'N/A',
                 ];
@@ -225,6 +226,32 @@ class CaracterizacionController extends Controller
         } else {
             return response()->json(['message' => 'No se encontraron caracterizaciones.'], 404);
         }
+    }
 
+    public function show(Request $request)
+    {
+        $search = $request->input('search');
+
+        $caracteres = CaracterizacionPrograma::with(['ficha', 'programaFormacion', 'persona'])
+            ->whereHas('ficha', function ($query) use ($search) {
+                $query->where('ficha', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('programaFormacion', function ($query) use ($search) {
+                $query->where('nombre', 'like', '%' . $search . '%');
+            })
+            ->orWhereHas('persona', function ($query) use ($search) {
+                $query->where('primer_nombre', 'like', '%' . $search . '%')
+                    ->orWhere('segundo_nombre', 'like', '%' . $search . '%')
+                    ->orWhere('primer_apellido', 'like', '%' . $search . '%')
+                    ->orWhere('segundo_apellido', 'like', '%' . $search . '%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(7);
+
+        if ($caracteres->isEmpty()) {
+            return redirect()->route('caracterizacion.index')->with('error', 'No se encontraron resultados.');
+        }
+
+        return view('caracterizacion.index', compact('caracteres'));
     }
 }
