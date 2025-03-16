@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ficha_caracterizacions', function (Blueprint $table) {
+        Schema::table('fichas_caracterizacion', function (Blueprint $table) {
+            $table->foreignId('dias_de_formacion')->after('ficha');
             $table->foreignId('user_create_id')->after('dias_de_formacion')->constrained('users');
             $table->foreignId('user_edit_id')->after('user_create_id')->constrained('users');
         });
@@ -22,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ficha_caracterizacions', function (Blueprint $table) {
+        Schema::table('fichas_caracterizacion', function (Blueprint $table) {
             //
         });
     }

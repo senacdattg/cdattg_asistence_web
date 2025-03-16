@@ -9,18 +9,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
-    
-
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    
-    <link rel="stylesheet" href="">
-
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css?v=3.2.0">
- 
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -44,49 +36,31 @@
 
             {{-- cierre de sesion --}}
             <ul class="navbar-nav ml-auto">
-
-
                 <li class="nav-item dropdown user-menu ml-auto ">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                         <img src="
-                        {{ asset('dist/img/LogoSena.png') }}" class="user-image img-circle elevation-2"
-                            alt="User Image">
+                        {{ asset('dist/img/LogoSena.png') }}"
+                            class="user-image img-circle elevation-2" alt="User Image">
                         <span class="d-none d-md-inline">{{ Auth::user()->persona->primer_nombre }}
                             {{ Auth::user()->persona->primer_apellido }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-
                         <li class="user-header bg-primary">
                             <img src="
-                            {{ asset('dist/img/LogoSena.png') }}" class="img-circle elevation-2" alt="User Image">
+                            {{ asset('dist/img/LogoSena.png') }}"
+                                class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ Auth::user()->persona->primer_nombre }} {{ Auth::user()->persona->primer_apellido }}
                                 {{-- <small>Member since Nov. 2012</small> --}}
                             </p>
                         </li>
-
-                        {{-- <li class="user-body">
-                            <div class="row">
-                                <div class="col-4 text-center">
-                                    <a href="#">Followers</a>
-                                </div>
-                                <div class="col-4 text-center">
-                                    <a href="#">Sales</a>
-                                </div>
-                                <div class="col-4 text-center">
-                                    <a href="#">Friends</a>
-                                </div>
-                            </div>
-
-                        </li> --}}
-
                         <li class="user-footer">
-                            <a href="{{ route('persona.show', ['persona' => Auth::user()->persona->id]) }}" class="btn btn-default btn-flat">Perfil</a>
+                            <a href="{{ route('persona.show', ['persona' => Auth::user()->persona->id]) }}"
+                                class="btn btn-default btn-flat">Perfil</a>
                             <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Cerrar
                                 sesión</a>
                         </li>
                     </ul>
                 </li>
             </ul>
-
         </nav>

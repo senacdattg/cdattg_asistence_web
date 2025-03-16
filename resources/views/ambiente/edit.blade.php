@@ -29,7 +29,6 @@
                      <div class="card-body">
                         <a class="btn btn-warning btn-sm" href="{{ route('ambiente.index') }}">
                             <i class="fas fa-arrow-left"></i>
-                            </i>
                             Volver
                         </a>
                     </div>
@@ -38,36 +37,35 @@
                         @method('put')
                         <div class="row">
                         <div class="col-md-6 div-regional">
-                                <label for="regional_id">Seleccione la regional</label>
+                                <label for="regional_id">Seleccione la Regional</label>
                                 <select name="regional_id" id="regional_id" class="form-control" required autofocus>
-                                    <option value="" disabled selected>Selecciona una regional</option>
+                                    <option value="" disabled selected>Selecciona una Regional</option>
                                     @forelse ($regionales as $regional)
                                         <option value="{{ $regional->id }}">{{ $regional->regional }}</option>
                                     @empty
-                                        <option value="">No hay regionales disponibles</option>
+                                        <option value="">No hay Regionales disponibles</option>
                                     @endforelse
                                 </select>
                             </div>
 
                             <div class="col-md-6 div-sede">
-                                <label for="sede_id">Seleccione la sede</label>
+                                <label for="sede_id">Seleccione la Sede</label>
                                 <select name="sede_id" id="sede_id" class="form-control" required>
-                                        <option value="" disabled selected>Selecciona una sede</option>
+                                        <option value="" disabled selected>Selecciona una Sede</option>
                                 </select>
                             </div>
 
                             <div class="col-md-6 div-bloque">
-                                <label for="bloque_id">Seleccione el bloque</label>
+                                <label for="bloque_id">Seleccione el Bloque</label>
                                 <select name="bloque_id" id="bloque_id" class="form-control @error('bloque_id') is-invalid @enderror" required>
-                                   <option value="" disabled selected>Selecciona un bloque</option>
+                                   <option value="" disabled selected>Selecciona un Bloque</option>
                                 </select>
                             </div>
 
-
                             <div class="col-md-6 div-piso">
-                                <label for="piso_id">Seleccione el piso</label>
+                                <label for="piso_id">Seleccione el Piso</label>
                                 <select name="piso_id" id="piso_id" class="form-control" required>
-                                  <option value="" disabled selected>Selecciona un piso</option>
+                                  <option value="" disabled selected>Selecciona un Piso</option>
                                 </select>
 
                             </div>

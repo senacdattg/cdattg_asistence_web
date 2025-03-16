@@ -1,5 +1,5 @@
 @include('layout.header-registro')
 <div class="main-content">
-@yield('content')
+    @yield('content')
 </div>
 @include('layout.footer-registro')

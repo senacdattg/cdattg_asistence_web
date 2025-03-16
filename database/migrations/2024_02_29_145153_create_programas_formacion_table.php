@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('sede_id')->constrained('sedes');
             $table->bigInteger('codigo');
             $table->string('nombre');
-            $table->string('duracion'); 
+            $table->string('duracion');
             $table->timestamps();
         });
     }

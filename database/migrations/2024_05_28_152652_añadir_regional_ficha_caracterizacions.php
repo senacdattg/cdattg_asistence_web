@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ficha_caracterizacions', function (Blueprint $table) {
+        Schema::table('fichas_caracterizacion', function (Blueprint $table) {
             $table->boolean('status')->default(1);
         });
     }

@@ -37,19 +37,17 @@ class PisoController extends Controller
     }
     public function cargarPisos($bloque_id)
     {
-        // DB::enableQueryLog();
         $pisos = Piso::where('bloque_id', $bloque_id)->get();
         return response()->json(['success' => true, 'pisos' => $pisos]);
-        // dd(DB::getQueryLog());
     }
+
     public function apiCargarPisos(Request $request)
     {
         $bloque_id = $request->bloque_id;
-        // DB::enableQueryLog();
         $pisos = Piso::where('bloque_id', $bloque_id)->get();
         return response()->json($pisos, 200);
-        // dd(DB::getQueryLog());
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -77,11 +75,11 @@ class PisoController extends Controller
         } catch (QueryException $e) {
             // Manejar excepciones de la base de datos
             DB::rollBack();
-            return redirect()->back()->with('error','Error de base de datos. Por favor, inténtelo de nuevo.');
+            return redirect()->back()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.');
         } catch (\Exception $e) {
             // Manejar otras excepciones
             DB::rollBack();
-            return redirect()->back()->with('error','Se produjo un error. Por favor, inténtelo de nuevo.');
+            return redirect()->back()->with('error', 'Se produjo un error. Por favor, inténtelo de nuevo.');
         }
     }
 
@@ -107,7 +105,7 @@ class PisoController extends Controller
      */
     public function update(UpdatePisoRequest $request, Piso $piso)
     {
-        try{
+        try {
             DB::beginTransaction();
             $piso->update([
                 'piso' => $request->piso,
@@ -116,7 +114,7 @@ class PisoController extends Controller
             ]);
             DB::commit();
             return redirect()->route('piso.show', ['piso' => $piso->id])->with('success', 'Piso Actualizado con éxito!');
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Ha ocurrido un error al actualizar el piso.' . $e->getMessage());
         }
@@ -127,12 +125,12 @@ class PisoController extends Controller
      */
     public function destroy(Piso $piso)
     {
-        try{
+        try {
             DB::beginTransaction();
             $piso->delete();
             DB::commit();
             return redirect()->back()->with('success', 'Piso Eliminado exitosamente');
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             DB::rollBack();
 
             if ($e->getCode() == 23000) {
@@ -142,21 +140,23 @@ class PisoController extends Controller
 
         return redirect()->route('piso.index')->with('success', 'Piso eliminado exitosamente');
     }
-    public function cambiarEstado(Piso $piso){
-        try{
+
+    public function cambiarEstado(Piso $piso)
+    {
+        try {
             DB::beginTransaction();
-            if ( $piso->status == 1){
+            if ($piso->status == 1) {
                 $piso->update([
                     'status' => 0,
                 ]);
-            }else{
+            } else {
                 $piso->update([
                     'status' => 1,
                 ]);
             }
             DB::commit();
             return redirect()->back();
-        }catch (QueryException $e){
+        } catch (QueryException $e) {
             DB::rollBack();
             return redirect()->back()->with('error', 'Ha ocurrido un error al actualizar el estado del bloque');
         }

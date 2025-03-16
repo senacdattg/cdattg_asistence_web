@@ -22,31 +22,30 @@
                 });
             }
         }
-        function confirmarEliminar(){
 
-        
-        $('.formulario-eliminar').submit(function(e) {
-            e.preventDefault(); // Evita que el formulario se envíe automáticamente
+        function confirmarEliminar() {
+            $('.formulario-eliminar').submit(function(e) {
+                e.preventDefault(); // Evita que el formulario se envíe automáticamente
 
-            var form = this; // Referencia al formulario actual
+                var form = this; // Referencia al formulario actual
 
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "¡No podrás revertir esto!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Sí, eliminarlo",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Si se confirma la eliminación, envía el formulario actual
-                    form.submit();
-                }
+                Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Sí, eliminarlo",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Si se confirma la eliminación, envía el formulario actual
+                        form.submit();
+                    }
+                });
             });
-        });
-    }
+        }
 
         mostrarSuccess();
         mostrarError();

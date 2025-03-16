@@ -1,22 +1,15 @@
-<div class="card-footer">
-{{-- <p>Desarrolladores:</p>
-{{-- <p>JOSE WILLIAM LOPEZ REBELLON</p> --}}
-</div>
+    <div class="card-footer"></div>
 
-<footer class="main-footer">
-<div class="float-right d-none d-sm-block">
-<b>Version</b> 3.2.0
-</div>
-<strong>Copyright &copy; 2024 <a href="">Industria y Tecnólogia SENA Guaviare</a>.</strong> Todos los derechos reservados.
-</footer>
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-block">
+            <b>Version</b> 3.2.0
+        </div>
+        <strong>Copyright &copy; @php echo date('Y') @endphp <a href="">Industria y Tecnología SENA || Regional Guaviare</a>.</strong> Todos los derechos reservados.
+    </footer>
 
-<aside class="control-sidebar control-sidebar-dark">
-
-</aside>
+    <aside class="control-sidebar control-sidebar-dark"></aside>
 
 </div>
-
-
 
 <script src="../../plugins/jquery/jquery.min.js"></script>
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -27,4 +20,5 @@
 @include('layout.alertas')
 
 </body>
+
 </html>
