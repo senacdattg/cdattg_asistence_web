@@ -49,12 +49,14 @@ class RegionalController extends Controller
         $validator = Validator::make($request->all(), [
             'regional' => 'required|string|unique:regionals'
         ]);
-        if ($validator->fails()){
+
+        if ($validator->fails()) {
             return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
-        try{
+
+        try {
             DB::beginTransaction();
             $regional = Regional::create([
                 'regional' => $request->regional,
@@ -66,11 +68,10 @@ class RegionalController extends Controller
             DB::commit();
 
             return redirect()->route('regional.show', $regional->id)->with('success', 'Regional creada con éxito');
-        }catch(QueryException $e){
+        } catch (QueryException $e) {
             DB::rollBack();
-            if($e->getCode() == 23000){
+            if ($e->getCode() == 23000) {
                 return redirect()->back()->withInput()->withErrors(['error' => 'Error al momento de crear la regional' . $e->getMessage()]);
-
             }
             return redirect()->back()->withInput()->withErrors(['error' => 'Error al momento de crear la regional' . $e->getMessage()]);
         }
@@ -123,6 +124,8 @@ class RegionalController extends Controller
      */
     public function destroy(Regional $regional)
     {
+        dd("aqui ta");
+
         try {
             DB::beginTransaction();
             $regional->delete();
@@ -136,7 +139,9 @@ class RegionalController extends Controller
             }
         }
     }
-    public function cambiarEstadoRegional(Regional $regional){
+
+    public function cambiarEstadoRegional(Regional $regional)
+    {
         if ($regional->status === 1) {
             $regional->update(['status' => 0]);
         } else {

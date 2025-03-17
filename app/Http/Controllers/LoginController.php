@@ -11,13 +11,12 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function index(){
+    public function index()
+    {
 
         return view('user.login');
     }
-    public function mostrarLogin()
-    {
-    }
+    public function mostrarLogin() {}
     public function iniciarSesion(Request $request)
     {
         try {
@@ -79,7 +78,7 @@ class LoginController extends Controller
             // Retornar la respuesta JSON incluyendo el token
             return response()->json(['user' => $user, 'persona' => $persona, 'token' => $token], 200);
         }
-    return response()->json(['error' => 'Credenciales incorrectas'], 401);
+        return response()->json(['error' => 'Credenciales incorrectas'], 401);
         //  back()->withErrors([
         //     'email' => 'The provided credentials do not match our records.',
         // ])->onlyInput('email');
