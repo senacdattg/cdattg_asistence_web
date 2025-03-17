@@ -26,11 +26,6 @@ class ProgramaFormacionController extends Controller
     {
         $programas = ProgramaFormacion::with(['sede', 'tipoPrograma'])->orderBy('id', 'desc')->paginate(6);
 
-        if (count($programas) == 0) {
-            $programas = null;
-        }
-
-
         return view('programas.index', compact('programas'));
     }
 
@@ -47,15 +42,6 @@ class ProgramaFormacionController extends Controller
     {
         $sedes = Sede::all();
         $tipos = TipoPrograma::all();
-
-
-        if (count($sedes) == 0) {
-            $sedes = null;
-        }
-
-        if (count($tipos) == 0) {
-            $tipos = null;
-        }
 
         return view('programas.create', compact('sedes', 'tipos'));
     }

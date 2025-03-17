@@ -6,10 +6,7 @@
             <div class="container-fluid mt-3">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Programas de formación
-
-
-                        </h1>
+                        <h1>Programas de formación</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -58,7 +55,7 @@
                     <table class="table table-responsive">
                         <thead>
                             <tr>
-                                <th style="width: 1%">
+                                <th style="width: 10%">
                                     Id
                                 </th>
                                 <th style="width: 20%">
@@ -76,28 +73,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if (!$programas || $programas->isEmpty()):  ?>
 
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <p>Error al consultar lista de programas</p>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                            <?php endif; ?>
-                            @foreach ($programas as $progrma)
+                            @forelse ($programas as $progrma)
                                 <tr>
                                     <td>{{ $progrma->id }}</td>
                                     <td>{{ $progrma->nombre }}</td>
                                     <td>{{ $progrma->TipoPrograma->nombre }}</td>
-                                    <td>
-                                        {{ $progrma->sede->sede }}
-                                    </td>
+                                    <td>{{ $progrma->sede->sede }}</td>
                                     <td>
                                         @can('VER PROGRAMA DE CARACTERIZACION')
                                             <div class="btn-group" role="group" aria-label="Acciones" style="gap: 10px;">
-
                                                 <a href="/programa/{{ $progrma->id }}/edit" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
@@ -114,7 +99,11 @@
                                         @endcan
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center">No hay programas disponibles.</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

@@ -118,7 +118,6 @@ class InstructorController extends Controller
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('numero_documento'));
         $user->persona_id = $persona->id;
-        $user->roll_id = 3;
         $user->save();
         $user->assignRole('INSTRUCTOR');
 
