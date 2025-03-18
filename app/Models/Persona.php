@@ -47,10 +47,12 @@ class Persona extends Model
     {
         return $this->hasOne(User::class, 'persona_id');
     }
+
     public function tipoDocumento()
     {
         return $this->belongsTo(Parametro::class, 'tipo_documento');
     }
+
     public function tipoGenero()
     {
         return $this->belongsTo(Parametro::class, 'genero');
@@ -64,5 +66,10 @@ class Persona extends Model
     public function caracterizacionProgramas()
     {
         return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
+    }
+
+    public function getNombreCompletoAttribute()
+    {
+        return trim($this->primer_nombre . ' ' . $this->primer_apellido);
     }
 }
