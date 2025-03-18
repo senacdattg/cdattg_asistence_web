@@ -18,16 +18,20 @@ class Parametro extends Model
         parent::boot();
 
         static::creating(function ($parametro) {
-            $parametro->status = $parametro->status ?? 'ACTIVO';
+            // Si no se proporciona un estado, se asigna 1 (ACTIVO)
+            $parametro->status = $parametro->status ?? 1;
         });
+
         static::saving(function ($parametro) {
             $parametro->name = strtoupper($parametro->name);
         });
     }
+
     public function userCreate()
     {
         return  $this->belongsTo(User::class, 'user_create_id');
     }
+
     public function userUpdate()
     {
         return  $this->belongsTo(User::class, 'user_edit_id');

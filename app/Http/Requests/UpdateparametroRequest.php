@@ -17,12 +17,17 @@ class UpdateparametroRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
+        // Obtener el ID del parámetro que se está actualizando.
+        // Se asume que la ruta tiene un parámetro 'parametro'
+        $parametroId = $this->route('parametro')->id;
+
         return [
-            //
+            'name'   => 'required|string|max:255|unique:parametros,name,' . $parametroId,
+            'status' => 'required|boolean',
         ];
     }
 }
