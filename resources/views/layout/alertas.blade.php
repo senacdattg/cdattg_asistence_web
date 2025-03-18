@@ -1,33 +1,28 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var successMessage = "{{ Session::get('success') }}";
-        var errorMessage = "{{ Session::get('error') }}";
+        var successMessage = @json(Session::get('success'));
+        var errorMessage = @json(Session::get('error'));
 
-        function mostrarSuccess() {
-            if (successMessage) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Éxito',
-                    text: successMessage
-                });
-            }
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: successMessage
+            });
         }
 
-        function mostrarError() {
-            if (errorMessage) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: errorMessage
-                });
-            }
+        if (errorMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
         }
 
-        function confirmarEliminar() {
-            $('.formulario-eliminar').submit(function(e) {
+        document.addEventListener('submit', function(e) {
+            if (e.target.matches('.formulario-eliminar')) {
                 e.preventDefault(); // Evita que el formulario se envíe automáticamente
-
-                var form = this; // Referencia al formulario actual
+                var form = e.target; // Referencia al formulario actual
 
                 Swal.fire({
                     title: "¿Estás seguro?",
@@ -40,37 +35,20 @@
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Si se confirma la eliminación, envía el formulario actual
                         form.submit();
                     }
                 });
-            });
-        }
+            }
+        });
 
-        mostrarSuccess();
-        mostrarError();
-        confirmarEliminar();
-    });
-</script>
-@if ($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Mostrar errores de validación
+        var validationErrors = @json($errors->all());
+        if (validationErrors.length > 0) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                html: '{!! implode('<br>', $errors->all()) !!}',
+                html: validationErrors.join('<br>'),
             });
-        });
-    </script>
-@endif
-{{-- @if (Session::has('success'))
-<script>
-    mostrarSuccess();
+        }
+    });
 </script>
-@endif
-
-@if (Session::has('error'))
-<script>
-    mostrarError();
-</script>
-@endif --}}

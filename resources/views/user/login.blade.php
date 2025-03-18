@@ -1,50 +1,100 @@
 @extends('layout.master-layout-registro')
-@section('content')
 
-    <body class="hold-transition login-page">
-        <div class="login-box">
-            <div class="card card-outline card-primary">
-                <div class="card-header text-center">
-                    {{-- Bienvenida al login --}}
-                    <img src="{{ asset('dist/img/LogoSena.png') }}" alt="Logo del sena" style="width: 150px; height: auto;">
-                    <h1>Bienvenido</h1>
+@section('content')
+    <div class="login-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                {{-- Logo del SENA --}}
+                <img src="{{ asset('dist/img/LogoSena.png') }}" alt="Logo del sena" style="width: 150px; height: auto;">
+                <h1>Bienvenido</h1>
+            </div>
+
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <p class="login-box-msg"><strong>¡Para comenzar, inicie sesión!</strong></p>
                 </div>
-                {{-- logo del sena --}}
-                <div class="card-body">
-                    <div class="d-flex justify-content-center">
-                        <p class="login-box-msg"><strong>¡Para comenzar inicie sesión!</strong></p>
+
+                {{-- Mostrar mensajes de éxito o error --}}
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <form action="{{ route('iniciarSesion') }}" method="POST">
-                        @csrf
-                        {{-- correo institucional --}}
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                {{-- Mostrar errores de validación en bloque --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+
+                {{-- Formulario de inicio de sesión --}}
+                <form action="{{ route('iniciarSesion') }}" method="POST">
+                    @csrf
+
+                    {{-- Correo Institucional --}}
+                    <div class="form-group">
                         <label for="email">Usuario</label>
-                        <div class="input-group mb-3">
-                            <input type="email" class="form-control" name="email" placeholder="Correo Institucional"
-                                value="{{ old('email') }}" autofocus>
+                        <div class="input-group">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                                id="email" placeholder="Correo Institucional" value="{{ old('email') }}" required
+                                autofocus>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>
                                 </div>
                             </div>
                         </div>
-                        {{-- contraseña --}}
+                        @error('email')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- Contraseña --}}
+                    <div class="form-group">
                         <label for="password">Contraseña</label>
-                        <div class="input-group mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Contraseña"
-                                value="{{ old('password') }}">
+                        <div class="input-group">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                name="password" id="password" placeholder="Contraseña" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-lock"></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-6">
-                                <button type="submit" class="btn btn-outline-success btn-block">Iniciar Sesión</button>
-                            </div>
+                        @error('password')
+                            <span class="text-danger small">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    {{-- Botón de inicio de sesión --}}
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-outline-success btn-block">Iniciar Sesión</button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                </form>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
