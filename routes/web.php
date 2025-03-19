@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BloqueController;
 use App\Http\Controllers\CaracterizacionController;
 use App\Http\Controllers\CarnetController;
+use App\Http\Controllers\CentroFormacionController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\EntradaSalidaController;
 use App\Http\Controllers\FichaCaracterizacionController;
@@ -95,7 +96,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/asistence/setNewEntrance', [AsistenceQrController::class, 'setNewEntranceAsistenceWeb'])->name('asistence.setNewEntrance');
     });
 
-
     //rutas para ProgramaCaractizacionControllerasistence.webexit
     // Rutas para ProgramaCaracterizacionController
     Route::resource('programaFormacion', ProgramaFormacionController::class);
@@ -116,7 +116,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/jornada/{id}/destroy', [JornadaController::class, 'destroy'])->name('jornada.destroy');
         Route::post('jornada/{id}/update', [JornadaController::class, 'update'])->name('jornada.update');
     });
-
 
     // Rutas para FichasCaracterizacionController
     Route::resource('fichaCaracterizacion', FichaCaracterizacionController::class);
@@ -160,6 +159,7 @@ Route::middleware('auth')->group(function () {
         Route::post('instructor/store', [InstructorController::class, 'store'])->name('instructor.store');
         Route::get('instructor/delete/{id}', [InstructorController::class, 'deleteWithoudUser'])->name('instructor.deleteWithoudUser');
     });
+
     // Rutas para entrada y salida
     Route::resource('entradaSalida', EntradaSalidaController::class);
     Route::get('cargarDatos', [EntradaSalidaController::class, 'cargarDatos'])->name('entradaSalida.cargarDatos')->middleware('cros');
@@ -169,7 +169,28 @@ Route::middleware('auth')->group(function () {
     Route::post('updateSalida', [EntradaSalidaController::class, 'updateSalida'])->name('entradaSalida.updateSalida');
     Route::get('generarCSV/{ficha}', [EntradaSalidaController::class, 'generarCSV'])->name('entradaSalida.generarCSV');
 
+    // Rutas para ver centros de formación (permiso: VER CENTROS DE FORMACION)
+    Route::middleware('can:VER CENTROS DE FORMACION')->group(function () {
+        Route::get('/centros', [CentroFormacionController::class, 'index'])->name('centros.index');
+        Route::get('/centros/{centro}', [CentroFormacionController::class, 'show'])->name('centros.show');
+    });
 
+    // Rutas para crear centros de formación (permiso: CREAR CENTRO DE FORMACION)
+    Route::middleware('can:CREAR CENTRO DE FORMACION')->group(function () {
+        Route::get('/centros/create', [CentroFormacionController::class, 'create'])->name('centros.create');
+        Route::post('/centros', [CentroFormacionController::class, 'store'])->name('centros.store');
+    });
+
+    // Rutas para editar centros de formación (permiso: EDITAR CENTRO DE FORMACION)
+    Route::middleware('can:EDITAR CENTRO DE FORMACION')->group(function () {
+        Route::get('/centros/{centro}/edit', [CentroFormacionController::class, 'edit'])->name('centros.edit');
+        Route::put('/centros/{centro}', [CentroFormacionController::class, 'update'])->name('centros.update');
+    });
+
+    // Rutas para eliminar centros de formación (permiso: ELIMINAR CENTRO DE FORMACION)
+    Route::middleware('can:ELIMINAR CENTRO DE FORMACION')->group(function () {
+        Route::delete('/centros/{centro}', [CentroFormacionController::class, 'destroy'])->name('centros.destroy');
+    });
 
     // Ruta para sedes
     Route::resource('sede', SedeController::class);

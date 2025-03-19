@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sedes', function (Blueprint $table) {
+        Schema::create('centro_formacions', function (Blueprint $table) {
             $table->id();
-            $table->string('sede');
+            $table->foreignId('regional_id')->constrained();
+            $table->string('nombre');
+            $table->string('telefono');
             $table->string('direccion');
-            $table->foreignId('user_create_id')->constrained('users');
-            $table->foreignId('user_edit_id')->constrained('users');
+            $table->string('web');
             $table->boolean('status')->default(1);
+            $table->foreignId('user_create_id')->constrained('users');
+            $table->foreignId('user_update_id')->constrained('users');
+
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sedes');
+        Schema::dropIfExists('centro_formacions');
     }
 };

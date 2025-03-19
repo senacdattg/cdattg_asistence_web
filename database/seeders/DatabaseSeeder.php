@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             PaisSeeder::class,
             RegionalSeeder::class,
+            CentroFormacionSeeder::class,
             DepartamentoSeeder::class,
             MunicipioSeeder::class,
             SedeSeeder::class,

@@ -33,6 +33,11 @@ class RolePermissionSeeder extends Seeder
             'EDITAR REGIONAL',
             'VER REGIONAL',
             'ELIMINAR REGIONAL',
+            // Permisos para centros de formación
+            'CREAR CENTRO DE FORMACION',
+            'EDITAR CENTRO DE FORMACION',
+            'VER CENTROS DE FORMACION',
+            'ELIMINAR CENTRO DE FORMACION',
             // Permisos para sedes
             'CREAR SEDE',
             'VER SEDE',
@@ -95,6 +100,10 @@ class RolePermissionSeeder extends Seeder
             'EDITAR REGIONAL',
             'VER REGIONAL',
             'ELIMINAR REGIONAL',
+            'CREAR CENTRO DE FORMACION',
+            'EDITAR CENTRO DE FORMACION',
+            'VER CENTROS DE FORMACION',
+            'ELIMINAR CENTRO DE FORMACION',
             'CREAR SEDE',
             'VER SEDE',
             'EDITAR SEDE',

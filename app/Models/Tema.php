@@ -18,6 +18,7 @@ class Tema extends Model
         static::creating(function ($tema) {
             $tema->status = $tema->status ?? true;
         });
+
         static::saving(function ($tema) {
             $tema->name = strtoupper($tema->name);
         });
@@ -36,7 +37,7 @@ class Tema extends Model
     public function parametros()
     {
         return $this->belongsToMany(Parametro::class, 'parametros_temas')
-            ->withPivot('user_create_id', 'user_edit_id','status')
+            ->withPivot('user_create_id', 'user_edit_id', 'status')
             ->withTimestamps();
     }
 }

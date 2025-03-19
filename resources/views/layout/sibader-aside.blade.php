@@ -55,38 +55,25 @@
                                     </a>
                                 </li>
                             @endcan
-                        </ul>
-                    </li>
-                @endif
-
-                {{-- Administrar Regionales --}}
-                @can('VER REGIONAL')
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-map-marked-alt"></i>
-                            <p>
-                                Administrar Regionales
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('regional.index') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Regionales</p>
-                                </a>
-                            </li>
-                            @can('CREAR REGIONAL')
+                            @can('VER REGIONAL')
                                 <li class="nav-item">
-                                    <a href="{{ route('regional.create') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Crear Regional</p>
+                                    <a href="{{ route('regional.index') }}" class="nav-link">
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        <p>Regionales</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('VER CENTROS DE FORMACION')
+                                <li class="nav-item">
+                                    <a href="{{ route('centros.index') }}" class="nav-link">
+                                        <i class="fas fa-school"></i>
+                                        <p>Centros de Formación</p>
                                     </a>
                                 </li>
                             @endcan
                         </ul>
                     </li>
-                @endcan
+                @endif
 
                 {{-- Administrar Sedes --}}
                 @can('VER SEDE')

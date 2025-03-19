@@ -17,7 +17,7 @@ class UpdateRegionalRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
@@ -25,7 +25,23 @@ class UpdateRegionalRequest extends FormRequest
 
         return [
             'regional' => 'required|string|unique:regionals,regional,' . $regionalId,
-            'status' => 'required|boolean',
+            'status'   => 'required|boolean',
+        ];
+    }
+
+    /**
+     * Get custom error messages for validation.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'regional.required' => 'El nombre de la regional es obligatorio.',
+            'regional.string'   => 'El nombre de la regional debe ser una cadena de caracteres.',
+            'regional.unique'   => 'El nombre de la regional ya existe.',
+            'status.required'   => 'El estado es obligatorio.',
+            'status.boolean'    => 'El estado debe ser verdadero o falso.',
         ];
     }
 }
