@@ -11,27 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Crear la tabla de temas
         Schema::create('temas', function (Blueprint $table) {
             $table->id();
-            // añadir los nuevos campos
             $table->string('name')->unique();
             $table->boolean('status')->default(1);
             $table->foreignId('user_create_id')->constrained('users')->default(1);
             $table->foreignId('user_edit_id')->constrained('users')->default(1);
-            // termina los nuevos campos
             $table->timestamps();
         });
+
+        // Crear la tabla pivote para relacionar temas y parámetros
         Schema::create('parametros_temas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tema_id');
-            $table->unsignedBigInteger('parametro_id');
-            $table->foreignId('user_create_id')->default(1)->constrained('users');
-            $table->foreignId('user_edit_id')->default(1)->constrained('users');
+            $table->foreignId('tema_id')->constrained('temas')->onDelete('cascade');
+            $table->foreignId('parametro_id')->constrained('parametros')->onDelete('cascade');
+            $table->foreignId('user_create_id')->constrained('users')->default(1);
+            $table->foreignId('user_edit_id')->constrained('users')->default(1);
             $table->boolean('status')->default(1);
             $table->timestamps();
-
-            $table->foreign('tema_id')->references('id')->on('temas');
-            $table->foreign('parametro_id')->references('id')->on('parametros');
         });
     }
 
@@ -40,6 +38,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('parametros_temas');
         Schema::dropIfExists('temas');
     }
 };

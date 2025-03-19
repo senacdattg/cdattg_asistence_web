@@ -34,7 +34,7 @@
                             @can('VER PARAMETRO')
                                 <li class="nav-item">
                                     <a href="{{ route('parametro.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-sliders-h"></i>
                                         <p>Parámetros</p>
                                     </a>
                                 </li>
@@ -42,7 +42,7 @@
                             @can('VER TEMA')
                                 <li class="nav-item">
                                     <a href="{{ route('tema.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-book"></i>
                                         <p>Temas</p>
                                     </a>
                                 </li>
@@ -50,7 +50,7 @@
                             @can('ASIGNAR PERMISOS')
                                 <li class="nav-item">
                                     <a href="{{ route('permiso.index') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="fas fa-user-shield"></i>
                                         <p>Asignar Permisos</p>
                                     </a>
                                 </li>

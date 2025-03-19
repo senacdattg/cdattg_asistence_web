@@ -22,16 +22,21 @@ class Tema extends Model
             $tema->name = strtoupper($tema->name);
         });
     }
+
     public function userCreate()
     {
         return  $this->belongsTo(User::class, 'user_create_id');
     }
+
     public function userUpdate()
     {
         return  $this->belongsTo(User::class, 'user_edit_id');
     }
+
     public function parametros()
     {
-        return $this->belongsToMany(Parametro::class, 'parametros_temas')->withPivot('status');
+        return $this->belongsToMany(Parametro::class, 'parametros_temas')
+            ->withPivot('user_create_id', 'user_edit_id','status')
+            ->withTimestamps();
     }
 }

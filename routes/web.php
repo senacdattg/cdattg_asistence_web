@@ -215,8 +215,9 @@ Route::middleware('auth')->group(function () {
     route::middleware('can:EDITAR TEMA')->group(function () {
 
         Route::put('/tema/{tema}/cambiar-estado', [TemaController::class, 'cambiarEstado'])->name('tema.cambiarEstado');
-        Route::put('/tema/{parametro}/cambiar-estado-parametro', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
+        Route::put('/tema/{tema}/cambiar-estado-parametro/{parametro}', [TemaController::class, 'cambiarEstadoParametro'])->name('tema.cambiarEstadoParametro');
         Route::post('/temas/updatePatametrosTemas', [TemaController::class, 'updateParametrosTemas'])->name('tema.updateParametrosTemas');
+        Route::delete('/tema/{tema}/eliminar-parametro/{parametro}', [TemaController::class, 'eliminarParametro'])->name('tema.eliminarParametro');
     });
     // rutas para las regionales
     Route::resource('regional', RegionalController::class);

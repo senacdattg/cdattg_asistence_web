@@ -1,7 +1,8 @@
 @extends('layout.master-layout')
+
 @section('content')
     <div class="content-wrapper">
-
+        <!-- Encabezado de la página -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -19,155 +20,159 @@
             </div>
         </section>
 
+        <!-- Contenido principal -->
         <section class="content">
+            <a class="btn btn-outline-secondary btn-sm mb-3" href="{{ route('tema.index') }}" title="Volver">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
 
-            <div class="card">
+            <!-- Card de Detalle del Tema -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3 class="card-title">Detalle del Tema</h3>
+                </div>
                 <div class="card-body">
-                    <a class="btn btn-warning btn-sm" href="{{ route('tema.index') }}">
-                        <i class="fas fa-arrow-left"></i>
-                        </i>
-                        Volver
-                    </a>
-                </div>
-                <div class="container">
-                    <h1>Tema: {{ $tema->name }}</h1>
-                    <table class="table table-bordered">
-                        <tbody>
-                            <tr>
-                                <th scope="row">Nombre:</th>
-                                <td>{{ $tema->name }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Estado:</th>
-                                <td>
-                                    <span class="badge badge-{{ $tema->status === 1 ? 'success' : 'danger' }}">
-                                        {{-- {{ $tema->status }} --}}
-                                        @if ($tema->status === 1)
-                                            ACTIVO
-                                        @else
-                                            INACTIVO
-                                        @endif
-                                    </span>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th>
-                                    Creado Por:
-                                </th>
-                                <td>
-                                    @if ($tema->userCreate)
-                                        {{ $tema->userCreate->persona->primer_nombre }}
-                                        {{ $tema->userCreate->persona->primer_apellido }}
-                                    @else
-                                        Usuario no disponible
-                                    @endif
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <th>
-                                    Actualizado Por:
-                                </th>
-                                <td>
-                                    @if ($tema->userUpdate)
-                                        {{ $tema->userUpdate->persona->primer_nombre }}
-                                        {{ $tema->userUpdate->persona->primer_apellido }}
-                                    @else
-                                        Usuario no disponible
-                                    @endif
-                                </td>
-                            <tr>
-                                <th scope="row">Creado en:</th>
-                                <td>{{ $tema->created_at }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Actualizado en:</th>
-                                <td>{{ $tema->updated_at }}</td>
-                            </tr>
-                            <tr>
-                        </tbody>
-
-
-                    </table>
-                </div>
-                <div class="container">
-                    <div class="content">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">PARAMETROS</h4>
-                            </div>
-                            <table class="table table-striped">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <tbody>
                                 <tr>
-                                    <th>Nombre</th>
-                                    <th>Estado</th>
+                                    <th>Nombre:</th>
+                                    <td>{{ $tema->name }}</td>
                                 </tr>
-                                @forelse ($tema->parametros as $parametro)
-                                    <tr>
-                                        <td>
-                                            {{ $parametro->name }}
-                                        </td>
-                                        <td>
-                                            <span
-                                                class="badge badge-{{ $parametro->status === 1 ? 'success' : 'danger' }}">
-                                                {{-- {{ $tema->status }} --}}
-                                                @if ($parametro->status === 1)
-                                                    ACTIVO
-                                                    <i class="fas fa-check-circle"></i>
-                                                @else
-                                                    INACTIVO
-                                                    <i class="fas fa-times-circle"></i>
-                                                @endif
-
-                                            </span>
-                                        </td>
-                                        <td>
-                                            @can('EDITAR TEMA')
-
-                                            <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('tema.cambiarEstadoParametro', ['parametro' => $parametro->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                class="fas fa-sync"></i></button>
-                                            </form>
-                                            @endcan
-                                        </td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                            </table>
-                        </div>
+                                <tr>
+                                    <th>Estado:</th>
+                                    <td>
+                                        <span class="badge badge-{{ $tema->status === 1 ? 'success' : 'danger' }}">
+                                            {{ $tema->status === 1 ? 'ACTIVO' : 'INACTIVO' }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Creado Por:</th>
+                                    <td>
+                                        @if ($tema->userCreate)
+                                            {{ $tema->userCreate->persona->primer_nombre }}
+                                            {{ $tema->userCreate->persona->primer_apellido }}
+                                        @else
+                                            <em>Usuario no disponible</em>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Actualizado Por:</th>
+                                    <td>
+                                        @if ($tema->userUpdate)
+                                            {{ $tema->userUpdate->persona->primer_nombre }}
+                                            {{ $tema->userUpdate->persona->primer_apellido }}
+                                        @else
+                                            <em>Usuario no disponible</em>
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Creado en:</th>
+                                    <td>{{ $tema->created_at }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Actualizado en:</th>
+                                    <td>{{ $tema->updated_at }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                {{-- Botones --}}
-                <div class="mb-3 text-center">
+                <div class="card-footer text-center">
                     @can('EDITAR TEMA')
+                        <form id="cambiarEstadoForm" class="d-inline"
+                            action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}" method="POST">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success btn-sm" title="Cambiar Estado">
+                                <i class="fas fa-sync"></i> Cambiar Estado
+                            </button>
+                        </form>
+                        <a class="btn btn-info btn-sm" href="{{ route('tema.edit', ['tema' => $tema->id]) }}" title="Editar">
+                            <i class="fas fa-pencil-alt"></i> Editar
+                        </a>
+                    @endcan
+                    @can('ELIMINAR TEMA')
+                        <form class="formulario-eliminar d-inline" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}"
+                            method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                <i class="fas fa-trash"></i> Eliminar
+                            </button>
+                        </form>
+                    @endcan
+                </div>
 
-                    <form id="cambiarEstadoForm" class=" d-inline"
-                    action="{{ route('tema.cambiarEstado', ['tema' => $tema->id]) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-sync"></i></button>
-                </form>
-                <a class="btn btn-info btn-sm" href="{{ route('tema.edit', ['tema' => $tema->id]) }}">
-                    <i class="fas fa-pencil-alt">
-                    </i>
-                </a>
-                @endcan
-                @can('ELIMINAR TEMA')
+            </div>
 
-                <form class="formulario-eliminar btn" action="{{ route('tema.destroy', ['tema' => $tema->id]) }}" method="POST" class="d-inline">
-                    @csrf
-                    @method('DELETE')
-
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
-                @endcan
-
+            <!-- Card de Parámetros Asociados -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="card-title">Parámetros Asociados</h4>
+                </div>
+                <div class="card-body">
+                    @if ($tema->parametros->isNotEmpty())
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Nombre</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tema->parametros as $parametro)
+                                        <tr class="text-center">
+                                            <td>{{ $parametro->name }}</td>
+                                            <td>
+                                                <span
+                                                    class="badge badge-{{ $parametro->pivot->status == 1 ? 'success' : 'danger' }}">
+                                                    {{ $parametro->pivot->status == 1 ? 'ACTIVO' : 'INACTIVO' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @can('EDITAR TEMA')
+                                                    <form class="d-inline"
+                                                        action="{{ route('tema.cambiarEstadoParametro', ['tema' => $tema->id, 'parametro' => $parametro->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" class="btn btn-success btn-sm"
+                                                            title="Cambiar Estado">
+                                                            <i class="fas fa-sync"></i> Cambiar Estado
+                                                        </button>
+                                                    </form>
+                                                @endcan
+                                                @can('ELIMINAR PARAMETRO DE TEMA')
+                                                    <form class="d-inline"
+                                                        action="{{ route('tema.eliminarParametro', ['tema' => $tema->id, 'parametro' => $parametro->id]) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                            <i class="fas fa-trash"></i> Eliminar
+                                                        </button>
+                                                    </form>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <p class="text-muted text-center">No hay parámetros asignados a este tema.</p>
+                    @endif
                 </div>
             </div>
-        @endsection
+
+
+
+        </section>
+    </div>
+@endsection

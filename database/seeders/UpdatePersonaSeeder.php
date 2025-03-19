@@ -6,14 +6,14 @@ use App\Models\Persona;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class updatePersona extends Seeder
+class UpdatePersonaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Persona::where('id',1)->update([
+        Persona::where('id', 1)->update([
             'tipo_documento' => 8,
             'genero' => 11,
         ]);
