@@ -49,42 +49,51 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(EntradaSalida::class);
     }
-    // relacion de bloques y usuario
+    
+    // relación de bloques y usuario
     public function bloqueCreated()
     {
         return $this->hasMany(Bloque::class, 'user_create_id');
     }
+    
     public function bloqueEdited()
     {
         return $this->hasMany(Bloque::class, 'user_edit_id');
     }
-    // relacion e sedes y usuario
+    
+    // relación de sedes y usuario
     public function sedeCreated()
     {
         return $this->hasMany(Sede::class);
     }
+    
     public function sedeEdited()
     {
         return $this->hasMany(Sede::class);
     }
+    
     // relacion  entre piso y usuario
     public function pisoCreated()
     {
         return $this->hasMany(Piso::class, 'user_create_id');
     }
+    
     public function pisoEdited()
     {
         return $this->hasMany(Piso::class, 'user_edit_id');
     }
+    
     // relacion  entre ambiente y usuario
     public function ambienteCreated()
     {
         return $this->hasMany(Ambiente::class, 'user_create_id');
     }
+    
     public function ambienteEdited()
     {
         return $this->hasMany(Ambiente::class, 'user_edit_id');
     }
+    
     public function parametrosCreated()
     {
         return $this->hasMany(Parametro::class, 'user_create_id');
@@ -95,6 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(FichaCaracterizacion::class);
     }
+    
     public function fichaCaracerizacionEdit()
     {
         return $this->hasMany(FichaCaracterizacion::class);

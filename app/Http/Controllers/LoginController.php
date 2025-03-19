@@ -18,11 +18,17 @@ class LoginController extends Controller
     {
         try {
             $credentials = $request->validate([
-                'email' => 'required|email',
+                'email'    => 'required|email',
                 'password' => 'required|string|min:6',
             ]);
 
             if (Auth::attempt($credentials)) {
+                $user = Auth::user();
+                // Si el campo status es 0 se considera que la cuenta está inactiva
+                if ($user->status == 0) {
+                    Auth::logout();
+                    return back()->withInput()->withErrors(['error' => 'La cuenta se encuentra inactiva']);
+                }
                 return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!');
             } else {
                 return back()->withInput()->withErrors(['error' => 'Correo o contraseña inválidos']);

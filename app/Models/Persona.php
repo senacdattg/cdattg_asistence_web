@@ -2,22 +2,21 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
 
 class Persona extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Los atributos asignables.
      *
      * @var array<int, string>
      */
-
     protected $fillable = [
         'tipo_documento',
         'numero_documento',
@@ -41,7 +40,6 @@ class Persona extends Model
             $persona->segundo_apellido = strtoupper($persona->segundo_apellido);
         });
     }
-
 
     public function user()
     {
@@ -68,8 +66,41 @@ class Persona extends Model
         return $this->hasMany(CaracterizacionPrograma::class, 'instructor_id');
     }
 
+    /**
+     * Accesor para obtener el nombre completo de la persona.
+     *
+     * @return string
+     */
     public function getNombreCompletoAttribute()
     {
-        return trim($this->primer_nombre . ' ' . $this->primer_apellido);
+        // Usa array_filter para omitir valores vacíos y join para unirlos con espacios
+        $nombres = [
+            $this->primer_nombre,
+            $this->segundo_nombre, // Corregido: de sedundo_nombre a segundo_nombre
+            $this->primer_apellido,
+            $this->segundo_apellido
+        ];
+        return trim(implode(' ', array_filter($nombres)));
+    }
+
+    /**
+     * Accesor para calcular la edad a partir de la fecha de nacimiento.
+     *
+     * @return int
+     */
+    public function getEdadAttribute()
+    {
+        return Carbon::parse($this->fecha_de_nacimiento)->age;
+    }
+
+    /**
+     * Accesor para convertir el email a mayúsculas.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function getEmailAttribute($value)
+    {
+        return strtoupper($value);
     }
 }

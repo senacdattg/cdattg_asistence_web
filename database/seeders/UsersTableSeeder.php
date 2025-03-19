@@ -39,6 +39,5 @@ class UsersTableSeeder extends Seeder
             'persona_id' => 3,
         ]);
         $instructor->assignRole('INSTRUCTOR');
-
     }
 }

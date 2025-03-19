@@ -31,6 +31,7 @@ use App\Http\Controllers\ProgramaCaracterizacionController;
 use App\Http\Controllers\ProgramaFormacionController;
 use App\Http\Controllers\RegionalController;
 use App\Http\Controllers\TemaController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CorsMiddleware;
 use App\Models\CaracterizacionPrograma;
 
@@ -228,7 +229,7 @@ Route::middleware('auth')->group(function () {
     route::middleware('can:ASIGNAR PERMISOS')->group(function () {
 
         route::resource('permiso', PermisoController::class);
-        route::get('/showpermiso/{user}', [PermisoController::class, 'showUserPermiso'])->name('permiso.showUserPermiso');
+        route::get('/permiso/{user}', [PermisoController::class, 'showPermiso'])->name('permiso.show');
     });
 
     Route::get('/logout', [LogoutController::class, 'cerrarSesion'])->name('logout');
@@ -237,6 +238,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/cargardepartamentos', [DepartamentoController::class, 'cargardepartamentos'])->name('departamento.cargardepartamentos');
     Route::get('/cargarMunicipios/{departamento_id}', [MunicipioController::class, 'cargarMunicipios'])->name('municipio.cargarMunicipios');
+
+    // Ruta para activar/inactivar usuario
+    Route::patch('/user/{user}', [UserController::class, 'toggleStatus'])->name('user.toggleStatus');
+
+    // Ruta para asignar roles (solo SUPER ADMINISTRADOR)
+    Route::patch('/user/{user}/assign-roles', [UserController::class, 'assignRoles'])->name('user.assignRoles');
 });
 
 // rutas del controlador register

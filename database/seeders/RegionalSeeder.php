@@ -14,7 +14,7 @@ class RegionalSeeder extends Seeder
     public function run(): void
     {
         Regional::create([
-            'regional' => 'CENTRO DE DESARROLLO AGROINDUSTRIAL, TURÍSTICO Y TECNOLÓGICO DEL GUAVIARE REGIONAL GUAVIARE',
+            'regional' => 'GUAVIARE',
             'user_create_id' => '1',
             'user_edit_id' => '1',
             'status' => '1',
