@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
 
 class LoginController extends Controller
 {
@@ -17,6 +19,7 @@ class LoginController extends Controller
     public function iniciarSesion(Request $request)
     {
         try {
+            // Validamos la solicitud
             $credentials = $request->validate([
                 'email'    => 'required|email',
                 'password' => 'required|string|min:6',
@@ -24,17 +27,28 @@ class LoginController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
-                // Si el campo status es 0 se considera que la cuenta está inactiva
+
+                // Verificar si la cuenta está inactiva
                 if ($user->status == 0) {
+                    Log::warning("Intento de inicio de sesión de usuario inactivo: ID {$user->id}");
                     Auth::logout();
                     return back()->withInput()->withErrors(['error' => 'La cuenta se encuentra inactiva']);
                 }
+
                 return redirect()->route('home.index')->with('success', '¡Sesión Iniciada!');
             } else {
+                Log::warning("Fallo en el inicio de sesión para el correo: {$request->email}");
+
                 return back()->withInput()->withErrors(['error' => 'Correo o contraseña inválidos']);
             }
+        } catch (QueryException $e) {
+            // Captura de excepciones de conexión a la base de datos
+            Log::error('Error de conexión a la base de datos: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Error al conectar con la base de datos. Por favor, inténtelo de nuevo más tarde.']);
         } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Error al iniciar sesión: ' . $e->getMessage()]);
+            Log::error('Error al iniciar sesión: ' . $e->getMessage());
+
+            return back()->withInput()->withErrors(['error' => 'Error al iniciar sesión. Por favor, inténtelo de nuevo más tarde.']);
         }
     }
 
