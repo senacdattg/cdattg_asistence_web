@@ -30,7 +30,8 @@ class ParametroSeeder extends Seeder
             ['id' => 11, 'name' => 'NO DEFINE', 'status' => 1, 'user_create_id' => 1, 'user_edit_id' => 1],
         ];
 
-        // Inserción masiva (más rápida, pero no dispara eventos del modelo)
-        Parametro::insert($parametros);
+        foreach ($parametros as $parametro) {
+            Parametro::create($parametro);
+        }
     }
 }
