@@ -17,7 +17,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('regional.index') }}">Regionales</a>
                             </li>
-                            <li class="breadcrumb-item active">Ver Regional</li>
+                            <li class="breadcrumb-item active">{{ $regional->nombre }}</li>
                         </ol>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                 <tbody>
                                     <tr>
                                         <th scope="row">Regional:</th>
-                                        <td>{{ $regional->regional }}</td>
+                                        <td>{{ $regional->nombre }}</td>
                                     </tr>
                                     <tr>
                                         <th>Creado Por:</th>

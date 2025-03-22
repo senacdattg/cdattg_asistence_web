@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('instructors', function (Blueprint $table) {
+            // Añadir la clave foránea
             $table->foreignId('regional_id')->constrained('regionals');
         });
     }
@@ -22,7 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('instructors', function (Blueprint $table) {
-            //
+            // Eliminar la clave foránea
+            $table->dropForeign(['regional_id']);
+            $table->dropColumn('regional_id');
         });
     }
 };

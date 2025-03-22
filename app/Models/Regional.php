@@ -15,7 +15,7 @@ class Regional extends Model
      * @var array
      */
     protected $fillable = [
-        'regional',
+        'nombre',
         'user_create_id',
         'user_edit_id',
         'status',
@@ -30,7 +30,7 @@ class Regional extends Model
 
         // Convertir el nombre de la regional a mayúsculas antes de guardar.
         static::saving(function ($regional) {
-            $regional->regional = strtoupper($regional->regional);
+            $regional->nombre = strtoupper($regional->nombre);
         });
     }
 
@@ -64,5 +64,10 @@ class Regional extends Model
     public function fichasCaracterizacion()
     {
         return $this->hasMany(FichaCaracterizacion::class, 'regional_id');
+    }
+
+    public function centroFormacion()
+    {
+        return $this->hasMany(CentroFormacion::class);
     }
 }

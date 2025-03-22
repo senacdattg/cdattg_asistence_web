@@ -22,7 +22,7 @@ class StoreRegionalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'regional' => 'required|string|unique:regionals,regional',
+            'nombre' => 'required|string|unique:regionals,nombre',
         ];
     }
 }

@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ $regional->regional }}</h1>
+                        <h1>{{ $regional->nombre }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -17,7 +17,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('regional.index') }}">Regionales</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ $regional->regional }}</li>
+                            <li class="breadcrumb-item active">{{ $regional->nombre }}</li>
                         </ol>
                     </div>
                 </div>
@@ -42,9 +42,9 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="regional" class="col-form-label">Nombre de la Regional:</label>
-                            <input type="text" name="regional" id="regional"
+                            <input type="text" name="nombre" id="nombre"
                                 class="form-control @error('regional') is-invalid @enderror"
-                                value="{{ old('regional', $regional->regional) }}" required autofocus>
+                                value="{{ old('regional', $regional->nombre) }}" required autofocus>
                             @error('regional')
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror

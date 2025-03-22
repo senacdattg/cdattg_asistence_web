@@ -7,12 +7,26 @@ use Illuminate\Http\Request;
 
 class CentroFormacionController extends Controller
 {
+    public function __contruct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('can:centroFormacion.index')->only('index');
+        $this->middleware('can:centroFormacion.create')->only('create', 'store');
+        $this->middleware('can:centroFormacion.edit')->only('edit', 'update');
+        $this->middleware('can:centroFormacion.show')->only('show');
+        $this->middleware('can:centroFormacion.destroy')->only('destroy');
+    }
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $centros = CentroFormacion::paginate(10);
+
+        return view('centros.index', compact('centros'));
     }
 
     /**

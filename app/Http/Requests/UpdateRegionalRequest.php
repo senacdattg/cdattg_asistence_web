@@ -24,7 +24,7 @@ class UpdateRegionalRequest extends FormRequest
         $regionalId = $this->route('regional')->id;
 
         return [
-            'regional' => 'required|string|unique:regionals,regional,' . $regionalId,
+            'nombre' => 'required|string|unique:regionals,nombre,' . $regionalId,
             'status'   => 'required|boolean',
         ];
     }
@@ -37,9 +37,9 @@ class UpdateRegionalRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'regional.required' => 'El nombre de la regional es obligatorio.',
-            'regional.string'   => 'El nombre de la regional debe ser una cadena de caracteres.',
-            'regional.unique'   => 'El nombre de la regional ya existe.',
+            'nombre.required' => 'El nombre de la regional es obligatorio.',
+            'nombre.string'   => 'El nombre de la regional debe ser una cadena de caracteres.',
+            'nombre.unique'   => 'El nombre de la regional ya existe.',
             'status.required'   => 'El estado es obligatorio.',
             'status.boolean'    => 'El estado debe ser verdadero o falso.',
         ];

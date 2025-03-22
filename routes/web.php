@@ -35,6 +35,7 @@ use App\Http\Controllers\TemaController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CorsMiddleware;
 use App\Models\CaracterizacionPrograma;
+use App\Models\CentroFormacion;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +186,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:EDITAR CENTRO DE FORMACION')->group(function () {
         Route::get('/centros/{centro}/edit', [CentroFormacionController::class, 'edit'])->name('centros.edit');
         Route::put('/centros/{centro}', [CentroFormacionController::class, 'update'])->name('centros.update');
+        Route::put('/centros/{centro}/cambiarEstado', [CentroFormacion::class, 'cambiarEstado'])->name('centro.cambiarEstado');
     });
 
     // Rutas para eliminar centros de formación (permiso: ELIMINAR CENTRO DE FORMACION)
