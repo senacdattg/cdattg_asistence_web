@@ -57,15 +57,23 @@ Route::get('/apis', function () {
 Route::middleware('auth')->group(function () {
 
     Route::resource('home', HomeController::class);
-    // Rutas para persona
-    Route::resource('persona', PersonaController::class);
-    route::middleware('can:EDITAR INSTRUCTOR')->group(function () {
-        Route::put('/persona/{persona}/cambiarEstado', [PersonaController::class, 'cambiarEstadoUser'])->name('persona.cambiarEstadoUser');
+    // Rutas para personas
+    Route::resource('personas', PersonaController::class);
+    Route::middleware('can:CAMBIAR ESTADO PERSONA')->group(function () {
+        Route::put('/personas/{id}/cambiarEstadoPersona', [PersonaController::class, 'cambiarEstadoPersona'])->name('persona.cambiarEstadoPersona');
     });
+    Route::middleware('can:EDITAR PERSONA')->group(function () {
+        Route::get('/persona/{persona}/edit', [PersonaController::class, 'edit'])->name('persona.edit');
+        Route::put('/persona/{persona}', [PersonaController::class, 'update'])->name('persona.update');
+    });
+    Route::middleware('can:ELIMINAR PERSONA')->group(function () {
+        Route::delete('/persona/{persona}', [PersonaController::class, 'destroy'])->name('persona.destroy');
+    });
+
 
     // Rutas para AsistenciaAprendizController
     Route::resource('asistenciaAprendiz', AsistenciaAprendicesController::class);
-    route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
+    Route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
         Route::get('/asistencia/index', [AsistenciaAprendicesController::class, 'index'])->name('asistencia.index');
         Route::post('/asistencia/ficha', [AsistenciaAprendicesController::class, 'getAttendanceByFicha'])->name('asistencia.getAttendanceByFicha');
         Route::post('/asistencia/ficha/fecha', [AsistenciaAprendicesController::class, 'getAttendanceByDateAndFicha'])->name('asistencia.getAttendanceByDateAndFicha');

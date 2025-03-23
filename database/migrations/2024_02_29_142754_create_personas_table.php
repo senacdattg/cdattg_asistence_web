@@ -18,11 +18,15 @@ return new class extends Migration
             $table->string('segundo_nombre')->nullable();
             $table->string('primer_apellido')->nullable();
             $table->string('segundo_apellido')->nullable();
-            $table->date('fecha_de_nacimiento')->nullable();
-            $table->string('email')->unique(); // Asegura que el email sea único
+            $table->date('fecha_nacimiento')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('celular')->nullable()->unique();
+            $table->string('email')->unique();
+            $table->boolean('status')->default(1);
+            $table->foreignId('user_create_id')->nullable()->constrained('users');
+            $table->foreignId('user_edit_id')->nullable()->constrained('users');
+
             $table->timestamps();
-
-
         });
     }
 

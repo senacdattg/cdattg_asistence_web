@@ -21,10 +21,14 @@ class PersonaSeeder extends Seeder
             'segundo_nombre' => NULL,
             'primer_apellido' => 'ADMINISTRADOR',
             'segundo_apellido' => NULL,
-            'fecha_de_nacimiento' => '2000-01-01',
+            'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'superAdmin@superAdmin.com',
+            'status' => 1,
         ]);
+
         Persona::create([
             'id' => 2,
             'tipo_documento' => NULL,
@@ -33,10 +37,12 @@ class PersonaSeeder extends Seeder
             'segundo_nombre' => NULL,
             'primer_apellido' => 'PRUEBA',
             'segundo_apellido' => NULL,
-            'fecha_de_nacimiento' => '2000-01-01',
+            'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'admin@admin.com',
-
+            'status' => 1,
         ]);
 
         Persona::create([
@@ -47,10 +53,12 @@ class PersonaSeeder extends Seeder
             'segundo_nombre' => NULL,
             'primer_apellido' => 'PRUEBA',
             'segundo_apellido' => NULL,
-            'fecha_de_nacimiento' => '2000-01-01',
+            'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'instructor@instructor.com',
-
+            'status' => 1,
         ]);
     }
 }

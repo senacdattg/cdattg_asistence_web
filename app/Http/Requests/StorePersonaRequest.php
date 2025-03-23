@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StorePersonaRequest extends FormRequest
 {
@@ -18,28 +17,48 @@ class StorePersonaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, mixed>
      */
     public function rules(): array
     {
-        $personaId = $this->persona->id;
-        $userId = $this->persona->user->id; // Suponiendo que $this->instructor es una instancia del modelo User y tiene una relación con Persona
-
         return [
-            'tipo_documento' => 'required',
-            'numero_documento' => 'required',
-            'primer_nombre' => 'required',
-            'segundo_nombre' => 'nullable',
-            'primer_apellido' => 'required',
-            'segundo_apellido' => 'nullable',
-            'fecha_de_nacimiento' => 'required|date',
-            'genero' => 'required',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('personas', 'email')->ignore($personaId),
-                Rule::unique('users', 'email')->ignore($userId),
-            ],
+            'tipo_documento'      => 'required',
+            'numero_documento'    => 'required|unique:personas,numero_documento',
+            'primer_nombre'       => 'required|string',
+            'segundo_nombre'      => 'nullable|string',
+            'primer_apellido'     => 'required|string',
+            'segundo_apellido'    => 'nullable|string',
+            'fecha_nacimiento'    => 'required|date',
+            'genero'              => 'required',
+            'telefono'            => 'nullable|unique:personas,telefono',
+            'celular'             => 'nullable|unique:personas,celular',
+            'email'               => 'required|email|unique:personas,email|unique:users,email',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'tipo_documento.required'      => 'El tipo de documento es obligatorio.',
+            'numero_documento.required'    => 'El número de documento es obligatorio.',
+            'numero_documento.unique'      => 'El número de documento ya está registrado.',
+            'primer_nombre.required'       => 'El primer nombre es obligatorio.',
+            'primer_nombre.string'         => 'El primer nombre debe ser una cadena de texto.',
+            'primer_apellido.required'     => 'El primer apellido es obligatorio.',
+            'primer_apellido.string'       => 'El primer apellido debe ser una cadena de texto.',
+            'fecha_nacimiento.required'    => 'La fecha de nacimiento es obligatoria.',
+            'fecha_nacimiento.date'        => 'La fecha de nacimiento debe ser una fecha válida.',
+            'genero.required'              => 'El género es obligatorio.',
+            'telefono.unique'              => 'El número de teléfono ya está registrado.',
+            'celular.unique'               => 'El número de celular ya está registrado.',
+            'email.required'               => 'El correo electrónico es obligatorio.',
+            'email.email'                  => 'El correo electrónico debe ser válido.',
+            'email.unique'                 => 'El correo electrónico ya está en uso.',
         ];
     }
 }

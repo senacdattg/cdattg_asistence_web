@@ -22,6 +22,7 @@ class UsersTableSeeder extends Seeder
             'status' => 1,
             'persona_id' => 1,
         ]);
+
         $superAdmin->assignRole('SUPER ADMINISTRADOR');
 
         $admin = User::create([
@@ -30,6 +31,7 @@ class UsersTableSeeder extends Seeder
             'status' => 1,
             'persona_id' => 2,
         ]);
+
         $admin->assignRole('ADMINISTRADOR');
 
         $instructor = User::create([
@@ -38,6 +40,7 @@ class UsersTableSeeder extends Seeder
             'status' => 1,
             'persona_id' => 3,
         ]);
+
         $instructor->assignRole('INSTRUCTOR');
     }
 }

@@ -1,151 +1,147 @@
 @extends('layout.master-layout')
+
 @section('content')
     <div class="content-wrapper">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-
-
+        <!-- Encabezado de la página -->
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ request()->path() }}
-
-
-                        </h1>
+                        <h1>Personas</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                {{-- <a href="{{ route('home.index') }}">Inicio</a> --}}
+                                <a href="{{ route('verificarLogin') }}">Inicio</a>
                             </li>
-                            <li class="breadcrumb-item active">{{ request()->path() }}
-                            </li>
+                            <li class="breadcrumb-item active">Personas</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- Contenido principal -->
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">{{ request()->path() }}</h3>
-                    {{-- <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div> --}}
+                    <h3 class="card-title">Lista de Personas</h3>
+                    <div class="card-tools">
+                        @can('CREAR PERSONA')
+                            <a href="{{ route('personas.create') }}" class="btn btn-primary btn-sm">
+                                <i class="fas fa-plus"></i> Crear Persona
+                            </a>
+                        @endcan
+                    </div>
                 </div>
 
                 <div class="card-body p-0">
-                    <table class="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th style="width: 1%">
-                                    #
-                                </th>
-                                <th style="width: 20%">
-                                    Nombre y apellido
-                                </th>
-                                <th style="width: 30%">
-                                    Numero de documento
-                                </th>
-                                <th style="width: 40%">
-                                    Correo electronico
-                                </th>
-                                <th style="width: 50%">
-                                    Estado
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($personas as $persona)
+                    <div class="table-responsive">
+                        <table class="table table-striped projects text-center">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        {{ $persona->id }}
-                                    </td>
-                                    <td>
-                                        {{ $persona->primer_nombre }} {{ $persona->primer_apellido }}
-                                    </td>
-
-                                    <td>
-                                        {{ $persona->numero_documento }}
-                                    </td>
-                                    <td>
-                                        {{ $persona->email }}
-                                    </td>
-                                    <td>
-                                        <span class="badge badge-{{ $persona->user->status === 1 ? 'success' : 'danger' }}">
-                                            @if ($persona->user->status === 1)
-                                                ACTIVO
-                                            @else
-                                                INACTIVO
-                                            @endif
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <form id="cambiarEstadoForm" class=" d-inline"
-                                            action="{{ route('persona.cambiarEstadoUser', ['persona' => $persona->id]) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-success btn-sm"><i
-                                                    class="fas fa-sync"></i></button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-warning btn-sm"
-                                            href="{{ route('persona.show', ['persona' => $persona->id]) }}">
-                                            <i class="fas fa-eye"></i>
-
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-info btn-sm"
-                                            href="{{ route('persona.edit', ['persona' => $persona->id]) }}">
-                                            <i class="fas fa-pencil-alt">
-                                            </i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        {{-- <form action="{{ route('personas.destroy', ['persona' => $persona->id]) }}"
-                                            method="POST" class="d-inline">
-                                            @csrf
-                                            @method('DELETE') --}}
-
-                                        {{-- <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('¿Estás seguro de que deseas eliminar este parámetro?')">
-
-                                            <i class="fas fa-trash"></i>
-                                        </button> --}}
-                                        {{-- </form> --}}
-                                    </td>
+                                    <th>#</th>
+                                    <th>Nombre y Apellido</th>
+                                    <th>Número de Documento</th>
+                                    <th>Correo Electrónico</th>
+                                    <th>Estado</th>
+                                    <th colspan="4">Opciones</th>
                                 </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($personas as $persona)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $persona->nombre_completo }}</td>
+                                        <td>{{ $persona->numero_documento }}</td>
+                                        <td>{{ $persona->email }}</td>
+                                        <td class="project-state">
+                                            <span class="badge badge-{{ $persona->status === 1 ? 'success' : 'danger' }}">
+                                                {{ $persona->status === 1 ? 'ACTIVO' : 'INACTIVO' }}
+                                            </span>
+                                        </td>
+                                        <td class="project-actions">
+                                            @can('CAMBIAR ESTADO PERSONA')
+                                                <form class="d-inline"
+                                                    action="{{ route('persona.cambiarEstadoPersona', $persona->id) }}"
+                                                    method="POST" title="Cambiar Estado">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="fas fa-sync"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
+                                            @can('VER PERSONA')
+                                                <a href="{{ route('personas.show', $persona->id) }}"
+                                                    class="btn btn-warning btn-sm" title="Ver">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            @endcan
+                                            @can('EDITAR PERSONA')
+                                                <a href="{{ route('personas.edit', $persona->id) }}"
+                                                    class="btn btn-info btn-sm" title="Editar">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </a>
+                                            @endcan
+                                            @can('ELIMINAR PERSONA')
+                                                <form class="d-inline eliminar-persona-form"
+                                                    action="{{ route('personas.destroy', $persona->id) }}" method="POST"
+                                                    title="Eliminar">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            @endcan
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="9" class="text-center">No hay personas registradas</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                            @empty
-                                <tr>
-                                    <td colspan="4">No hay personas registradas</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
+                <!-- Paginación -->
+                <div class="card-footer">
+                    <div class="float-right">
+                        {{ $personas->links() }}
+                    </div>
                 </div>
             </div>
+        </section>
     </div>
+@endsection
 
-    <div class="card-footer">
-        <div class="float-right">
-            {{ $personas->links() }}
-        </div>
-    </div>
+@section('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('.eliminar-persona-form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Está seguro de eliminar esta persona?',
+                        text: "¡Esta acción no se podrá revertir!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

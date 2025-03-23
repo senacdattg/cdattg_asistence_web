@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             TemaSeeder::class,
             UpdatePersonaSeeder::class,
             InstructorSeeder::class,
+            UpdatePersonasUserFieldsSeeder::class,
         ]);
     }
 }

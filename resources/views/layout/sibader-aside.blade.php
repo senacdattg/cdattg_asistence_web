@@ -71,6 +71,14 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('VER PERSONA')
+                                <li class="nav-item">
+                                    <a href="{{ route('personas.index') }}" class="nav-link">
+                                        <i class="fas fa-users"></i>
+                                        <p>Personas</p>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endif

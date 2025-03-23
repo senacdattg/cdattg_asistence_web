@@ -14,6 +14,7 @@ class RolePermissionSeeder extends Seeder
         $superAdministrador = Role::firstOrCreate(['name' => 'SUPER ADMINISTRADOR']);
         $administrador      = Role::firstOrCreate(['name' => 'ADMINISTRADOR']);
         $instructor         = Role::firstOrCreate(['name' => 'INSTRUCTOR']);
+        $visitante          = Role::firstOrCreate(['name' => 'VISITANTE']);
 
         // Definir un arreglo de permisos para cada grupo
         $permisos = [
@@ -78,6 +79,12 @@ class RolePermissionSeeder extends Seeder
             'EDITAR PROGRAMA DE CARACTERIZACION',
             'ELIMINAR PROGRAMA DE CARACTERIZACION',
             'MANIPULAR CARACTERIZACION',
+            //Permisos para crear personas
+            'CREAR PERSONA',
+            'VER PERSONA',
+            'EDITAR PERSONA',
+            'ELIMINAR PERSONA',
+            'CAMBIAR ESTADO PERSONA',
         ];
 
         // Crear cada permiso si no existe
@@ -126,6 +133,11 @@ class RolePermissionSeeder extends Seeder
             'EDITAR PROGRAMA DE CARACTERIZACION',
             'ELIMINAR PROGRAMA DE CARACTERIZACION',
             'MANIPULAR CARACTERIZACION',
+            'CREAR PERSONA',
+            'VER PERSONA',
+            'EDITAR PERSONA',
+            'ELIMINAR PERSONA',
+            'CAMBIAR ESTADO PERSONA',
         ]);
 
         // Asignar permisos al rol ADMINISTRADOR
@@ -138,6 +150,10 @@ class RolePermissionSeeder extends Seeder
             'VER INSTRUCTOR',
             'EDITAR INSTRUCTOR',
             'ELIMINAR INSTRUCTOR',
+            'CREAR PERSONA',
+            'VER PERSONA',
+            'EDITAR PERSONA',
+            'CAMBIAR ESTADO PERSONA',
         ]);
 
         // Asignar permisos al rol INSTRUCTOR
