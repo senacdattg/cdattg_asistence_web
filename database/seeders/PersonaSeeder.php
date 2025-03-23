@@ -23,6 +23,8 @@ class PersonaSeeder extends Seeder
             'segundo_apellido' => NULL,
             'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'superAdmin@superAdmin.com',
             'status' => 1,
         ]);
@@ -37,6 +39,8 @@ class PersonaSeeder extends Seeder
             'segundo_apellido' => NULL,
             'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'admin@admin.com',
             'status' => 1,
         ]);
@@ -51,6 +55,8 @@ class PersonaSeeder extends Seeder
             'segundo_apellido' => NULL,
             'fecha_nacimiento' => '2000-01-01',
             'genero' => NULL,
+            'telefono' => NULL,
+            'celular' => NULL,
             'email' => 'instructor@instructor.com',
             'status' => 1,
         ]);

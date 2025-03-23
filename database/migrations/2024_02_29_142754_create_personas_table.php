@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('primer_apellido')->nullable();
             $table->string('segundo_apellido')->nullable();
             $table->date('fecha_nacimiento')->nullable();
+            $table->string('telefono')->nullable();
+            $table->string('celular')->nullable()->unique();
             $table->string('email')->unique();
             $table->boolean('status')->default(1);
             $table->foreignId('user_create_id')->nullable()->constrained('users');

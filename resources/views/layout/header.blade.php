@@ -57,7 +57,7 @@
                                 </p>
                             </li>
                             <li class="user-footer">
-                                <a href="{{ route('persona.show', ['persona' => $persona->id]) }}" class="btn btn-default btn-flat">Perfil</a>
+                                <a href="{{ route('personas.show', ['persona' => $persona->id]) }}" class="btn btn-default btn-flat">Perfil</a>
                                 <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-right">Cerrar sesión</a>
                             </li>
                         </ul>

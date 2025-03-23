@@ -30,6 +30,8 @@ class StorePersonaRequest extends FormRequest
             'segundo_apellido'    => 'nullable|string',
             'fecha_nacimiento'    => 'required|date',
             'genero'              => 'required',
+            'telefono'            => 'nullable|unique:personas,telefono',
+            'celular'             => 'nullable|unique:personas,celular',
             'email'               => 'required|email|unique:personas,email|unique:users,email',
         ];
     }
@@ -49,9 +51,11 @@ class StorePersonaRequest extends FormRequest
             'primer_nombre.string'         => 'El primer nombre debe ser una cadena de texto.',
             'primer_apellido.required'     => 'El primer apellido es obligatorio.',
             'primer_apellido.string'       => 'El primer apellido debe ser una cadena de texto.',
-            'fecha_de_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
-            'fecha_de_nacimiento.date'     => 'La fecha de nacimiento debe ser una fecha válida.',
+            'fecha_nacimiento.required'    => 'La fecha de nacimiento es obligatoria.',
+            'fecha_nacimiento.date'        => 'La fecha de nacimiento debe ser una fecha válida.',
             'genero.required'              => 'El género es obligatorio.',
+            'telefono.unique'              => 'El número de teléfono ya está registrado.',
+            'celular.unique'               => 'El número de celular ya está registrado.',
             'email.required'               => 'El correo electrónico es obligatorio.',
             'email.email'                  => 'El correo electrónico debe ser válido.',
             'email.unique'                 => 'El correo electrónico ya está en uso.',

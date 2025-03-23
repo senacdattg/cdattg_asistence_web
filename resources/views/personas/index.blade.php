@@ -28,7 +28,7 @@
                     <h3 class="card-title">Lista de Personas</h3>
                     <div class="card-tools">
                         @can('CREAR PERSONA')
-                            <a href="{{ route('persona.create') }}" class="btn btn-primary btn-sm">
+                            <a href="{{ route('personas.create') }}" class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus"></i> Crear Persona
                             </a>
                         @endcan
@@ -72,21 +72,21 @@
                                                     </button>
                                                 </form>
                                             @endcan
-                                            @can('EDITAR PERSONA')
-                                                <a href="{{ route('persona.edit', $persona->id) }}" class="btn btn-info btn-sm"
-                                                    title="Editar">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                            @endcan
                                             @can('VER PERSONA')
-                                                <a href="{{ route('persona.show', $persona->id) }}"
+                                                <a href="{{ route('personas.show', $persona->id) }}"
                                                     class="btn btn-warning btn-sm" title="Ver">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             @endcan
+                                            @can('EDITAR PERSONA')
+                                                <a href="{{ route('personas.edit', $persona->id) }}"
+                                                    class="btn btn-info btn-sm" title="Editar">
+                                                    <i class="fas fa-pencil-alt"></i>
+                                                </a>
+                                            @endcan
                                             @can('ELIMINAR PERSONA')
                                                 <form class="d-inline eliminar-persona-form"
-                                                    action="{{ route('persona.destroy', $persona->id) }}" method="POST"
+                                                    action="{{ route('personas.destroy', $persona->id) }}" method="POST"
                                                     title="Eliminar">
                                                     @csrf
                                                     @method('DELETE')

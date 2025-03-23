@@ -64,6 +64,9 @@ class PersonaController extends Controller
                 // Obtener los datos validados
                 $data = $request->validated();
 
+                $data['user_create_id'] = Auth::id();
+                $data['user_edit_id'] = Auth::id();
+
                 // Crear la persona de forma masiva
                 $persona = Persona::create($data);
 
@@ -71,7 +74,7 @@ class PersonaController extends Controller
                 $this->crearUsuarioPersona($persona);
             });
 
-            return redirect()->route('persona.index')->with('success', '¡Registro Exitoso!');
+            return redirect()->route('personas.index')->with('success', '¡Registro Exitoso!');
         } catch (\Exception $e) {
             Log::error('Error al registrar persona: ' . $e->getMessage());
 
@@ -84,13 +87,6 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        if (Auth::user()->id != $persona->id) {
-            return redirect()->back()->with('error', 'No tiene permitido realizar esta acción!');
-        }
-
-        $persona->edad = Carbon::parse($persona->fecha_de_nacimiento)->age;
-        $persona->fecha_de_nacimiento = Carbon::parse($persona->fecha_de_nacimiento)->format('d/m/Y');
-
 
         return view('personas.show', ['persona' => $persona]);
     }
@@ -104,11 +100,12 @@ class PersonaController extends Controller
         $documentos = Tema::with(['parametros' => function ($query) {
             $query->wherePivot('status', 1);
         }])->findOrFail(2);
+
         // llamar los generos
         $generos = Tema::with(['parametros' => function ($query) {
             $query->wherePivot('status', 1);
         }])->findOrFail(3);
-        // $persona = Persona::find(1);
+
         return view('personas.edit', ['persona' => $persona, 'documentos' => $documentos, 'generos' => $generos]);
     }
 
@@ -118,34 +115,24 @@ class PersonaController extends Controller
     public function update(UpdatePersonaRequest $request, Persona $persona)
     {
         try {
-            // Actualizar Persona
-            DB::beginTransaction();
-            $persona->update([
-                'tipo_documento' => $request->input('tipo_documento'),
-                'numero_documento' => $request->input('numero_documento'),
-                'primer_nombre' => $request->input('primer_nombre'),
-                'segundo_nombre' => $request->input('segundo_nombre'),
-                'primer_apellido' => $request->input('primer_apellido'),
-                'segundo_apellido' => $request->input('segundo_apellido'),
-                'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
-                'genero' => $request->input('genero'),
-                'email' => $request->input('email'),
-            ]);
-            // Actualizar Usuario asociado a la Persona
-            $user = User::where('persona_id', $persona->id)->first();
+            DB::transaction(function () use ($request, $persona) {
+                $data = $request->validated();
+                $persona->update($data);
 
-            if ($user) {
-                $user->update([
-                    'email' => $request->input('email'),
-                    'password' => Hash::make($request->input('numero_documento')),
-                ]);
-            }
-            DB::commit();
-            return redirect()->route('persona.show', ['persona' => $persona->id])
+                if ($persona->user) {
+                    $persona->user->update([
+                        'email' => $request->input('email'),
+                    ]);
+                }
+            });
+
+            return redirect()->route('personas.show', $persona->id)
                 ->with('success', 'Información actualizada exitosamente');
-        } catch (QueryException $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo.']);
+        } catch (\Exception $e) {
+            Log::error("Error al actualizar la persona (ID: {$persona->id}): " . $e->getMessage());
+            return redirect()->back()->withErrors([
+                'error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo o comuníquese con el administrador del sistema.'
+            ]);
         }
     }
 
@@ -180,9 +167,21 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        $persona->delete();
+        try {
+            DB::transaction(function () use ($persona) {
+                $persona->delete();
+            });
 
-        return redirect()->route('persona.index')->with('success', 'Persona eliminada exitosamente');
+            return redirect()->route('personas.index')->with('success', 'Persona eliminada exitosamente');
+        } catch (QueryException $e) {
+            Log::error("Error al eliminar la persona (ID: {$persona->id}): " . $e->getMessage());
+
+            return redirect()->back()->with('error', 'No se pudo eliminar la persona. Es posible que tenga un usuario asociado.');
+        } catch (\Exception $e) {
+            Log::error("Error inesperado al eliminar la persona (ID: {$persona->id}): " . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Ocurrió un error inesperado. Por favor, inténtelo de nuevo.');
+        }
     }
 
     /**

@@ -67,7 +67,7 @@
                                     </li>
                                     <li class="list-group-item">
                                         <b><i class="fas fa-birthday-cake"></i> Fecha de nacimiento:</b>
-                                        <span class="float-right">{{ $user->persona->fecha_de_nacimiento }}</span>
+                                        <span class="float-right">{{ $user->persona->fecha_nacimiento }}</span>
                                     </li>
                                     <li class="list-group-item">
                                         <b><i class="fas fa-envelope"></i> Correo:</b>
@@ -85,7 +85,7 @@
                                         <b><i class="fas fa-toggle-on"></i> Estado:</b>
                                         <span
                                             class="badge badge-{{ $user->persona->user->status === 1 ? 'success' : 'danger' }} float-right">
-                                            {{ $user->persona->user->status === 1 ? 'ACTIVO' : 'INACTIVO' }}
+                                            {{ $user->status === 1 ? 'ACTIVO' : 'INACTIVO' }}
                                         </span>
                                     </li>
                                     @if ($user->persona->instructor && $user->persona->instructor->regional)

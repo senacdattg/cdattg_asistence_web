@@ -24,8 +24,10 @@ class Persona extends Model
         'segundo_nombre',
         'primer_apellido',
         'segundo_apellido',
-        'fecha_de_nacimiento',
+        'fecha_nacimiento',
         'genero',
+        'telefono',
+        'celular',
         'email',
         'status',
         'user_create_id',
@@ -93,7 +95,7 @@ class Persona extends Model
      */
     public function getEdadAttribute()
     {
-        return Carbon::parse($this->fecha_de_nacimiento)->age;
+        return Carbon::parse($this->fecha_nacimiento)->age;
     }
 
     /**
@@ -105,5 +107,15 @@ class Persona extends Model
     public function getEmailAttribute($value)
     {
         return strtoupper($value);
+    }
+
+    public function userCreatedBy()
+    {
+        return $this->belongsTo(User::class, 'user_create_id');
+    }
+
+    public function userUpdatedBy()
+    {
+        return $this->belongsTo(User::class, 'user_edit_id');
     }
 }

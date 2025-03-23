@@ -12,7 +12,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('verificarLogin') }}">Inicio</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('persona.index') }}">Personas</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('personas.index') }}">Personas</a></li>
                             <li class="breadcrumb-item active">Crear Persona</li>
                         </ol>
                     </div>
@@ -23,7 +23,7 @@
         <!-- Contenido Principal -->
         <section class="content">
             <div class="container-fluid">
-                <a class="btn btn-outline-secondary btn-sm mb-3" href="{{ route('persona.index') }}">
+                <a class="btn btn-outline-secondary btn-sm mb-3" href="{{ route('personas.index') }}">
                     <i class="fas fa-arrow-left"></i> Volver
                 </a>
                 <div class="card">
@@ -33,7 +33,7 @@
                     </div>
                     <!-- Card Body: Formulario -->
                     <div class="card-body">
-                        <form method="post" action="{{ route('persona.store') }}">
+                        <form method="post" action="{{ route('personas.store') }}">
                             @csrf
                             <div class="row">
                                 <!-- Tipo de Documento -->
@@ -163,6 +163,32 @@
                                             id="fecha_nacimiento" name="fecha_nacimiento"
                                             value="{{ old('fecha_nacimiento') }}" required>
                                         @error('fecha_nacimiento')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Teléfono -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="telefono">Teléfono</label>
+                                        <input type="text" class="form-control @error('telefono') is-invalid @enderror"
+                                            id="telefono" name="telefono" value="{{ old('telefono') }}"
+                                            placeholder="Teléfono" required>
+                                        @error('telefono')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="celular">Celular</label>
+                                        <input type="text" class="form-control @error('celular') is-invalid @enderror"
+                                            id="celular" name="celular" value="{{ old('celular') }}"
+                                            placeholder="Celular" required>
+                                        @error('celular')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
