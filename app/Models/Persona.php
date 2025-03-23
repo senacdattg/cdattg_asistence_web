@@ -27,6 +27,9 @@ class Persona extends Model
         'fecha_de_nacimiento',
         'genero',
         'email',
+        'status',
+        'user_create_id',
+        'user_edit_id',
     ];
 
     protected static function boot()

@@ -7,18 +7,28 @@ use App\Models\Persona;
 
 use App\Http\Requests\StorePersonaRequest;
 use App\Http\Requests\UpdatePersonaRequest;
-use App\Models\Regional;
 use App\Models\Tema;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class PersonaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+        $this->middleware('can:VER PERSONA')->only(['index', 'show']);
+        $this->middleware('can:CREAR PERSONA')->only(['create', 'store']);
+        $this->middleware('can:EDITAR PERSONA')->only(['edit', 'update']);
+        $this->middleware('can:ELIMINAR PERSONA')->only('destroy');
+        $this->middleware('can:CAMBIAR ESTADO USUARIO')->only('cambiarEstadoUser');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +43,15 @@ class PersonaController extends Controller
      */
     public function create()
     {
-        return view('personas.create');
+        $documentos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(2);
+
+        $generos = Tema::with(['parametros' => function ($query) {
+            $query->wherePivot('status', 1);
+        }])->findOrFail(3);
+
+        return view('personas.create', compact('documentos', 'generos'));
     }
 
     /**
@@ -41,58 +59,23 @@ class PersonaController extends Controller
      */
     public function store(StorePersonaRequest $request)
     {
-
         try {
+            DB::transaction(function () use ($request) {
+                // Obtener los datos validados
+                $data = $request->validated();
 
-            $validator = Validator::make($request->all(), [
-                'tipo_documento' => 'required',
-                'numero_documento' => 'required|unique:personas,numero_documento',
-                'primer_nombre' => 'required',
-                'segundo_nombre' => 'nullable',
-                'primer_apellido' => 'required',
-                'segundo_apellido' => 'nullable',
-                'fecha_de_nacimiento' => 'required|date',
-                'genero' => 'required',
-                'email' => 'required|email|unique:personas,email|unique:users,email',
-                'cargo' => 'required',
-            ]);
+                // Crear la persona de forma masiva
+                $persona = Persona::create($data);
 
-            if ($validator->fails()) {
-                @dd($validator);
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+                // Crear el usuario asociado a la persona
+                $this->crearUsuarioPersona($persona);
+            });
 
-            // Crear Persona
-            $persona = Persona::create([
-                'tipo_documento' => $request->input('tipo_documento'),
-                'numero_documento' => $request->input('numero_documento'),
-                'primer_nombre' => $request->input('primer_nombre'),
-                'segundo_nombre' => $request->input('segundo_nombre'),
-                'primer_apellido' => $request->input('primer_apellido'),
-                'segundo_apellido' => $request->input('segundo_apellido'),
-                'fecha_de_nacimiento' => $request->input('fecha_de_nacimiento'),
-                'genero' => $request->input('genero'),
-                'email' => $request->input('email'),
-                'cargo' => $request->input('cargo'),
-            ]);
+            return redirect()->route('persona.index')->with('success', '¡Registro Exitoso!');
+        } catch (\Exception $e) {
+            Log::error('Error al registrar persona: ' . $e->getMessage());
 
-            // Crear Usuario asociado a la Persona
-            $user = User::create([
-                'email' => $request->input('email'),
-                'password' => Hash::make($request->input('numero_documento')),
-                'persona_id' => $persona->id,
-            ]);
-
-
-
-            $user->assignRole('INSTRUCTOR');
-
-            return redirect()->route('instructores.index')->with('success', '¡Registro Exitoso!');
-        } catch (QueryException $e) {
-
-            return redirect()->back()->with('error', 'Error de base de datos. Por favor, inténtelo de nuevo.');
+            return redirect()->back()->withInput()->with('error', 'Error al registrar persona.');
         }
     }
 
@@ -101,11 +84,10 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-        //dd($persona);
         if (Auth::user()->id != $persona->id) {
             return redirect()->back()->with('error', 'No tiene permitido realizar esta acción!');
         }
-        // $persona = Persona::find(1);
+
         $persona->edad = Carbon::parse($persona->fecha_de_nacimiento)->age;
         $persona->fecha_de_nacimiento = Carbon::parse($persona->fecha_de_nacimiento)->format('d/m/Y');
 
@@ -166,25 +148,31 @@ class PersonaController extends Controller
             return redirect()->back()->withErrors(['error' => 'Error al actualizar la información. Por favor, inténtelo de nuevo.']);
         }
     }
-    public function cambiarEstadoUser(Request $request, string $id)
-    {
-        //  DB::enableQueryLog();
-        // @dd($user->id);
-        $user = User::where('persona_id', $id)->first();
 
-        // @dd($user);
-        // @dd($user->update(['status' => 0]));
+    /**
+     * Cambia el estado de una persona.
+     *
+     * Este método alterna el estado de una persona entre activo (1) e inactivo (0).
+     * Si el estado actual es 1, se cambiará a 0 y viceversa.
+     *
+     * @param int $id El ID de la persona cuyo estado se va a cambiar.
+     * @return \Illuminate\Http\RedirectResponse Redirección de vuelta con un mensaje de éxito o error.
+     */
+    public function cambiarEstadoPersona($id)
+    {
+        $persona = Persona::findOrFail($id);
+        $user = User::where('persona_id', $persona->id)->first();
+
         try {
-            if ($user->status === 1) {
-                $user->update(['status' => 0]);
-            } else {
-                $user->update(['status' => 1]);
-            }
+            $persona->update(['status' => !$persona->status]);
+            $user->update(['status' => !$user->status]);
+
+            return redirect()->back()->with('success', 'Estado actualizado correctamente.');
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            Log::error("Error al cambiar estado de la persona (ID: {$id}): " . $e->getMessage());
+
+            return redirect()->back()->with('error', 'No se pudo actualizar el estado.');
         }
-        return redirect()->back();
-        // dd(DB::getQueryLog());
     }
 
     /**
@@ -192,6 +180,25 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        //
+        $persona->delete();
+
+        return redirect()->route('persona.index')->with('success', 'Persona eliminada exitosamente');
+    }
+
+    /**
+     * Crea un nuevo usuario basado en la información de una persona.
+     *
+     * @param Persona $persona La instancia de la persona de la cual se creará el usuario.
+     * @return void
+     */
+    function crearUsuarioPersona(Persona $persona)
+    {
+        $user = User::create([
+            'email' => $persona->email,
+            'password' => Hash::make($persona->numero_documento),
+            'persona_id' => $persona->id,
+        ]);
+
+        $user->assignRole('VISITANTE');
     }
 }

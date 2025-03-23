@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::table('personas', function (Blueprint $table) {
             $table->foreignId('tipo_documento')->after('id')->nullable()->constrained('parametros_temas');
-            $table->foreignId('genero')->after('fecha_de_nacimiento')->nullable()->constrained('parametros_temas');
+            $table->foreignId('genero')->after('fecha_nacimiento')->nullable()->constrained('parametros_temas');
 
-            $table->unique(['tipo_documento', 'numero_documento', 'primer_nombre', 'primer_apellido', 'fecha_de_nacimiento', 'genero'], 'personas_uk');
+            $table->unique(['tipo_documento', 'numero_documento', 'primer_nombre', 'primer_apellido', 'fecha_nacimiento', 'genero'], 'personas_uk');
         });
     }
 
