@@ -1,4 +1,4 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 
 @section('css')
     <!-- Estilos para Dual Listbox -->

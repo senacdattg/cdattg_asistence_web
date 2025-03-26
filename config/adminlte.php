@@ -369,7 +369,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Sede',
-                            'url'  => 'sede.create',
+                            'url'  => 'sede/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -385,7 +385,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Bloque',
-                            'url'  => 'bloque.create',
+                            'url'  => 'bloque/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -401,7 +401,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Piso',
-                            'url'  => 'piso.create',
+                            'url'  => 'piso/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -417,7 +417,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Ambiente',
-                            'url'  => 'ambiente.create',
+                            'url'  => 'ambiente/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -440,7 +440,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Instructor',
-                            'url'  => 'instructor.create',
+                            'url'  => 'instructor/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -480,7 +480,7 @@ return [
                 ],
                 [
                     'text' => 'Crear Persona',
-                    'url'  => 'persona.create',
+                    'url'  => 'personas/create',
                     'icon' => 'fas fa-fw fa-plus-circle',
                 ],
             ],
@@ -501,7 +501,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Jornada',
-                            'url'  => 'jornada.create',
+                            'url'  => 'jornada/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -517,7 +517,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Programa',
-                            'url'  => 'programa.create',
+                            'url'  => 'programa/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
@@ -549,7 +549,7 @@ return [
                         ],
                         [
                             'text' => 'Crear Caracterización',
-                            'url'  => 'caracterizacion.create',
+                            'url'  => 'caracterizacion/create',
                             'icon' => 'fas fa-fw fa-plus-circle',
                         ],
                     ],
