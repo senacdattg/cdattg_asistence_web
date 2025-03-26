@@ -301,12 +301,12 @@ return [
     'menu' => [
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
+            'type'       => 'navbar-search',
+            'text'       => 'search',
             'topnav_right' => true,
         ],
         [
-            'type' => 'fullscreen-widget',
+            'type'       => 'fullscreen-widget',
             'topnav_right' => true,
         ],
 
@@ -315,29 +315,277 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
+
+        // Panel de control
         [
-            'text' => 'Panel de control',
-            'icon' => 'fas fa-fw fa-chart-pie',
+            'header'  => 'Panel de control',
+            'icon'  => 'fas fa-fw fa-tachometer-alt',
+        ],
+        // Configuración y Seguridad
+        [
+            'text'    => 'Configuración y Seguridad',
+            'icon'    => 'fas fa-fw fa-cogs',
             'submenu' => [
                 [
                     'text' => 'Parámetros',
-                    'url' => 'parametro',
+                    'url'  => 'parametro',
                     'icon' => 'fas fa-fw fa-sliders-h',
                 ],
                 [
-                    'text' => 'Usuarios',
-                    'url' => '#',
-                    'icon' => 'fas fa-fw fa-users',
+                    'text' => 'Temas',
+                    'url'  => 'tema',
+                    'icon' => 'fas fa-fw fa-paint-brush',
                 ],
                 [
-                    'text' => 'Roles',
-                    'url' => '#',
-                    'icon' => 'fas fa-fw fa-user-tag',
+                    'text' => 'Asignar Permisos',
+                    'url'  => 'permiso',
+                    'icon' => 'fas fa-fw fa-lock',
+                ],
+            ],
+        ],
+        // Ubicación e Infraestructura
+        [
+            'text'    => 'Ubicación e Infraestructura',
+            'icon'    => 'fas fa-fw fa-building',
+            'submenu' => [
+                [
+                    'text' => 'Regionales',
+                    'url'  => 'regional',
+                    'icon' => 'fas fa-fw fa-map-marker-alt',
                 ],
                 [
-                    'text' => 'Permisos',
-                    'url' => '#',
-                    'icon' => 'fas fa-fw fa-user-lock',
+                    'text' => 'Centros de Formación',
+                    'url'  => 'centros',
+                    'icon' => 'fas fa-fw fa-school',
+                ],
+                [
+                    'text'    => 'Sedes',
+                    'icon'    => 'fas fa-fw fa-hospital',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Sedes',
+                            'url'  => 'sede',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Sede',
+                            'url'  => 'sede.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Bloques',
+                    'icon'    => 'fas fa-fw fa-th-large',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Bloques',
+                            'url'  => 'bloque',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Bloque',
+                            'url'  => 'bloque.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Pisos',
+                    'icon'    => 'fas fa-fw fa-layer-group',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Pisos',
+                            'url'  => 'piso',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Piso',
+                            'url'  => 'piso.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Ambientes',
+                    'icon'    => 'fas fa-fw fa-door-open',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Ambientes',
+                            'url'  => 'ambiente',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Ambiente',
+                            'url'  => 'ambiente.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        // Gestión de Personal y Roles
+        [
+            'text'    => 'Gestión de Personal y Roles',
+            'icon'    => 'fas fa-fw fa-users',
+            'submenu' => [
+                [
+                    'text'    => 'Instructores',
+                    'icon'    => 'fas fa-fw fa-chalkboard-teacher',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Instructores',
+                            'url'  => 'instructor',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Instructor',
+                            'url'  => 'instructor.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Vigilantes',
+                    'icon'    => 'fas fa-fw fa-user-shield',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Vigilantes',
+                            'url'  => 'vigilante',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Vigilante',
+                            'url'  => 'vigilante/create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Importar CSV',
+                    'url'  => 'createImportarCSV',
+                    'icon' => 'fas fa-fw fa-file-upload',
+                ],
+            ],
+        ],
+        // Personas
+        [
+            'text'    => 'Personas',
+            'icon'    => 'fas fa-fw fa-user',
+            'submenu' => [
+                [
+                    'text' => 'Ver Personas',
+                    'url'  => 'personas',
+                    'icon' => 'fas fa-fw fa-eye',
+                ],
+                [
+                    'text' => 'Crear Persona',
+                    'url'  => 'persona.create',
+                    'icon' => 'fas fa-fw fa-plus-circle',
+                ],
+            ],
+        ],
+        // Operaciones Académicas y Administrativas
+        [
+            'text'    => 'Operaciones Académicas y Administrativas',
+            'icon'    => 'fas fa-fw fa-book',
+            'submenu' => [
+                [
+                    'text'    => 'Jornadas',
+                    'icon'    => 'fas fa-fw fa-calendar',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Jornadas',
+                            'url'  => 'jornada',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Jornada',
+                            'url'  => 'jornada.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Programas',
+                    'icon'    => 'fas fa-fw fa-graduation-cap',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Programas',
+                            'url'  => 'programa',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Programa',
+                            'url'  => 'programa.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Fichas',
+                    'icon'    => 'fas fa-fw fa-address-book',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Fichas',
+                            'url'  => 'ficha',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Fichas',
+                            'url'  => 'fichas.ficha',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text'    => 'Caracterización',
+                    'icon'    => 'fas fa-fw fa-info-circle',
+                    'submenu' => [
+                        [
+                            'text' => 'Ver Caracterización',
+                            'url'  => 'caracterizacion',
+                            'icon' => 'fas fa-fw fa-eye',
+                        ],
+                        [
+                            'text' => 'Crear Caracterización',
+                            'url'  => 'caracterizacion.create',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
+                ],
+                [
+                    'text' => 'Administrar Asistencias',
+                    'url'  => 'asistencia',
+                    'icon' => 'fas fa-fw fa-check-square',
+                ],
+            ],
+        ],
+        // Consultas y Gestión de Carnet
+        [
+            'text'    => 'Consultas y Gestión de Carnet',
+            'icon'    => 'fas fa-fw fa-search',
+            'submenu' => [
+                [
+                    'text' => 'Consultas',
+                    'url'  => 'consulta',
+                    'icon' => 'fas fa-fw fa-search',
+                ],
+                [
+                    'text'    => 'Carnet',
+                    'icon'    => 'fas fa-fw fa-id-card',
+                    'submenu' => [
+                        [
+                            'text' => 'Administrar Carnet',
+                            'url'  => 'administrar-carnet',
+                            'icon' => 'fas fa-fw fa-tasks',
+                        ],
+                        [
+                            'text' => 'Crear Carnet',
+                            'url'  => 'carnet',
+                            'icon' => 'fas fa-fw fa-plus-circle',
+                        ],
+                    ],
                 ],
             ],
         ],

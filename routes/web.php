@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
 // Rutas públicas
 foreach (glob(routes_path('autenticacion/public') . '/*.php') as $routeFile) {
     include_once $routeFile;

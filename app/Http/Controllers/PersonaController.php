@@ -87,7 +87,6 @@ class PersonaController extends Controller
      */
     public function show(Persona $persona)
     {
-
         return view('personas.show', ['persona' => $persona]);
     }
 

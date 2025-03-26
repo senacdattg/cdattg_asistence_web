@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProgramaFormacionController;
 
 // Rutas para ProgramaCaracterizacionController
-Route::resource('programaFormacion', ProgramaFormacionController::class);
+Route::resource('programa', ProgramaFormacionController::class);
 route::middleware('can:VER PROGRAMA DE CARACTERIZACION')->group(function () {
     Route::get('/programa/index', [ProgramaFormacionController::class, 'index'])->name('programa.index');
     Route::get('/programa/create', [ProgramaFormacionController::class, 'create']);
