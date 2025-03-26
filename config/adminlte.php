@@ -321,7 +321,7 @@ return [
             'submenu' => [
                 [
                     'text' => 'Parámetros',
-                    'url' => '#',
+                    'url' => 'parametro',
                     'icon' => 'fas fa-fw fa-sliders-h',
                 ],
                 [

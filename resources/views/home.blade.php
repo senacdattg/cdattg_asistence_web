@@ -24,7 +24,7 @@
             @endphp
 
             @role('SUPER ADMINISTRADOR')
-                <h1 class="display-4">
+                <h1 class="display-4">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
                     Bienvenido <strong>{{ $nombreCompleto }}</strong>!
                 </h1>
                 <p class="lead">Tienes acceso completo a todas las herramientas del sistema.</p>
