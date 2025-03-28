@@ -1,6 +1,5 @@
 @extends('layout.master-layout')
 @section('content')
-    <div class="content-wrapper">
         <section class="content-header mt-3">
             <div class="container-fluid mt-3">
                 <div class="row mb-2">

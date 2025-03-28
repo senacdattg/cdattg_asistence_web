@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-    <div class="content-wrapper">
         <!-- Encabezado de la página -->
         <section class="content-header">
             <div class="container-fluid">

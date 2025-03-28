@@ -1,6 +1,5 @@
 @extends('adminlte::page')
 @section('content')
-    <div class="content-wrapper">
 
         <section class="content">
             <div class="card">
@@ -55,7 +54,5 @@
                 </div>
 
             </div>
-    </div>
-    </section>
-    </div>
+        </section>
 @endsection

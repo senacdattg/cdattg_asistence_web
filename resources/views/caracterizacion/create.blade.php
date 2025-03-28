@@ -1,6 +1,5 @@
 @extends('layout.master-layout')
 @section('content')
-<div class="content-wrapper">
     <section class="content">
         <div class="card">
             <div class="card-header">
