@@ -1,7 +1,5 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 @section('content')
-    <div class="content-wrapper">
-
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -83,7 +81,6 @@
                 </div>
             </div>
         </section>
-    </div>
 @endsection
 @section('script')
     <script src="{{ asset('js/jquery-selectDinamico.js') }}"></script>

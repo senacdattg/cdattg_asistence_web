@@ -1,4 +1,4 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 
 @section('css')
     <!-- Estilos para Select2 y Dual Listbox -->
@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-    <div class="content-wrapper">
         <!-- Encabezado de la página -->
         <section class="content-header">
             <div class="container-fluid">

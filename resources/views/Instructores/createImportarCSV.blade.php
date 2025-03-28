@@ -1,4 +1,4 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 @section('css')
     <style>
         #overlay {
@@ -16,7 +16,6 @@
     </style>
 @endsection
 @section('content')
-    <div class="content-wrapper">
 
         <section class="content-header">
             <div class="container-fluid">

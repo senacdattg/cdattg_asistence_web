@@ -1,6 +1,5 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 @section('content')
-    <div class="content-wrapper">
 
         <section class="content-header mt-3">
             <div class="container-fluid mt-3">

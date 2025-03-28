@@ -1,6 +1,5 @@
-@extends('layout.master-layout')
+@extends('adminlte::page')
 @section('content')
-    <div class="content-wrapper">
         <!-- Encabezado de la página -->
         <section class="content-header">
             <div class="container-fluid">
@@ -114,5 +113,4 @@
                 </div>
             </div>
         </section>
-    </div>
 @endsection
