@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CentroFormacionController;
+use App\Models\CentroFormacion;
 
 // Rutas para ver centros de formación (permiso: VER CENTROS DE FORMACION)
     Route::middleware('can:VER CENTROS DE FORMACION')->group(function () {
@@ -19,6 +20,7 @@ use App\Http\Controllers\CentroFormacionController;
     Route::middleware('can:EDITAR CENTRO DE FORMACION')->group(function () {
         Route::get('/centros/{centro}/edit', [CentroFormacionController::class, 'edit'])->name('centros.edit');
         Route::put('/centros/{centro}', [CentroFormacionController::class, 'update'])->name('centros.update');
+        Route::put('/centros/{centro}/cambiarEstado', [CentroFormacion::class, 'cambiarEstado'])->name('centro.cambiarEstado');
     });
 
     // Rutas para eliminar centros de formación (permiso: ELIMINAR CENTRO DE FORMACION)

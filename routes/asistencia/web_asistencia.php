@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AsistenciaAprendicesController;
+use App\Http\Controllers\AsistenceQrController;
 
 // Rutas para AsistenciaAprendizController
 Route::resource('asistencia', AsistenciaAprendicesController::class);
