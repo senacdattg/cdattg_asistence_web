@@ -1,21 +1,5 @@
 @extends('adminlte::page')
 
-@section('content_header')
-    <div class="row mb-2">
-        <div class="col-sm-6">
-            <h1>Inicio</h1>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item">
-                    <a href="{{ route('verificarLogin') }}">Inicio</a>
-                </li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-        </div>
-    </div>
-@endsection
-
 @section('content')
     <div class="jumbotron py-3">
         @auth
@@ -25,7 +9,7 @@
 
             @role('SUPER ADMINISTRADOR')
                 <h1 class="display-4">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-                    Bienvenido <strong>{{ $nombreCompleto }}</strong>!
+                    @include('dashboards.superadmin')
                 </h1>
                 <p class="lead">Tienes acceso completo a todas las herramientas del sistema.</p>
             @elserole('ADMINISTRADOR')

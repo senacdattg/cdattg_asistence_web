@@ -48,7 +48,7 @@ return [
     */
 
     'google_fonts' => [
-        'allowed' => true,
+        'allowed' => false,
     ],
 
     /*
@@ -314,6 +314,16 @@ return [
         [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
+        ],
+        // Home
+        [
+            'header' => 'Home',
+            'icon'  => 'fas fa-fw fa-tachometer-alt',
+        ],
+        [
+            'text' => 'Dashboard',
+            'url'  => 'home',
+            'icon' => 'fas fa-fw fa-tachometer-alt',
         ],
 
         // Panel de control
@@ -747,5 +757,6 @@ return [
 
     'custom_css' => [
         'css/custom.css',
+        'public/css/app.css',
     ],
 ];
