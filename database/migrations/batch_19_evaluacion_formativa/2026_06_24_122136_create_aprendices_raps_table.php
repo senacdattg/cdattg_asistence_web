@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('aprendices_raps', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('aprendiz_id');
-            $table->foreign('aprendiz_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('aprendiz_id')->references('id')->on('aprendices')->onDelete('cascade');
             $table->unsignedBigInteger('rap_id');
             $table->foreign('rap_id')->references('id')->on('resultados_aprendizajes')->onDelete('cascade');
             $table->unsignedBigInteger('estado_id');

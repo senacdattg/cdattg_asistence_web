@@ -5,19 +5,18 @@ namespace App\Models\EvaluacionFormativa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Interfaces\Auditable;
+use App\Traits\Seguimiento;
 
-class DetallePlanMejoramiento extends Model
+class DetallePlanMejoramiento extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Seguimiento;
 
     protected $table = 'detalles_plan_mejoramiento';
 
     protected $fillable = [
         'plan_mejoramiento_id',
         'criterios_deficientes',
-        'user_create_id',
-        'user_update_id',
-        'user_delete_id',
     ];
 
     protected $casts = [];

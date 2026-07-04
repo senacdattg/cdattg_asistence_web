@@ -5,10 +5,12 @@ namespace App\Models\EvaluacionFormativa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Interfaces\Auditable;
+use App\Traits\Seguimiento;
 
-class CriterioRubricaItemEvaluable extends Model
+class CriterioRubricaItemEvaluable extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Seguimiento;
 
     protected $table = 'criterios_rubricas_item_evaluable';
 
@@ -16,9 +18,6 @@ class CriterioRubricaItemEvaluable extends Model
         'item_evaluable_id',
         'rubricas_criterios_id',
         'peso_porcentual',
-        'user_create_id',
-        'user_update_id',
-        'user_delete_id',
     ];
 
     protected $casts = [

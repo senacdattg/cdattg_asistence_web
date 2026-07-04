@@ -5,10 +5,12 @@ namespace App\Models\EvaluacionFormativa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Interfaces\Auditable;
+use App\Traits\Seguimiento;
 
-class ActividadAprendizaje extends Model
+class ActividadAprendizaje extends Model implements Auditable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Seguimiento;
 
     protected $table = 'actividades_aprendizaje';
 
@@ -16,9 +18,6 @@ class ActividadAprendizaje extends Model
 
     protected $fillable = [
         'tipo_actividad',
-        'user_create_id',
-        'user_update_id',
-        'user_delete_id',
     ];
 
     protected $casts = [];

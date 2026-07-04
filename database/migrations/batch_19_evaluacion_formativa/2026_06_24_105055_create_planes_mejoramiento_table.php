@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('item_id')->primary();
             $table->foreign('item_id')->references('item_id')->on('item_evaluable')->onDelete('cascade');
             $table->unsignedBigInteger('aprendiz_id');
-            $table->foreign('aprendiz_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('aprendiz_id')->references('id')->on('aprendices')->onDelete('cascade');
             $table->unsignedBigInteger('item_origen_id')->nullable();
             $table->foreign('item_origen_id')->references('item_id')->on('item_evaluable')->onDelete('cascade');            
             $table->boolean('estado')->default(true);

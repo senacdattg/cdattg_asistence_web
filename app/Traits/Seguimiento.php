@@ -3,44 +3,67 @@
 namespace App\Traits;
 
 use App\Models\User;
-
+use App\Observers\AuditoriaObserver;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait Seguimiento
 {
-    
-    // Relación con el usuario que creó el registro
-    public function userCreate()
+    public function getUserCreateIdColumn(): string
     {
-        return $this->belongsTo(User::class, 'user_create_id');
+        return 'user_create_id';
     }
-    
-    // Relación con el usuario que actualizó el registro por última vez
-    public function userUpdate()
+
+    public function getUserUpdateIdColumn(): string
     {
-        return $this->belongsTo(User::class, 'user_update_id');
+        return 'user_update_id';
     }
-    
-    // Alias de userCreate() para compatibilidad
-    public function creador()
+
+    public function getUserDeleteIdColumn(): ?string
+    {
+        return 'user_delete_id';
+    }
+
+    public function userCreate(): BelongsTo
+    {
+        return $this->belongsTo(User::class, $this->getUserCreateIdColumn());
+    }
+
+    public function userUpdate(): BelongsTo
+    {
+        return $this->belongsTo(User::class, $this->getUserUpdateIdColumn());
+    }
+
+    public function userDelete(): BelongsTo
+    {
+        $column = $this->getUserDeleteIdColumn();
+
+        if ($column === null) {
+            throw new \RuntimeException(sprintf(
+                'The model [%s] does not have a user delete column.',
+                static::class
+            ));
+        }
+
+        return $this->belongsTo(User::class, $column);
+    }
+
+    public function creador(): BelongsTo
     {
         return $this->userCreate();
     }
 
-    // Alias de userUpdate() para compatibilidad
-    public function actualizador()
+    public function actualizador(): BelongsTo
     {
         return $this->userUpdate();
     }
 
-    // Relación con el usuario que eliminó el registro
-    public function userDelete()
-    {
-        return $this->belongsTo(User::class, 'user_delete_id');
-    }
-
-    // Alias de userDelete() para compatibilidad
-    public function eliminador()
+    public function eliminador(): BelongsTo
     {
         return $this->userDelete();
+    }
+
+    protected static function bootSeguimiento(): void
+    {
+        static::observe(AuditoriaObserver::class);
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('actividades_aprendizaje', function (Blueprint $table) {
             $table->unsignedBigInteger('item_id')->primary();
             $table->foreign('item_id')->references('item_id')->on('item_evaluable')->onDelete('cascade');
-            $table->foreignId('tipo_evaluacion')->constrained('parametros_temas'); // FK al catálogo de tipos (Conocimiento, Desempeño, Producto)
+            $table->foreignId('tipo_actividad')->constrained('parametros_temas'); // FK al catálogo de tipos (Conocimiento, Desempeño, Producto)
             $table->foreignId('user_create_id')->constrained('users');
             $table->foreignId('user_update_id')->nullable()->constrained('users');
             $table->foreignId('user_delete_id')->nullable()->constrained('users');
