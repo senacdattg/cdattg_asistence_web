@@ -54,5 +54,8 @@
                 @endforeach
             </div>
         @endif
+    <section class="mb-4">
+        @include('biogjgas.public.partials.modulos-grid')
+    </section>
     </section>
 @endsection

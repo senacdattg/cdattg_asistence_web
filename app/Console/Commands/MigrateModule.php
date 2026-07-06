@@ -52,6 +52,7 @@ class MigrateModule extends Command
         'batch_17_complementarios' => 'Módulo de Complementarios (cursos complementarios, aspirantes, caracterización)',
         'batch_18_entrada_salida' => 'Módulo de Entradas y Salidas',
         'batch_19_biogjgas' => 'Módulo BIOGJGAS Guaviare (Investigación)',
+        'batch_20_biogjgas_contenido' => 'Módulo BIOGJGAS submódulos de contenido',
     ];
 
     /**
