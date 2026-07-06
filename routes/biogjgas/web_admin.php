@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Admin\ConvocatoriaAdminController;
 use App\Http\Controllers\Biogjgas\Admin\PodcastAdminController;
 use App\Http\Controllers\Biogjgas\Admin\BoletinAdminController;
 use App\Http\Controllers\Biogjgas\Admin\RevistaAdminController;
@@ -20,4 +21,5 @@ Route::prefix('biogjgas/admin')
         Route::resource('revista', RevistaAdminController::class)->except(['show']);
         Route::resource('boletin', BoletinAdminController::class)->except(['show']);
         Route::resource('podcast', PodcastAdminController::class)->except(['show']);
+        Route::resource('convocatoria', ConvocatoriaAdminController::class)->except(['show']);
     });

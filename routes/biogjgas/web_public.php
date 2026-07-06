@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Public\ConvocatoriaController;
 use App\Http\Controllers\Biogjgas\Public\PodcastController;
 use App\Http\Controllers\Biogjgas\Public\BoletinController;
 use App\Http\Controllers\Biogjgas\Public\RevistaController;
@@ -27,6 +28,11 @@ Route::prefix('investigacion')
                 Route::prefix('podcast')->name('podcast.')->group(function () {
             Route::get('/', [PodcastController::class, 'index'])->name('index');
             Route::get('/{podcast}', [PodcastController::class, 'show'])->name('show');
+        });
+
+        Route::prefix('convocatorias')->name('convocatorias.')->group(function () {
+            Route::get('/', [ConvocatoriaController::class, 'index'])->name('index');
+            Route::get('/{convocatoria}', [ConvocatoriaController::class, 'show'])->name('show');
         });
 
     });
