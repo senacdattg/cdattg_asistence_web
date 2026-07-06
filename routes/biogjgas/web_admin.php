@@ -1,3 +1,6 @@
+use App\Http\Controllers\Biogjgas\Admin\IntegranteAdminController;
+use App\Http\Controllers\Biogjgas\Admin\LineaAdminController;
+use App\Http\Controllers\Biogjgas\Admin\ProyectoAdminController;
 use App\Http\Controllers\Biogjgas\Admin\ActividadAdminController;
 use App\Http\Controllers\Biogjgas\Admin\ConvocatoriaAdminController;
 use App\Http\Controllers\Biogjgas\Admin\PodcastAdminController;
@@ -10,7 +13,6 @@ use App\Http\Controllers\Biogjgas\Admin\DashboardController;
 use App\Http\Controllers\Biogjgas\Admin\PresentacionAdminController;
 use App\Http\Controllers\Biogjgas\Admin\SemilleroAdminController;
 use Illuminate\Support\Facades\Route;
-
 Route::prefix('biogjgas/admin')
     ->name('biogjgas.admin.')
     ->group(function () {
@@ -24,4 +26,7 @@ Route::prefix('biogjgas/admin')
         Route::resource('podcast', PodcastAdminController::class)->except(['show']);
         Route::resource('convocatoria', ConvocatoriaAdminController::class)->except(['show']);
         Route::resource('actividad', ActividadAdminController::class)->except(['show']);
+        Route::resource('linea', LineaAdminController::class)->except(['show']);
+        Route::resource('integrante', IntegranteAdminController::class)->except(['show']);
+        Route::resource('proyecto', ProyectoAdminController::class)->except(['show']);
     });

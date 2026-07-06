@@ -92,7 +92,21 @@ class BiogjgasSubmoduleService
     {
         return BiogjgasActividad::query()->publicados()->with('semillero')->findOrFail($id);
     }
-(string $modelo, int $perPage = 15): LengthAwarePaginator
+
+    public function semilleroConRelaciones(string $slug): BiogjgasSemillero
+    {
+        return BiogjgasSemillero::query()
+            ->publicados()
+            ->with([
+                'lineas' => fn ($q) => $q->where('estado_publicacion', 'publicado')->orderBy('orden'),
+                'integrantes' => fn ($q) => $q->where('estado_publicacion', 'publicado')->orderBy('orden'),
+                'proyectos' => fn ($q) => $q->where('estado_publicacion', 'publicado')->orderBy('orden'),
+            ])
+            ->where('slug', $slug)
+            ->firstOrFail();
+    }
+
+    public function paginar(string $modelo, int $perPage = 15): LengthAwarePaginator
     {
         return $this->modelo($modelo)::query()
             ->orderByDesc('created_at')
