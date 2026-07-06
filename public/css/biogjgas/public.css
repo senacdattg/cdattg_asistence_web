@@ -1,0 +1,123 @@
+.biogjgas-public {
+    padding-bottom: 2rem;
+}
+
+.biogjgas-hero {
+    background: linear-gradient(135deg, #0f9d58 0%, #0c7b43 55%, #0a6537 100%);
+    color: #fff;
+}
+
+.biogjgas-hero__icon {
+    font-size: 5rem;
+    opacity: 0.35;
+}
+
+.biogjgas-carousel__slide {
+    min-height: 220px;
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+}
+
+.biogjgas-semillero-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.5rem 1rem;
+    height: 100%;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.biogjgas-semillero-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+    color: #1e293b;
+}
+
+.biogjgas-semillero-card__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--semillero-color, #0f9d58);
+    color: #fff;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.biogjgas-semillero-card__sigla {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--semillero-color, #0f9d58);
+}
+
+.biogjgas-semillero-card__nombre {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-top: 0.35rem;
+    min-height: 2.8rem;
+}
+
+.biogjgas-semillero-card__resumen {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0.75rem 0 1rem;
+}
+
+.biogjgas-semillero-card__cta {
+    margin-top: auto;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0f9d58;
+}
+
+.biogjgas-modulo-card__icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #ecfdf5;
+    color: #0f9d58;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.biogjgas-semillero-hero {
+    background: linear-gradient(135deg, var(--semillero-color, #0f9d58) 0%, #0f172a 100%);
+    color: #fff;
+}
+
+.biogjgas-semillero-hero__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+}
+
+.biogjgas-semillero-mini-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--semillero-color, #0f9d58);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
