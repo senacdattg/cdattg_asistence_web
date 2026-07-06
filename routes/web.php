@@ -92,6 +92,9 @@ Route::middleware('web')->group(function () {
         ->name('departamentos.by.pais');
     Route::get('/municipios/{departamento}', [MunicipioController::class, 'getByDepartamento'])
         ->name('municipios.by.departamento');
+
+
+    Route::middleware('web')->group(base_path('routes/biogjgas/web_public.php'));
 });
 
 $loadRouteFolders(['autenticacion/public']);
@@ -115,6 +118,9 @@ $protectedRouteFolders = [
 ];
 
 $loadRouteFolders($protectedRouteFolders, ['web', 'auth']);
+
+Route::middleware(['web', 'auth'])->group(base_path('routes/biogjgas/web_admin.php'));
+
 
 Route::middleware(['web', 'auth'])->group(function () {
     Route::post(
