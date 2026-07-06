@@ -20,6 +20,28 @@ $permisoVerPiso = 'VER PISO';
 $permisoVerAmbiente = 'VER AMBIENTE';
 $permisoVerParametro = 'VER PARAMETRO';
 $permisoVerTema = 'VER TEMA';
+$permisoVerBiogjgasAdmin = 'VER BIOGJGAS ADMIN';
+$permisoGestionarSemilleroBiogjgas = 'GESTIONAR SEMILLERO BIOGJGAS';
+$permisoGestionarBannerBiogjgas = 'GESTIONAR BANNER BIOGJGAS';
+$permisoGestionarPresentacionBiogjgas = 'GESTIONAR PRESENTACION BIOGJGAS';
+$permisoGestionarRevistaBiogjgas = 'GESTIONAR REVISTA BIOGJGAS';
+$permisoGestionarBoletinBiogjgas = 'GESTIONAR BOLETIN BIOGJGAS';
+$permisoGestionarPodcastBiogjgas = 'GESTIONAR PODCAST BIOGJGAS';
+$permisoGestionarConvocatoriaBiogjgas = 'GESTIONAR CONVOCATORIA BIOGJGAS';
+$permisoGestionarActividadBiogjgas = 'GESTIONAR ACTIVIDAD BIOGJGAS';
+$permisoPublicarBiogjgas = 'PUBLICAR CONTENIDO BIOGJGAS';
+$permisosMenuBiogjgas = [
+    $permisoVerBiogjgasAdmin,
+    $permisoGestionarSemilleroBiogjgas,
+    $permisoGestionarBannerBiogjgas,
+    $permisoGestionarPresentacionBiogjgas,
+    $permisoGestionarRevistaBiogjgas,
+    $permisoGestionarBoletinBiogjgas,
+    $permisoGestionarPodcastBiogjgas,
+    $permisoGestionarConvocatoriaBiogjgas,
+    $permisoGestionarActividadBiogjgas,
+    $permisoPublicarBiogjgas,
+];
 
 // Constantes para íconos duplicados
 $iconoLista = 'fas fa-fw fa-list';
@@ -861,6 +883,100 @@ return [
                             'can'  => $permisoVerContrato,
                         ],
                     ],
+                ],
+            ],
+        ],
+
+        // ========================================
+        // INVESTIGACIÓN BIOGJGAS
+        // ========================================
+        [
+            'header' => 'INVESTIGACIÓN BIOGJGAS',
+            'can' => $permisosMenuBiogjgas,
+        ],
+        [
+            'text' => 'Investigación',
+            'icon' => 'fas fa-fw fa-flask',
+            'can' => $permisosMenuBiogjgas,
+            'submenu' => [
+                [
+                    'text' => 'Panel',
+                    'url' => 'biogjgas/admin',
+                    'icon' => 'fas fa-fw fa-tachometer-alt',
+                    'can' => $permisoVerBiogjgasAdmin,
+                ],
+                [
+                    'text' => 'Semilleros',
+                    'url' => 'biogjgas/admin/semilleros',
+                    'icon' => 'fas fa-fw fa-seedling',
+                    'can' => $permisoGestionarSemilleroBiogjgas,
+                ],
+                [
+                    'text' => 'Banners',
+                    'url' => 'biogjgas/admin/banners',
+                    'icon' => 'fas fa-fw fa-images',
+                    'can' => $permisoGestionarBannerBiogjgas,
+                ],
+                [
+                    'text' => 'Presentación',
+                    'url' => 'biogjgas/admin/presentacion',
+                    'icon' => 'fas fa-fw fa-building',
+                    'can' => $permisoGestionarPresentacionBiogjgas,
+                ],
+                [
+                    'text' => 'Revista Rupícola',
+                    'url' => 'biogjgas/admin/revista',
+                    'icon' => 'fas fa-fw fa-book-open',
+                    'can' => $permisoGestionarRevistaBiogjgas,
+                ],
+                [
+                    'text' => 'Boletines',
+                    'url' => 'biogjgas/admin/boletin',
+                    'icon' => 'fas fa-fw fa-newspaper',
+                    'can' => $permisoGestionarBoletinBiogjgas,
+                ],
+                [
+                    'text' => 'Podcast',
+                    'url' => 'biogjgas/admin/podcast',
+                    'icon' => 'fas fa-fw fa-podcast',
+                    'can' => $permisoGestionarPodcastBiogjgas,
+                ],
+                [
+                    'text' => 'Convocatorias',
+                    'url' => 'biogjgas/admin/convocatoria',
+                    'icon' => 'fas fa-fw fa-bullhorn',
+                    'can' => $permisoGestionarConvocatoriaBiogjgas,
+                ],
+                [
+                    'text' => 'Actividades',
+                    'url' => 'biogjgas/admin/actividad',
+                    'icon' => 'fas fa-fw fa-calendar-alt',
+                    'can' => $permisoGestionarActividadBiogjgas,
+                ],
+                [
+                    'text' => 'Líneas de investigación',
+                    'url' => 'biogjgas/admin/linea',
+                    'icon' => 'fas fa-fw fa-project-diagram',
+                    'can' => $permisoGestionarSemilleroBiogjgas,
+                ],
+                [
+                    'text' => 'Integrantes',
+                    'url' => 'biogjgas/admin/integrante',
+                    'icon' => 'fas fa-fw fa-users',
+                    'can' => $permisoGestionarSemilleroBiogjgas,
+                ],
+                [
+                    'text' => 'Proyectos',
+                    'url' => 'biogjgas/admin/proyecto',
+                    'icon' => 'fas fa-fw fa-tasks',
+                    'can' => $permisoGestionarSemilleroBiogjgas,
+                ],
+                [
+                    'text' => 'Ver portal público',
+                    'url' => 'investigacion',
+                    'icon' => 'fas fa-fw fa-globe',
+                    'target' => '_blank',
+                    'can' => $permisoVerBiogjgasAdmin,
                 ],
             ],
         ],

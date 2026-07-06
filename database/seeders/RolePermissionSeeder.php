@@ -40,6 +40,9 @@ class RolePermissionSeeder extends Seeder
             'aprendiz' => Role::firstOrCreate(['name' => 'APRENDIZ']),
             'aspirante' => Role::firstOrCreate(['name' => 'ASPIRANTE']),
             'proveedor' => Role::firstOrCreate(['name' => 'PROVEEDOR']),
+            'administrador_biogjgas' => Role::firstOrCreate(['name' => 'ADMINISTRADOR BIOGJGAS']),
+            'editor_biogjgas' => Role::firstOrCreate(['name' => 'EDITOR BIOGJGAS']),
+            'publicador_biogjgas' => Role::firstOrCreate(['name' => 'PUBLICADOR BIOGJGAS']),
         ];
     }
 
@@ -61,6 +64,7 @@ class RolePermissionSeeder extends Seeder
             $this->getPermisosResultadosAprendizaje(),
             $this->getPermisosCompetencias(),
             $this->getPermisosComplementarios(),
+            $this->getPermisosBiogjgas(),
             $this->getPermisosControlSeguimiento(),
             $this->getPermisosGenerales(),
             $this->getPermisosGuiasAprendizaje()
@@ -99,6 +103,11 @@ class RolePermissionSeeder extends Seeder
 
         // PROVEEDOR
         $roles['proveedor']->syncPermissions($this->getPermisosVisitante());
+
+        // BIOGJGAS (roles dedicados del módulo de investigación)
+        $roles['administrador_biogjgas']->syncPermissions($this->getPermisosAdministradorBiogjgas());
+        $roles['editor_biogjgas']->syncPermissions($this->getPermisosEditorBiogjgas());
+        $roles['publicador_biogjgas']->syncPermissions($this->getPermisosPublicadorBiogjgas());
     }
 
     // ==========================================
@@ -441,6 +450,62 @@ class RolePermissionSeeder extends Seeder
             self::PERMISO_VER_PROGRAMA_COMPLEMENTARIO,
             'CREAR PROGRAMA COMPLEMENTARIO',
             'ELIMINAR ASPIRANTE COMPLEMENTARIO',
+        ];
+    }
+
+    /**
+     * Permisos del módulo BIOGJGAS (Investigación / Semilleros)
+     */
+    private function getPermisosBiogjgas(): array
+    {
+        return [
+            'VER BIOGJGAS ADMIN',
+            'GESTIONAR SEMILLERO BIOGJGAS',
+            'GESTIONAR BANNER BIOGJGAS',
+            'GESTIONAR PRESENTACION BIOGJGAS',
+            'GESTIONAR REVISTA BIOGJGAS',
+            'GESTIONAR BOLETIN BIOGJGAS',
+            'GESTIONAR PODCAST BIOGJGAS',
+            'GESTIONAR CONVOCATORIA BIOGJGAS',
+            'GESTIONAR ACTIVIDAD BIOGJGAS',
+            'PUBLICAR CONTENIDO BIOGJGAS',
+        ];
+    }
+
+    /**
+     * Permisos del rol ADMINISTRADOR BIOGJGAS (gestión completa del módulo)
+     */
+    private function getPermisosAdministradorBiogjgas(): array
+    {
+        return $this->getPermisosBiogjgas();
+    }
+
+    /**
+     * Permisos del rol EDITOR BIOGJGAS (ver panel y editar contenido)
+     */
+    private function getPermisosEditorBiogjgas(): array
+    {
+        return [
+            'VER BIOGJGAS ADMIN',
+            'GESTIONAR SEMILLERO BIOGJGAS',
+            'GESTIONAR BANNER BIOGJGAS',
+            'GESTIONAR PRESENTACION BIOGJGAS',
+            'GESTIONAR REVISTA BIOGJGAS',
+            'GESTIONAR BOLETIN BIOGJGAS',
+            'GESTIONAR PODCAST BIOGJGAS',
+            'GESTIONAR CONVOCATORIA BIOGJGAS',
+            'GESTIONAR ACTIVIDAD BIOGJGAS',
+        ];
+    }
+
+    /**
+     * Permisos del rol PUBLICADOR BIOGJGAS (ver panel y publicar contenido)
+     */
+    private function getPermisosPublicadorBiogjgas(): array
+    {
+        return [
+            'VER BIOGJGAS ADMIN',
+            'PUBLICAR CONTENIDO BIOGJGAS',
         ];
     }
 
