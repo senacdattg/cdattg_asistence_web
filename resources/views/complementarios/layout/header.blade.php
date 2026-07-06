@@ -28,6 +28,12 @@
                         <i class="fas fa-graduation-cap me-1"></i> Programas
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark {{ request()->routeIs('biogjgas.*') ? 'font-weight-bold' : '' }}"
+                       href="{{ route('biogjgas.home') }}">
+                        <i class="fas fa-microscope me-1"></i> Investigación
+                    </a>
+                </li>
             </ul>
             <div class="mx-auto"></div>
             <ul class="navbar-nav">
