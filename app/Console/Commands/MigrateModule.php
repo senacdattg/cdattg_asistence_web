@@ -81,7 +81,7 @@ class MigrateModule extends Command
             return 1;
         }
 
-        return $this->migrateSingleModule($module);
+        return $this->migrateSingleBatch($module);
     }
 
     /**
