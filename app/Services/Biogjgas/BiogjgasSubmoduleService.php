@@ -3,6 +3,7 @@
 namespace App\Services\Biogjgas;
 
 use App\Models\Biogjgas\BiogjgasBoletin;
+use App\Models\Biogjgas\BiogjgasPodcast;
 use App\Models\Biogjgas\BiogjgasPresentacion;
 use App\Models\Biogjgas\BiogjgasRevistaEdicion;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -57,7 +58,7 @@ class BiogjgasSubmoduleService
     {
         $query = $this->modelo($modelo)::query();
 
-        if (in_array($modelo, ['revista', 'boletin'], true)) {
+        if (in_array($modelo, ['revista', 'boletin', 'podcast'], true)) {
             $query->orderBy('orden')->orderByDesc('created_at');
         } else {
             $query->orderBy('orden')->orderByDesc('created_at');
@@ -113,6 +114,17 @@ class BiogjgasSubmoduleService
                 'issn' => $data['issn'] ?? null,
                 'articulos' => $this->articulosDesdeTexto($data['articulos_texto'] ?? null),
                 'fecha_publicacion' => $data['fecha_publicacion'] ?? null,
+                'orden' => (int) ($data['orden'] ?? 0),
+                'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
+            ],
+            'podcast' => [
+                'titulo' => $data['titulo'],
+                'descripcion' => $data['descripcion'] ?? null,
+                'audio_url' => $data['audio_url'] ?? null,
+                'duracion' => $data['duracion'] ?? null,
+                'invitados' => $data['invitados'] ?? null,
+                'portada_path' => $data['portada_path'] ?? null,
+                'fecha' => $data['fecha'] ?? null,
                 'orden' => (int) ($data['orden'] ?? 0),
                 'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
             ],
@@ -181,6 +193,7 @@ class BiogjgasSubmoduleService
             'presentacion' => BiogjgasPresentacion::class,
             'revista' => BiogjgasRevistaEdicion::class,
             'boletin' => BiogjgasBoletin::class,
+            'podcast' => BiogjgasPodcast::class,
             default => throw new \InvalidArgumentException("Modelo BIOGJGAS no soportado: {$modelo}"),
         };
     }

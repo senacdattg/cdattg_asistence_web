@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Admin\PodcastAdminController;
 use App\Http\Controllers\Biogjgas\Admin\BoletinAdminController;
 use App\Http\Controllers\Biogjgas\Admin\RevistaAdminController;
 <?php
@@ -18,4 +19,5 @@ Route::prefix('biogjgas/admin')
         Route::put('presentacion', [PresentacionAdminController::class, 'update'])->name('presentacion.update');
         Route::resource('revista', RevistaAdminController::class)->except(['show']);
         Route::resource('boletin', BoletinAdminController::class)->except(['show']);
+        Route::resource('podcast', PodcastAdminController::class)->except(['show']);
     });

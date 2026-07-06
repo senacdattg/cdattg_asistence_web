@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Public\PodcastController;
 use App\Http\Controllers\Biogjgas\Public\BoletinController;
 use App\Http\Controllers\Biogjgas\Public\RevistaController;
 <?php
@@ -23,5 +24,10 @@ Route::prefix('investigacion')
         Route::prefix('semilleros')->name('semilleros.')->group(function () {
             Route::get('/', [SemilleroController::class, 'index'])->name('index');
             Route::get('/{semillero}', [SemilleroController::class, 'show'])->name('show');
+                Route::prefix('podcast')->name('podcast.')->group(function () {
+            Route::get('/', [PodcastController::class, 'index'])->name('index');
+            Route::get('/{podcast}', [PodcastController::class, 'show'])->name('show');
         });
+
+    });
     });
