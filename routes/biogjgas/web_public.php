@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Public\BoletinController;
 use App\Http\Controllers\Biogjgas\Public\RevistaController;
 <?php
 
@@ -13,6 +14,11 @@ Route::prefix('investigacion')
         Route::get('/presentacion', [PresentacionController::class, 'show'])->name('presentacion.show');
         Route::get('/revista', [RevistaController::class, 'index'])->name('revista.index');
         Route::get('/revista/{edicion}', [RevistaController::class, 'show'])->name('revista.show');
+
+        Route::prefix('boletines')->name('boletines.')->group(function () {
+            Route::get('/', [BoletinController::class, 'index'])->name('index');
+            Route::get('/{boletin}', [BoletinController::class, 'show'])->name('show');
+        });
 
         Route::prefix('semilleros')->name('semilleros.')->group(function () {
             Route::get('/', [SemilleroController::class, 'index'])->name('index');

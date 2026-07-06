@@ -4,6 +4,7 @@
             @foreach ([
                 ['icon' => 'fa-building', 'titulo' => 'Presentación', 'texto' => 'Misión, visión y equipo institucional', 'url' => route('biogjgas.presentacion.show')],
                 ['icon' => 'fa-book-open', 'titulo' => 'Revista Rupícola', 'texto' => 'Ediciones y artículos científicos', 'url' => route('biogjgas.revista.index')],
+                ['icon' => 'fa-newspaper', 'titulo' => 'Boletines', 'texto' => 'Boletines divulgativos', 'url' => route('biogjgas.boletines.index')],
             ] as $modulo)
                 <div class="col-md-6 col-lg-4 mb-3">
                     <a href="{{ $modulo['url'] }}" class="text-decoration-none text-dark">

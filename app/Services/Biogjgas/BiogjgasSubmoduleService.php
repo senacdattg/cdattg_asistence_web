@@ -2,6 +2,7 @@
 
 namespace App\Services\Biogjgas;
 
+use App\Models\Biogjgas\BiogjgasBoletin;
 use App\Models\Biogjgas\BiogjgasPresentacion;
 use App\Models\Biogjgas\BiogjgasRevistaEdicion;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -35,6 +36,16 @@ class BiogjgasSubmoduleService
         return BiogjgasRevistaEdicion::query()->publicados()->where('slug', $slug)->firstOrFail();
     }
 
+    public function boletinesPublicados(): Collection
+    {
+        return BiogjgasBoletin::query()->publicados()->orderByDesc('fecha')->orderBy('orden')->get();
+    }
+
+    public function boletinPublicado(int $id): BiogjgasBoletin
+    {
+        return BiogjgasBoletin::query()->publicados()->findOrFail($id);
+    }
+
     public function paginar(string $modelo, int $perPage = 15): LengthAwarePaginator
     {
         return $this->modelo($modelo)::query()
@@ -46,7 +57,7 @@ class BiogjgasSubmoduleService
     {
         $query = $this->modelo($modelo)::query();
 
-        if (in_array($modelo, ['revista'], true)) {
+        if (in_array($modelo, ['revista', 'boletin'], true)) {
             $query->orderBy('orden')->orderByDesc('created_at');
         } else {
             $query->orderBy('orden')->orderByDesc('created_at');
@@ -105,6 +116,17 @@ class BiogjgasSubmoduleService
                 'orden' => (int) ($data['orden'] ?? 0),
                 'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
             ],
+            'boletin' => [
+                'titulo' => $data['titulo'],
+                'numero' => $data['numero'] ?? null,
+                'fecha' => $data['fecha'] ?? null,
+                'resumen' => $data['resumen'] ?? null,
+                'pdf_path' => $data['pdf_path'] ?? null,
+                'portada_path' => $data['portada_path'] ?? null,
+                'tematica' => $data['tematica'] ?? null,
+                'orden' => (int) ($data['orden'] ?? 0),
+                'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
+            ],
             default => $data,
         };
 
@@ -158,6 +180,7 @@ class BiogjgasSubmoduleService
         return match ($modelo) {
             'presentacion' => BiogjgasPresentacion::class,
             'revista' => BiogjgasRevistaEdicion::class,
+            'boletin' => BiogjgasBoletin::class,
             default => throw new \InvalidArgumentException("Modelo BIOGJGAS no soportado: {$modelo}"),
         };
     }
