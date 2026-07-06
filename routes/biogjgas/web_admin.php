@@ -1,3 +1,4 @@
+use App\Http\Controllers\Biogjgas\Admin\RevistaAdminController;
 <?php
 
 use App\Http\Controllers\Biogjgas\Admin\BannerAdminController;
@@ -14,4 +15,5 @@ Route::prefix('biogjgas/admin')
         Route::resource('banners', BannerAdminController::class)->except(['show']);
         Route::get('presentacion', [PresentacionAdminController::class, 'edit'])->name('presentacion.edit');
         Route::put('presentacion', [PresentacionAdminController::class, 'update'])->name('presentacion.update');
+        Route::resource('revista', RevistaAdminController::class)->except(['show']);
     });

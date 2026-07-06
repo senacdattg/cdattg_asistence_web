@@ -3,9 +3,11 @@
 namespace App\Services\Biogjgas;
 
 use App\Models\Biogjgas\BiogjgasPresentacion;
+use App\Models\Biogjgas\BiogjgasRevistaEdicion;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class BiogjgasSubmoduleService
 {
@@ -19,6 +21,20 @@ class BiogjgasSubmoduleService
         return BiogjgasPresentacion::query()->firstOrCreate([]);
     }
 
+    public function revistaPublicada(): Collection
+    {
+        return BiogjgasRevistaEdicion::query()
+            ->publicados()
+            ->orderByDesc('anio')
+            ->orderByDesc('numero')
+            ->get();
+    }
+
+    public function revistaEdicionPorSlug(string $slug): BiogjgasRevistaEdicion
+    {
+        return BiogjgasRevistaEdicion::query()->publicados()->where('slug', $slug)->firstOrFail();
+    }
+
     public function paginar(string $modelo, int $perPage = 15): LengthAwarePaginator
     {
         return $this->modelo($modelo)::query()
@@ -28,7 +44,15 @@ class BiogjgasSubmoduleService
 
     public function listarOrdenado(string $modelo): Collection
     {
-        return $this->modelo($modelo)::query()->orderBy('orden')->orderByDesc('created_at')->get();
+        $query = $this->modelo($modelo)::query();
+
+        if (in_array($modelo, ['revista'], true)) {
+            $query->orderBy('orden')->orderByDesc('created_at');
+        } else {
+            $query->orderBy('orden')->orderByDesc('created_at');
+        }
+
+        return $query->get();
     }
 
     public function guardar(string $modelo, array $data, ?int $userId = null, ?Model $existente = null): Model
@@ -67,6 +91,20 @@ class BiogjgasSubmoduleService
                 'equipo' => $this->equipoDesdeTexto($data['equipo_texto'] ?? null),
                 'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
             ],
+            'revista' => [
+                'slug' => Str::slug($data['slug'] ?? $data['titulo'].'-'.$data['anio']),
+                'titulo' => $data['titulo'],
+                'volumen' => $data['volumen'] ?? null,
+                'numero' => $data['numero'] ?? null,
+                'anio' => (int) $data['anio'],
+                'portada_path' => $data['portada_path'] ?? null,
+                'editorial' => $data['editorial'] ?? null,
+                'issn' => $data['issn'] ?? null,
+                'articulos' => $this->articulosDesdeTexto($data['articulos_texto'] ?? null),
+                'fecha_publicacion' => $data['fecha_publicacion'] ?? null,
+                'orden' => (int) ($data['orden'] ?? 0),
+                'estado_publicacion' => $data['estado_publicacion'] ?? 'borrador',
+            ],
             default => $data,
         };
 
@@ -94,10 +132,32 @@ class BiogjgasSubmoduleService
         }, preg_split('/\r\n|\r|\n/', $texto))));
     }
 
+    private function articulosDesdeTexto(?string $texto): ?array
+    {
+        if ($texto === null || trim($texto) === '') {
+            return null;
+        }
+
+        return array_values(array_filter(array_map(function (string $linea) {
+            $partes = array_map('trim', explode('|', $linea, 3));
+
+            if ($partes[0] === '') {
+                return null;
+            }
+
+            return [
+                'titulo' => $partes[0],
+                'autores' => $partes[1] ?? null,
+                'resumen' => $partes[2] ?? null,
+            ];
+        }, preg_split('/\r\n|\r|\n/', $texto))));
+    }
+
     private function modelo(string $modelo): string
     {
         return match ($modelo) {
             'presentacion' => BiogjgasPresentacion::class,
+            'revista' => BiogjgasRevistaEdicion::class,
             default => throw new \InvalidArgumentException("Modelo BIOGJGAS no soportado: {$modelo}"),
         };
     }
