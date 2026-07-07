@@ -1,18 +1,19 @@
-use App\Http\Controllers\Biogjgas\Admin\IntegranteAdminController;
-use App\Http\Controllers\Biogjgas\Admin\LineaAdminController;
-use App\Http\Controllers\Biogjgas\Admin\ProyectoAdminController;
-use App\Http\Controllers\Biogjgas\Admin\ActividadAdminController;
-use App\Http\Controllers\Biogjgas\Admin\ConvocatoriaAdminController;
-use App\Http\Controllers\Biogjgas\Admin\PodcastAdminController;
-use App\Http\Controllers\Biogjgas\Admin\BoletinAdminController;
-use App\Http\Controllers\Biogjgas\Admin\RevistaAdminController;
 <?php
 
+use App\Http\Controllers\Biogjgas\Admin\ActividadAdminController;
 use App\Http\Controllers\Biogjgas\Admin\BannerAdminController;
+use App\Http\Controllers\Biogjgas\Admin\BoletinAdminController;
+use App\Http\Controllers\Biogjgas\Admin\ConvocatoriaAdminController;
 use App\Http\Controllers\Biogjgas\Admin\DashboardController;
+use App\Http\Controllers\Biogjgas\Admin\IntegranteAdminController;
+use App\Http\Controllers\Biogjgas\Admin\LineaAdminController;
+use App\Http\Controllers\Biogjgas\Admin\PodcastAdminController;
 use App\Http\Controllers\Biogjgas\Admin\PresentacionAdminController;
+use App\Http\Controllers\Biogjgas\Admin\ProyectoAdminController;
+use App\Http\Controllers\Biogjgas\Admin\RevistaAdminController;
 use App\Http\Controllers\Biogjgas\Admin\SemilleroAdminController;
 use Illuminate\Support\Facades\Route;
+
 Route::prefix('biogjgas/admin')
     ->name('biogjgas.admin.')
     ->group(function () {
