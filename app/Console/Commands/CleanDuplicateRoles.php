@@ -2,12 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\User;
-use App\Models\Persona;
-use App\Models\Instructor;
 use App\Models\Aprendiz;
-use Spatie\Permission\Models\Role;
+use App\Models\Instructor;
+use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
 class CleanDuplicateRoles extends Command
@@ -85,8 +83,8 @@ class CleanDuplicateRoles extends Command
                 ->pluck('roles.name')
                 ->toArray();
 
-            $nombreCompleto = trim($user->primer_nombre . ' ' . $user->segundo_nombre . ' ' . $user->primer_apellido . ' ' . $user->segundo_apellido);
-            $this->line("   - {$nombreCompleto} ({$user->numero_documento}): " . implode(', ', $roles));
+            $nombreCompleto = trim($user->primer_nombre.' '.$user->segundo_nombre.' '.$user->primer_apellido.' '.$user->segundo_apellido);
+            $this->line("   - {$nombreCompleto} ({$user->numero_documento}): ".implode(', ', $roles));
         }
         $this->newLine();
     }
@@ -104,16 +102,15 @@ class CleanDuplicateRoles extends Command
         foreach ($instructores as $instructor) {
             if ($instructor->persona && $instructor->persona->user) {
                 $user = $instructor->persona->user;
-                $currentRoles = $user->getRoleNames()->toArray();
 
-                if (!$dryRun) {
+                if (! $dryRun) {
                     // Sincronizar solo el rol de INSTRUCTOR
                     $user->syncRoles(['INSTRUCTOR']);
                 }
 
                 $cleaned++;
-                $this->line("   ✅ {$instructor->persona->nombre_completo}: " .
-                    ($dryRun ? "Se asignaría solo INSTRUCTOR" : "Solo rol INSTRUCTOR"));
+                $this->line("   ✅ {$instructor->persona->nombre_completo}: ".
+                    ($dryRun ? 'Se asignaría solo INSTRUCTOR' : 'Solo rol INSTRUCTOR'));
             }
         }
 
@@ -135,14 +132,14 @@ class CleanDuplicateRoles extends Command
             if ($aprendiz->persona && $aprendiz->persona->user) {
                 $user = $aprendiz->persona->user;
 
-                if (!$dryRun) {
+                if (! $dryRun) {
                     // Sincronizar solo el rol de APRENDIZ
                     $user->syncRoles(['APRENDIZ']);
                 }
 
                 $cleaned++;
-                $this->line("   ✅ {$aprendiz->persona->nombre_completo}: " .
-                    ($dryRun ? "Se asignaría solo APRENDIZ" : "Solo rol APRENDIZ"));
+                $this->line("   ✅ {$aprendiz->persona->nombre_completo}: ".
+                    ($dryRun ? 'Se asignaría solo APRENDIZ' : 'Solo rol APRENDIZ'));
             }
         }
 
@@ -168,14 +165,14 @@ class CleanDuplicateRoles extends Command
 
         foreach ($orphanedUsers as $user) {
             if ($user->persona) {
-                if (!$dryRun) {
+                if (! $dryRun) {
                     // Remover todos los roles específicos, mantener solo VISITANTE si existe
                     $user->syncRoles(['VISITANTE']);
                 }
 
                 $cleaned++;
-                $this->line("   ✅ {$user->persona->nombre_completo}: " .
-                    ($dryRun ? "Se asignaría solo VISITANTE" : "Solo rol VISITANTE"));
+                $this->line("   ✅ {$user->persona->nombre_completo}: ".
+                    ($dryRun ? 'Se asignaría solo VISITANTE' : 'Solo rol VISITANTE'));
             }
         }
 

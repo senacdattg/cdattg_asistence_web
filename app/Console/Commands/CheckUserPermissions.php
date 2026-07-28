@@ -2,12 +2,33 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\User;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 class CheckUserPermissions extends Command
 {
+    /**
+     * Palabras clave por categoría (orden de evaluación: primera coincidencia gana).
+     *
+     * @var array<string, list<string>>
+     */
+    private const PERMISSION_GROUP_KEYWORDS = [
+        'PARÁMETROS Y TEMAS' => ['PARAMETRO', 'TEMA'],
+        'UBICACIÓN' => ['REGIONAL', 'MUNICIPIO'],
+        'INFRAESTRUCTURA' => ['CENTRO', 'SEDE', 'BLOQUE', 'PISO', 'AMBIENTE'],
+        'INSTRUCTORES' => ['INSTRUCTOR', 'ESPECIALIDAD'],
+        'FICHAS' => ['FICHA'],
+        'PERSONAS' => ['PERSONA'],
+        'INVENTARIO' => [
+            'PRODUCTO', 'CATALOGO', 'CARRITO', 'CATEGORIA', 'MARCA', 'PROVEEDOR',
+            'CONTRATO', 'ORDEN', 'PRESTAMO', 'DEVOLUCION', 'ENTRADA', 'SALIDA', 'INVENTARIO',
+        ],
+        'APRENDICES' => ['APRENDIZ'],
+        'PROGRAMAS' => ['PROGRAMA'],
+        'COMPETENCIAS Y RAP' => ['COMPETENCIA', 'RAP', 'RESULTADO'],
+    ];
+
     /**
      * The name and signature of the console command.
      *
@@ -44,8 +65,9 @@ class CheckUserPermissions extends Command
     {
         $user = User::with(['persona', 'roles', 'permissions'])->find($userId);
 
-        if (!$user) {
+        if (! $user) {
             $this->error("❌ Usuario con ID {$userId} no encontrado.");
+
             return;
         }
 
@@ -55,18 +77,19 @@ class CheckUserPermissions extends Command
         // Mostrar roles
         $roles = $user->roles->pluck('name')->toArray();
         if (empty($roles)) {
-            $this->warn("⚠️  Sin roles asignados");
+            $this->warn('⚠️  Sin roles asignados');
         } else {
-            $this->info("🎭 Roles asignados: " . implode(', ', $roles));
+            $this->info('🎭 Roles asignados: '.implode(', ', $roles));
         }
 
         // Obtener todos los permisos (directos y de roles)
         $allPermissions = $user->getAllPermissions();
 
-        $this->info("✅ Permisos totales: " . $allPermissions->count());
+        $this->info('✅ Permisos totales: '.$allPermissions->count());
 
         if ($allPermissions->isEmpty()) {
-            $this->warn("⚠️  No tiene permisos asignados");
+            $this->warn('⚠️  No tiene permisos asignados');
+
             return;
         }
 
@@ -87,7 +110,8 @@ class CheckUserPermissions extends Command
         $users = User::with(['persona', 'roles'])->get();
 
         if ($users->isEmpty()) {
-            $this->warn("⚠️  No hay usuarios registrados.");
+            $this->warn('⚠️  No hay usuarios registrados.');
+
             return;
         }
 
@@ -113,68 +137,57 @@ class CheckUserPermissions extends Command
         );
 
         $this->newLine();
-        $this->info("💡 Usa: php artisan user:check-permissions {userId} para ver los permisos detallados de un usuario");
+        $this->info('💡 Usa: php artisan user:check-permissions {userId} para ver los permisos detallados de un usuario');
     }
 
     private function groupPermissions($permissions)
     {
-        $groups = [
-            'PARÁMETROS Y TEMAS' => collect(),
-            'UBICACIÓN' => collect(),
-            'INFRAESTRUCTURA' => collect(),
-            'INSTRUCTORES' => collect(),
-            'FICHAS' => collect(),
-            'PERSONAS' => collect(),
-            'INVENTARIO' => collect(),
-            'APRENDICES' => collect(),
-            'PROGRAMAS' => collect(),
-            'COMPETENCIAS Y RAP' => collect(),
-            'OTROS' => collect(),
-        ];
+        $groups = $this->emptyPermissionGroups();
 
         foreach ($permissions as $permission) {
-            $name = strtoupper($permission->name);
+            $category = $this->resolvePermissionCategory(strtoupper($permission->name));
+            $groups[$category]->push($permission);
+        }
 
-            if (str_contains($name, 'PARAMETRO') || str_contains($name, 'TEMA')) {
-                $groups['PARÁMETROS Y TEMAS']->push($permission);
-            } elseif (str_contains($name, 'REGIONAL') || str_contains($name, 'MUNICIPIO')) {
-                $groups['UBICACIÓN']->push($permission);
-            } elseif (str_contains($name, 'CENTRO') || str_contains($name, 'SEDE') ||
-                      str_contains($name, 'BLOQUE') || str_contains($name, 'PISO') ||
-                      str_contains($name, 'AMBIENTE')) {
-                $groups['INFRAESTRUCTURA']->push($permission);
-            } elseif (str_contains($name, 'INSTRUCTOR') || str_contains($name, 'ESPECIALIDAD')) {
-                $groups['INSTRUCTORES']->push($permission);
-            } elseif (str_contains($name, 'FICHA')) {
-                $groups['FICHAS']->push($permission);
-            } elseif (str_contains($name, 'PERSONA')) {
-                $groups['PERSONAS']->push($permission);
-            } elseif (str_contains($name, 'PRODUCTO') || str_contains($name, 'CATALOGO') ||
-                      str_contains($name, 'CARRITO') || str_contains($name, 'CATEGORIA') ||
-                      str_contains($name, 'MARCA') || str_contains($name, 'PROVEEDOR') ||
-                      str_contains($name, 'CONTRATO') || str_contains($name, 'ORDEN') ||
-                      str_contains($name, 'PRESTAMO') || str_contains($name, 'DEVOLUCION') ||
-                      str_contains($name, 'ENTRADA') || str_contains($name, 'SALIDA') ||
-                      str_contains($name, 'INVENTARIO')) {
-                $groups['INVENTARIO']->push($permission);
-            } elseif (str_contains($name, 'APRENDIZ')) {
-                $groups['APRENDICES']->push($permission);
-            } elseif (str_contains($name, 'PROGRAMA') || $name === 'VER PROGRAMAS DE FORMACION' || 
-                      $name === 'VER PROGRAMA DE FORMACION' || $name === 'CREAR PROGRAMA DE FORMACION' || 
-                      $name === 'EDITAR PROGRAMA DE FORMACION' || $name === 'ELIMINAR PROGRAMA DE FORMACION' || 
-                      $name === 'CAMBIAR ESTADO PROGRAMA DE FORMACION') {
-                $groups['PROGRAMAS']->push($permission);
-            } elseif (str_contains($name, 'COMPETENCIA') || str_contains($name, 'RAP') ||
-                      str_contains($name, 'RESULTADO')) {
-                $groups['COMPETENCIAS Y RAP']->push($permission);
-            } else {
-                $groups['OTROS']->push($permission);
+        return collect($groups)->filter(fn ($group) => $group->isNotEmpty());
+    }
+
+    /**
+     * @return array<string, Collection<int, mixed>>
+     */
+    private function emptyPermissionGroups(): array
+    {
+        $categories = array_keys(self::PERMISSION_GROUP_KEYWORDS);
+        $categories[] = 'OTROS';
+
+        return array_combine(
+            $categories,
+            array_map(fn () => collect(), $categories)
+        );
+    }
+
+    private function resolvePermissionCategory(string $name): string
+    {
+        foreach (self::PERMISSION_GROUP_KEYWORDS as $category => $keywords) {
+            if ($this->nameMatchesAnyKeyword($name, $keywords)) {
+                return $category;
             }
         }
 
-        // Filtrar grupos vacíos
-        return collect($groups)->filter(function ($group) {
-            return $group->isNotEmpty();
-        });
+        return 'OTROS';
+    }
+
+    /**
+     * @param  list<string>  $keywords
+     */
+    private function nameMatchesAnyKeyword(string $name, array $keywords): bool
+    {
+        foreach ($keywords as $keyword) {
+            if (str_contains($name, $keyword)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -56,6 +56,10 @@
         }
     },
     "scripts": {
+        "dev": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd\" \"php artisan serve\" \"npm run dev\" --names=server,vite"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -81,8 +85,10 @@
         "sort-packages": true,
         "platform-check": false,
         "platform": {
+            "php": "8.4.15",
             "ext-pcntl": "1.0",
-            "ext-posix": "1.0"
+            "ext-posix": "1.0",
+            "ext-zip": "1.0"
         },
         "allow-plugins": {
             "pestphp/pest-plugin": true,

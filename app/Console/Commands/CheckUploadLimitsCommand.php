@@ -33,6 +33,7 @@ class CheckUploadLimitsCommand extends Command
 
         if ($this->option('json')) {
             $this->line(json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
             return $config['is_safe'] ? self::SUCCESS : self::FAILURE;
         }
 
@@ -45,7 +46,7 @@ class CheckUploadLimitsCommand extends Command
 
         foreach ($config['recommended'] as $param => $recommendedValue) {
             $currentValue = $config['current'][$param];
-            $status = $this->getStatusForParam($param, $currentValue, $recommendedValue, $config['issues']);
+            $status = $this->getStatusForParam($param, $config['issues']);
 
             $rows[] = [
                 $param,
@@ -75,7 +76,7 @@ class CheckUploadLimitsCommand extends Command
         $this->newLine();
 
         // Mostrar problemas si existen
-        if (!empty($config['issues'])) {
+        if (! empty($config['issues'])) {
             $this->error('❌ Se encontraron problemas de configuración:');
             $this->newLine();
 
@@ -100,7 +101,7 @@ class CheckUploadLimitsCommand extends Command
     /**
      * Obtiene el estado visual de un parámetro.
      */
-    private function getStatusForParam(string $param, string $current, string $recommended, array $issues): string
+    private function getStatusForParam(string $param, array $issues): string
     {
         foreach ($issues as $issue) {
             if (str_contains($issue, $param)) {
@@ -111,4 +112,3 @@ class CheckUploadLimitsCommand extends Command
         return '✅ OK';
     }
 }
-

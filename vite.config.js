@@ -1,10 +1,46 @@
-import { defineConfig } from 'vite';
+import dns from 'node:dns';
+import fs from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { defineConfig, loadEnv } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
-export default defineConfig({
-    plugins: [
-        laravel({
-            input: {
+dns.setDefaultResultOrder('ipv4first');
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+/** Evita 404 en / y explica que la app Laravel no es el puerto 5173. */
+function devServerWelcome(appUrl) {
+    return {
+        name: 'dev-server-welcome',
+        configureServer(server) {
+            server.middlewares.use((req, res, next) => {
+                const pathname = req.url?.split('?')[0] ?? '';
+                if (pathname !== '/' && pathname !== '/index.html') {
+                    return next();
+                }
+                const htmlPath = join(__dirname, 'node_modules/laravel-vite-plugin/dist/dev-server-index.html');
+                let html = fs.readFileSync(htmlPath, 'utf8');
+                html = html.replace(/\{\{ APP_URL \}\}/g, appUrl);
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                res.end(html);
+            });
+        },
+    };
+}
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+    const appUrl = env.APP_URL || 'http://127.0.0.1:8000';
+    const useHttpsApp = appUrl.startsWith('https://');
+
+    return {
+        plugins: [
+            devServerWelcome(appUrl),
+            laravel({
+                detectTls: useHttpsApp ? null : false,
+                input: {
                 // CSS files
                 'app_css': 'resources/css/app.css',
                 'style': 'resources/css/style.css',
@@ -131,7 +167,7 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '0.0.0.0',  // Escucha en todas las interfaces de red
+        host: '127.0.0.1',
         port: 5173,
         strictPort: true,
         watch: {
@@ -145,7 +181,9 @@ export default defineConfig({
             ],
         },
         hmr: {
-            host: 'localhost',  // Usa localhost para HMR en el navegador
+            host: '127.0.0.1',
+            port: 5173,
         },
     },
+    };
 });

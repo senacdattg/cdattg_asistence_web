@@ -59,29 +59,29 @@ class MigrateModule extends Command
     public function handle(): int
     {
         if ($this->option('list')) {
-            return $this->listModules();
-        }
-
-        if ($this->option('all')) {
+            $exitCode = $this->listModules();
+        } elseif ($this->option('all')) {
             if ($this->option('fresh')) {
                 $this->freshDatabase();
             }
-            return $this->migrateAll();
+            $exitCode = $this->migrateAll();
+        } else {
+            if ($this->option('fresh')) {
+                $this->freshDatabase();
+            }
+
+            $module = $this->argument('module');
+
+            if (! $module) {
+                $this->error('❌ Debes especificar un módulo o usar --all');
+                $this->info('💡 Usa: php artisan migrate:module --list para ver todos los módulos');
+                $exitCode = self::FAILURE;
+            } else {
+                $exitCode = $this->migrateSingleBatch($module);
+            }
         }
 
-        if ($this->option('fresh')) {
-            $this->freshDatabase();
-        }
-
-        $module = $this->argument('module');
-
-        if (!$module) {
-            $this->error('❌ Debes especificar un módulo o usar --all');
-            $this->info('💡 Usa: php artisan migrate:module --list para ver todos los módulos');
-            return 1;
-        }
-
-        return $this->migrateSingleModule($module);
+        return $exitCode;
     }
 
     /**
@@ -92,7 +92,7 @@ class MigrateModule extends Command
         $this->info('📋 Módulos de migración disponibles:');
         $this->newLine();
 
-            foreach ($this->batches as $key => $description) {
+        foreach ($this->batches as $key => $description) {
             $path = database_path("migrations/{$key}");
             $exists = is_dir($path);
             $status = $exists ? '✓' : '✗';
@@ -128,6 +128,7 @@ class MigrateModule extends Command
 
             if ($result !== 0) {
                 $this->error("❌ Error al migrar el batch: {$batch}");
+
                 return 1;
             }
 
@@ -135,6 +136,7 @@ class MigrateModule extends Command
         }
 
         $this->info('✅ Todas las migraciones completadas exitosamente');
+
         return 0;
     }
 
@@ -143,18 +145,19 @@ class MigrateModule extends Command
      */
     protected function migrateSingleBatch(string $batch, bool $showHeader = true): int
     {
-        if (!array_key_exists($batch, $this->batches)) {
+        if (! array_key_exists($batch, $this->batches)) {
             $this->error("❌ El batch '{$batch}' no existe");
             $this->info('💡 Usa: php artisan migrate:batch --list para ver todos los batches');
-            return 1;
+
+            return self::FAILURE;
         }
 
         $path = "database/migrations/{$batch}";
-        $fullPath = base_path($path);
 
-        if (!is_dir($fullPath)) {
+        if (! is_dir(base_path($path))) {
             $this->error("❌ El directorio del módulo no existe: {$path}");
-            return 1;
+
+            return self::FAILURE;
         }
 
         if ($showHeader) {
@@ -163,6 +166,11 @@ class MigrateModule extends Command
             $this->newLine();
         }
 
+        return $this->executeBatchMigration($batch, $path);
+    }
+
+    private function executeBatchMigration(string $batch, string $path): int
+    {
         try {
             $exitCode = Artisan::call('migrate', [
                 '--path' => $path,
@@ -170,20 +178,23 @@ class MigrateModule extends Command
             ]);
 
             $output = Artisan::output();
-            if (!empty(trim($output))) {
+            if (! empty(trim($output))) {
                 $this->line($output);
             }
 
-            if ($exitCode === 0) {
-                $this->info("✓ Batch {$batch} migrado exitosamente");
-                return 0;
-            } else {
+            if ($exitCode !== 0) {
                 $this->error("❌ Error al migrar el batch: {$batch}");
-                return 1;
+
+                return self::FAILURE;
             }
+
+            $this->info("✓ Batch {$batch} migrado exitosamente");
+
+            return self::SUCCESS;
         } catch (\Exception $e) {
             $this->error("❌ Error: {$e->getMessage()}");
-            return 1;
+
+            return self::FAILURE;
         }
     }
 
@@ -204,8 +215,7 @@ class MigrateModule extends Command
             $tables = [];
 
             if ($driver === 'mysql') {
-                $databaseName = DB::getDatabaseName();
-                $tables = DB::select("SHOW TABLES");
+                $tables = DB::select('SHOW TABLES');
                 $tableNames = [];
                 foreach ($tables as $table) {
                     $tableArray = (array) $table;
@@ -213,22 +223,24 @@ class MigrateModule extends Command
                 }
             } elseif ($driver === 'pgsql') {
                 $tables = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
-                $tableNames = array_map(function($table) {
+                $tableNames = array_map(function ($table) {
                     return $table->tablename;
                 }, $tables);
             } elseif ($driver === 'sqlite') {
                 $tables = DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name != 'sqlite_sequence'");
-                $tableNames = array_map(function($table) {
+                $tableNames = array_map(function ($table) {
                     return $table->name;
                 }, $tables);
             } else {
                 $this->warn("⚠️  Driver de base de datos no soportado: {$driver}");
+
                 return;
             }
 
             if (empty($tableNames)) {
                 $this->info('  ℹ No hay tablas para eliminar');
                 Schema::enableForeignKeyConstraints();
+
                 return;
             }
 
@@ -253,4 +265,3 @@ class MigrateModule extends Command
         }
     }
 }
-
