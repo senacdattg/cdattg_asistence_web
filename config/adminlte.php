@@ -20,10 +20,15 @@ $permisoVerPiso = 'VER PISO';
 $permisoVerAmbiente = 'VER AMBIENTE';
 $permisoVerParametro = 'VER PARAMETRO';
 $permisoVerTema = 'VER TEMA';
+$permisoVerRegional = 'VER REGIONAL';
+$permisoVerCentrosFormacion = 'VER CENTROS DE FORMACION';
+$permisoAsignarPermisos = 'ASIGNAR PERMISOS';
 
 // Constantes para íconos duplicados
 $iconoLista = 'fas fa-fw fa-list';
 $iconoAgregar = 'fas fa-fw fa-plus';
+$iconoClipboardCheck = 'fas fa-fw fa-clipboard-check';
+$iconoFileAlt = 'fas fa-fw fa-file-alt';
 
 return [
 
@@ -326,9 +331,11 @@ return [
     'menu' => [
         [
             'text' => 'Conviértete en Instructor SENA',
-            'url' => 'aitg/banco-instructores',
+            'url' => 'aitg/acceso-instructor',
             'icon' => 'fas fa-rocket',
             'topnav_right' => true,
+            // Carga completa (sin wire:navigate) para refrescar el menú lateral AITG.
+            'target' => '_self',
             'can' => 'VER BANCO INSTRUCTOR AITG',
         ],
         // Navbar items:
@@ -512,7 +519,7 @@ return [
         ],
         [
             'text' => 'Competencias y Resultados',
-            'icon' => 'fas fa-fw fa-clipboard-check',
+            'icon' => $iconoClipboardCheck,
             'can' => [$permisoVerCompetencia, $permisoVerResultadoAprendizaje],
             'submenu' => [
                 [
@@ -537,12 +544,12 @@ return [
         ],
         [
             'text' => 'Fichas',
-            'icon' => 'fas fa-fw fa-file-alt',
+            'icon' => $iconoFileAlt,
             'can' => ['VER FICHA CARACTERIZACION', 'VER JORNADA', 'VER FICHAS ASIGNADAS'],
             'submenu' => [
                 [
                     'text' => 'Fichas de Caracterización',
-                    'icon' => 'fas fa-fw fa-file-alt',
+                    'icon' => $iconoFileAlt,
                     'route' => 'fichaCaracterizacion.index',
                     'can' => ['VER FICHA CARACTERIZACION', 'VER FICHAS ASIGNADAS'],
                 ],
@@ -606,7 +613,7 @@ return [
                 ],
                 [
                     'text' => 'Consultar Asistencias',
-                    'icon' => 'fas fa-fw fa-clipboard-check',
+                    'icon' => $iconoClipboardCheck,
                     'can' => ['VER ASISTENCIA'],
                     'route' => 'asistencia.consulta',
                 ],
@@ -618,24 +625,24 @@ return [
         // ========================================
         [
             'header' => 'INFRAESTRUCTURA',
-            'can' => ['VER REGIONAL', 'VER CENTROS DE FORMACION'],
+            'can' => [$permisoVerRegional, $permisoVerCentrosFormacion],
         ],
         [
             'text' => 'Organización Territorial',
             'icon' => 'fas fa-fw fa-map-marked-alt',
-            'can' => ['VER REGIONAL', 'VER CENTROS DE FORMACION'],
+            'can' => [$permisoVerRegional, $permisoVerCentrosFormacion],
             'submenu' => [
                 [
                     'text' => 'Regionales',
                     'url' => 'regional',
                     'icon' => 'fas fa-fw fa-map-marker-alt',
-                    'can' => 'VER REGIONAL',
+                    'can' => $permisoVerRegional,
                 ],
                 [
                     'text' => 'Centros de Formación',
                     'url' => 'centros',
                     'icon' => 'fas fa-fw fa-school',
-                    'can' => 'VER CENTROS DE FORMACION',
+                    'can' => $permisoVerCentrosFormacion,
                 ],
             ],
         ],
@@ -873,19 +880,22 @@ return [
         ],
 
         // ========================================
-        // AITG
+        // AITG (aspirantes: visible tras «Conviértete en Instructor SENA» o con documentos)
         // ========================================
         [
             'header' => 'AITG',
+            'can' => 'ver-menu-aitg',
         ],
         [
             'text' => 'Convocatorias instructores',
             'icon' => 'fas fa-fw fa-bullhorn',
+            'can' => 'ver-menu-aitg',
             'submenu' => [
                 [
                     'text' => 'Ver convocatorias',
                     'url' => 'aitg/convocatorias/publicas',
-                    'icon' => 'fas fa-fw fa-list',
+                    'icon' => $iconoLista,
+                    'can' => 'ver-menu-aitg',
                 ],
                 [
                     'text' => 'Gestión de convocatorias',
@@ -899,7 +909,7 @@ return [
             'text' => 'Banco de Talento',
             'url' => 'aitg/banco-instructores',
             'icon' => 'fas fa-fw fa-id-card',
-            'can' => 'VER BANCO INSTRUCTOR AITG',
+            'can' => 'ver-menu-aitg-banco',
         ],
         [
             'text' => 'Validar solicitudes',
@@ -909,7 +919,7 @@ return [
         ],
         [
             'text' => 'Evaluación y Selección',
-            'icon' => 'fas fa-fw fa-clipboard-check',
+            'icon' => $iconoClipboardCheck,
             'can' => ['VER EVALUACION AITG', 'VER SELECCION AITG'],
             'submenu' => [
                 [
@@ -934,7 +944,7 @@ return [
                 [
                     'text' => 'Ver planes',
                     'url' => 'aitg/planes-contratacion',
-                    'icon' => 'fas fa-fw fa-list',
+                    'icon' => $iconoLista,
                     'can' => 'VER PLAN CONTRATACION',
                 ],
                 [
@@ -953,7 +963,7 @@ return [
                 [
                     'text' => 'Tipos de archivo',
                     'url' => 'aitg/tipos-archivo',
-                    'icon' => 'fas fa-fw fa-file-alt',
+                    'icon' => $iconoFileAlt,
                     'can' => 'VER TIPO ARCHIVO AITG',
                 ],
                 [
@@ -970,12 +980,12 @@ return [
         // ========================================
         [
             'header' => 'CONFIGURACIÓN',
-            'can' => [$permisoVerParametro, $permisoVerTema, 'ASIGNAR PERMISOS'],
+            'can' => [$permisoVerParametro, $permisoVerTema, $permisoAsignarPermisos],
         ],
         [
             'text' => 'Sistema',
             'icon' => 'fas fa-fw fa-cogs',
-            'can' => [$permisoVerParametro, $permisoVerTema, 'ASIGNAR PERMISOS'],
+            'can' => [$permisoVerParametro, $permisoVerTema, $permisoAsignarPermisos],
             'submenu' => [
                 [
                     'text' => 'Configuración General',
@@ -1000,7 +1010,7 @@ return [
                     'text' => 'Permisos',
                     'url' => 'permiso',
                     'icon' => 'fas fa-fw fa-lock',
-                    'can' => 'ASIGNAR PERMISOS',
+                    'can' => $permisoAsignarPermisos,
                 ],
             ],
         ],

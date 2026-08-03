@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Banco de Instructores - AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => 'Banco de Instructores',
         'subtitle' => 'Conviértete en Instructor SENA · Carga tu hoja de vida y documento de identidad',
@@ -18,7 +14,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         @if(session('success'))
@@ -93,16 +89,4 @@
         </div>
     </div>
 </section>
-@endsection
-
-@section('js')
-<script>
-document.querySelectorAll('.aitg-toggle-rechazo').forEach(function (select) {
-    select.addEventListener('change', function () {
-        const wrap = this.closest('.aitg-validacion-form');
-        const motivo = wrap?.querySelector('.aitg-campo-motivo');
-        if (motivo) motivo.style.display = this.value === 'rechazado' ? 'block' : 'none';
-    });
-});
-</script>
 @endsection

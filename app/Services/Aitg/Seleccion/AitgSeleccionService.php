@@ -19,11 +19,13 @@ class AitgSeleccionService
 
     public function convocatoriasParaSeleccion(int $perPage = 15): LengthAwarePaginator
     {
+        $estadosCandidatos = ['evaluacion_aprobada', 'seleccionado', 'suplente', 'rechazado'];
+
         return Convocatoria::query()
             ->with(['competencia', 'regional', 'plan'])
             ->whereIn('estado', ['publicada', 'cerrada', 'finalizada'])
-            ->whereHas('postulaciones', fn ($q) => $q->where('estado', 'evaluacion_aprobada'))
-            ->withCount(['postulaciones as candidatos_count' => fn ($q) => $q->where('estado', 'evaluacion_aprobada')])
+            ->whereHas('postulaciones', fn ($q) => $q->whereIn('estado', $estadosCandidatos)->whereHas('evaluacion'))
+            ->withCount(['postulaciones as candidatos_count' => fn ($q) => $q->whereIn('estado', $estadosCandidatos)->whereHas('evaluacion')])
             ->orderByDesc('updated_at')
             ->paginate($perPage);
     }
@@ -37,7 +39,8 @@ class AitgSeleccionService
                 'evaluacion',
             ])
             ->where('convocatoria_id', $convocatoria->id)
-            ->where('estado', 'evaluacion_aprobada')
+            ->whereIn('estado', ['evaluacion_aprobada', 'seleccionado', 'suplente', 'rechazado'])
+            ->whereHas('evaluacion')
             ->get()
             ->sortBy(
                 fn (PostulacionPlan $p) => (float) ($p->evaluacion?->puntaje_total ?? 0),

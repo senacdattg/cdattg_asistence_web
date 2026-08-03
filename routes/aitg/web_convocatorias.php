@@ -9,28 +9,34 @@ Route::prefix('aitg')->name('aitg.')->group(function () {
         Route::get('/planes-por-competencia', [ConvocatoriaController::class, 'planesPorCompetencia'])
             ->name('planes-por-competencia');
 
-        Route::prefix('publicas')->name('publicas.')->group(function () {
+        Route::prefix('publicas')->name('publicas.')->middleware('aitg.menu')->group(function () {
             Route::get('/', [ConvocatoriaPublicaController::class, 'index'])->name('index');
-            Route::get('/{convocatoria}', [ConvocatoriaPublicaController::class, 'show'])->name('show');
-            Route::delete('/{convocatoria}/postulacion', [ConvocatoriaPublicaController::class, 'destroyPostulacion'])->name('postulacion.destroy');
-            Route::get('/{convocatoria}/postular', [ConvocatoriaPublicaController::class, 'postular'])->name('postular');
-            Route::post('/{convocatoria}/perfil', [ConvocatoriaPublicaController::class, 'seleccionarPerfil'])->name('perfil');
-            Route::post('/{convocatoria}/documentos', [ConvocatoriaPublicaController::class, 'storeDocumentos'])->name('documentos.store');
-            Route::post('/{convocatoria}/documentos-lote', [ConvocatoriaPublicaController::class, 'storeDocumentosLote'])->name('documentos.lote');
-            Route::delete('/{convocatoria}/documentos/{postulacionArchivo}', [ConvocatoriaPublicaController::class, 'destroyDocumento'])->name('documentos.destroy');
-            Route::post('/{convocatoria}/reutilizar', [ConvocatoriaPublicaController::class, 'reutilizar'])->name('reutilizar');
-            Route::post('/{convocatoria}/enviar', [ConvocatoriaPublicaController::class, 'enviarPostulacion'])->name('enviar');
-            Route::get('/{convocatoria}/formalizacion', [ConvocatoriaPublicaController::class, 'formalizacion'])->name('formalizacion');
-            Route::post('/{convocatoria}/formalizacion/enviar', [ConvocatoriaPublicaController::class, 'enviarFormalizacion'])->name('formalizacion.enviar');
+
+            Route::prefix('{convocatoria}')->group(function () {
+                Route::get('/', [ConvocatoriaPublicaController::class, 'show'])->name('show');
+                Route::delete('/postulacion', [ConvocatoriaPublicaController::class, 'destroyPostulacion'])->name('postulacion.destroy');
+                Route::get('/postular', [ConvocatoriaPublicaController::class, 'postular'])->name('postular');
+                Route::post('/perfil', [ConvocatoriaPublicaController::class, 'seleccionarPerfil'])->name('perfil');
+                Route::post('/documentos', [ConvocatoriaPublicaController::class, 'storeDocumentos'])->name('documentos.store');
+                Route::post('/documentos-lote', [ConvocatoriaPublicaController::class, 'storeDocumentosLote'])->name('documentos.lote');
+                Route::delete('/documentos/{postulacionArchivo}', [ConvocatoriaPublicaController::class, 'destroyDocumento'])->name('documentos.destroy');
+                Route::post('/reutilizar', [ConvocatoriaPublicaController::class, 'reutilizar'])->name('reutilizar');
+                Route::post('/enviar', [ConvocatoriaPublicaController::class, 'enviarPostulacion'])->name('enviar');
+                Route::get('/formalizacion', [ConvocatoriaPublicaController::class, 'formalizacion'])->name('formalizacion');
+                Route::post('/formalizacion/enviar', [ConvocatoriaPublicaController::class, 'enviarFormalizacion'])->name('formalizacion.enviar');
+            });
         });
 
         Route::get('/', [ConvocatoriaController::class, 'index'])->name('index');
         Route::get('/create', [ConvocatoriaController::class, 'create'])->name('create');
         Route::post('/', [ConvocatoriaController::class, 'store'])->name('store');
-        Route::get('/{convocatoria}/postulaciones', [ConvocatoriaController::class, 'postulaciones'])->name('postulaciones');
-        Route::get('/{convocatoria}/edit', [ConvocatoriaController::class, 'edit'])->name('edit');
-        Route::put('/{convocatoria}', [ConvocatoriaController::class, 'update'])->name('update');
-        Route::delete('/{convocatoria}', [ConvocatoriaController::class, 'destroy'])->name('destroy');
-        Route::get('/{convocatoria}', [ConvocatoriaController::class, 'show'])->name('show');
+
+        Route::prefix('{convocatoria}')->group(function () {
+            Route::get('/postulaciones', [ConvocatoriaController::class, 'postulaciones'])->name('postulaciones');
+            Route::get('/edit', [ConvocatoriaController::class, 'edit'])->name('edit');
+            Route::put('/', [ConvocatoriaController::class, 'update'])->name('update');
+            Route::delete('/', [ConvocatoriaController::class, 'destroy'])->name('destroy');
+            Route::get('/', [ConvocatoriaController::class, 'show'])->name('show');
+        });
     });
 });

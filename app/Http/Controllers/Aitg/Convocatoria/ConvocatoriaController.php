@@ -9,7 +9,7 @@ use App\Models\Aitg\Convocatoria\Convocatoria;
 use App\Models\CentroFormacion;
 use App\Models\Competencia;
 use App\Models\Regional;
-use App\Services\Aitg\Banco\AitgBancoTalentoService;
+use App\Services\Aitg\Banco\AitgBancoConsultaService;
 use App\Services\Aitg\Convocatoria\AitgConvocatoriaService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class ConvocatoriaController extends Controller
 {
     public function __construct(
         private readonly AitgConvocatoriaService $convocatoriaService,
-        private readonly AitgBancoTalentoService $talentoService
+        private readonly AitgBancoConsultaService $consultaService
     ) {
         $this->middleware('auth');
         $this->middleware('can:VER CONVOCATORIA AITG')->only(['index', 'show', 'postulaciones']);
@@ -105,7 +105,7 @@ class ConvocatoriaController extends Controller
 
         return view('aitg.convocatorias.postulaciones', [
             'convocatoria' => $convocatoria,
-            'postulaciones' => $this->talentoService->listarPostulacionesDeConvocatoria($convocatoria),
+            'postulaciones' => $this->consultaService->listarPostulacionesDeConvocatoria($convocatoria),
         ]);
     }
 

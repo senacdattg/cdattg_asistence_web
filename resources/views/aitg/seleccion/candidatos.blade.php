@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Candidatos - Selección AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => 'Selección — ' . ($convocatoria->titulo ?? ''),
         'subtitle' => ($convocatoria->competencia->nombre ?? '') . ' · ' . ($convocatoria->regional->nombre ?? ''),
@@ -18,7 +14,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         @if(session('success'))
@@ -37,16 +33,32 @@
         @endif
 
         <div class="mb-3 d-flex flex-wrap align-items-center">
-            <a href="{{ route('aitg.seleccion.index') }}" class="btn btn-outline-secondary btn-sm mr-2">
+            <a href="{{ route('aitg.seleccion.index') }}" class="btn btn-outline-secondary btn-sm mr-2 mb-1">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
-            <form method="GET" class="form-inline">
-                <label class="mr-2">Ordenar por puntaje:</label>
-                <select name="orden" class="form-control form-control-sm mr-2" onchange="this.form.submit()">
+            <form method="GET" class="form-inline mr-2 mb-1">
+                <label for="orden_puntaje" class="mr-2">Ordenar por puntaje:</label>
+                <select id="orden_puntaje" name="orden" class="form-control form-control-sm mr-2" onchange="this.form.submit()">
                     <option value="desc" @selected($orden === 'desc')>Mayor a menor</option>
                     <option value="asc" @selected($orden === 'asc')>Menor a mayor</option>
                 </select>
             </form>
+            <div class="btn-group mb-1">
+                <a href="{{ route('aitg.seleccion.reporte.general', $convocatoria) }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-file-alt"></i> Reporte general
+                </a>
+                <a href="{{ route('aitg.seleccion.reporte.general.pdf', $convocatoria) }}" class="btn btn-sm btn-outline-danger" data-aitg-spa-ignore="1">
+                    <i class="fas fa-file-pdf"></i> PDF
+                </a>
+                <a href="{{ route('aitg.seleccion.reporte.general.excel', $convocatoria) }}" class="btn btn-sm btn-outline-success" data-aitg-spa-ignore="1">
+                    <i class="fas fa-file-excel"></i> Excel
+                </a>
+            </div>
+        </div>
+
+        <div class="alert alert-light border mb-3">
+            <strong>Reportes de justificación:</strong>
+            consulte o exporte el motivo detallado de selección / no selección por candidato o el consolidado de la convocatoria.
         </div>
 
         <div class="aitg-card aitg-card--primary mb-3">
@@ -63,6 +75,7 @@
                                 <th>Bonus</th>
                                 <th>Total ranking</th>
                                 <th>Empate</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -71,6 +84,12 @@
                                 @php
                                     $persona = $postulacion->user->persona;
                                     $eval = $postulacion->evaluacion;
+                                    $estadoBadge = match($postulacion->estado) {
+                                        'seleccionado' => 'success',
+                                        'suplente' => 'info',
+                                        'rechazado' => 'secondary',
+                                        default => 'primary',
+                                    };
                                 @endphp
                                 <tr @if($postulacion->en_empate) class="table-warning" @endif>
                                     <td>{{ $index + 1 }}</td>
@@ -87,14 +106,21 @@
                                             —
                                         @endif
                                     </td>
+                                    <td><span class="badge badge-{{ $estadoBadge }}">{{ $postulacion->estado_label }}</span></td>
                                     <td>
                                         @if($postulacion->evaluacion)
                                             <a href="{{ route('aitg.evaluacion.show', $postulacion->evaluacion) }}" class="btn btn-xs btn-outline-primary">Ver evaluación</a>
                                         @endif
+                                        <a href="{{ route('aitg.seleccion.reporte.individual', [$convocatoria, $postulacion]) }}" class="btn btn-xs btn-outline-secondary">
+                                            Reporte
+                                        </a>
+                                        <a href="{{ route('aitg.seleccion.reporte.individual.pdf', [$convocatoria, $postulacion]) }}" class="btn btn-xs btn-outline-danger" data-aitg-spa-ignore="1">
+                                            PDF
+                                        </a>
                                     </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="9" class="text-center text-muted">No hay candidatos con evaluación aprobada.</td></tr>
+                                <tr><td colspan="10" class="text-center text-muted">No hay candidatos con evaluación para esta convocatoria.</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -102,7 +128,10 @@
             </div>
         </div>
 
-        @if($convocatoria->estado !== 'finalizada' && $candidatos->isNotEmpty())
+        @php
+            $candidatosPendientes = $candidatos->where('estado', 'evaluacion_aprobada');
+        @endphp
+        @if($convocatoria->estado !== 'finalizada' && $candidatosPendientes->isNotEmpty())
             <div class="aitg-card aitg-card--primary">
                 <div class="aitg-card__header"><h3 class="h6 mb-0">Confirmar selección</h3></div>
                 <div class="aitg-card__body">
@@ -111,10 +140,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Instructor ganador <span class="text-danger">*</span></label>
-                                    <select name="postulacion_ganador_id" class="form-control" required>
+                                    <label for="postulacion_ganador_id">Instructor ganador <span class="text-danger">*</span></label>
+                                    <select id="postulacion_ganador_id" name="postulacion_ganador_id" class="form-control" required>
                                         <option value="">Seleccione...</option>
-                                        @foreach($candidatos as $postulacion)
+                                        @foreach($candidatosPendientes as $postulacion)
                                             <option value="{{ $postulacion->id }}">
                                                 {{ $postulacion->user->persona->numero_documento ?? $postulacion->id }} —
                                                 {{ trim(($postulacion->user->persona->primer_nombre ?? '') . ' ' . ($postulacion->user->persona->primer_apellido ?? '')) }}
@@ -126,10 +155,10 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Suplente (opcional)</label>
-                                    <select name="postulacion_suplente_id" class="form-control">
+                                    <label for="postulacion_suplente_id">Suplente (opcional)</label>
+                                    <select id="postulacion_suplente_id" name="postulacion_suplente_id" class="form-control">
                                         <option value="">Ninguno</option>
-                                        @foreach($candidatos as $postulacion)
+                                        @foreach($candidatosPendientes as $postulacion)
                                             <option value="{{ $postulacion->id }}">
                                                 {{ $postulacion->user->persona->numero_documento ?? $postulacion->id }} —
                                                 {{ trim(($postulacion->user->persona->primer_nombre ?? '') . ' ' . ($postulacion->user->persona->primer_apellido ?? '')) }}
@@ -140,8 +169,8 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Observaciones finales</label>
-                                    <textarea name="observaciones" rows="3" class="form-control" placeholder="Observaciones del comité de selección..."></textarea>
+                                    <label for="observaciones_seleccion">Observaciones finales</label>
+                                    <textarea id="observaciones_seleccion" name="observaciones" rows="3" class="form-control" placeholder="Observaciones del comité de selección..."></textarea>
                                 </div>
                             </div>
                         </div>

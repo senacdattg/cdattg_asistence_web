@@ -60,6 +60,7 @@ export default defineConfig({
                 'municipios': 'resources/js/municipios.js',
                 'parametros': 'resources/js/parametros.js',
                 'aitg_plan_contratacion_form': 'resources/js/aitg/planes-contratacion/index.js',
+                'aitg_spa': 'resources/js/aitg/spa.js',
                 'red-conocimiento': 'resources/js/red-conocimiento.js',
                 'tema': 'resources/js/tema.js',
                 // Asistencia files

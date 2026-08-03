@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use App\Support\Aitg\AitgMenuAccess;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,6 +28,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('ver-menu-aitg', function (?User $user) {
+            return app(AitgMenuAccess::class)->shouldShowSidebarMenu($user);
+        });
 
+        Gate::define('ver-menu-aitg-banco', function (?User $user) {
+            return $user?->can('VER BANCO INSTRUCTOR AITG')
+                && app(AitgMenuAccess::class)->shouldShowSidebarMenu($user);
+        });
     }
 }
+

@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Revisar postulación - AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => 'Revisar postulación #' . $postulacion->id,
         'subtitle' => ($postulacion->plan->competencia->nombre ?? 'Plan') . ' · ' . (trim(($postulacion->user->persona->primer_nombre ?? '') . ' ' . ($postulacion->user->persona->primer_apellido ?? '')) ?: $postulacion->user->email),
@@ -17,7 +13,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
@@ -61,8 +57,8 @@
                     <div class="aitg-card__body">
                         <form action="{{ route('aitg.validacion-banco.devolver', $postulacion) }}" method="POST" class="mb-3">
                             @csrf
-                            <label><strong>Devolver postulación al aspirante</strong></label>
-                            <textarea name="observaciones" class="form-control mb-2" rows="2" required placeholder="Indique qué debe corregir el aspirante..."></textarea>
+                            <label for="observaciones_devolver"><strong>Devolver postulación al aspirante</strong></label>
+                            <textarea id="observaciones_devolver" name="observaciones" class="form-control mb-2" rows="2" required placeholder="Indique qué debe corregir el aspirante..."></textarea>
                             <button type="submit" class="btn btn-warning btn-sm"><i class="fas fa-undo"></i> Devolver para corrección</button>
                         </form>
                         @if(! $postulacion->requierePerfil() && $postulacion->esBancoTalento())
@@ -148,16 +144,16 @@
                             <div class="aitg-validacion-fila border-top pt-3 mt-2" data-archivo-id="{{ $archivoPostulacion->id }}">
                                 <div class="row">
                                     <div class="col-md-3 form-group">
-                                        <label>Decisión <span class="text-danger">*</span></label>
-                                        <select name="validaciones[{{ $archivoPostulacion->id }}][resultado]" class="form-control aitg-toggle-rechazo" required>
+                                        <label for="validacion_resultado_{{ $archivoPostulacion->id }}">Decisión <span class="text-danger">*</span></label>
+                                        <select id="validacion_resultado_{{ $archivoPostulacion->id }}" name="validaciones[{{ $archivoPostulacion->id }}][resultado]" class="form-control aitg-toggle-rechazo" required>
                                             <option value="">Seleccione...</option>
                                             <option value="aprobado">Aprobar</option>
                                             <option value="rechazado">Rechazar</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4 form-group aitg-campo-motivo" style="display:none">
-                                        <label>Motivo de rechazo <span class="text-danger">*</span></label>
-                                        <select name="validaciones[{{ $archivoPostulacion->id }}][motivo_rechazo_id]" class="form-control aitg-motivo-select">
+                                        <label for="validacion_motivo_{{ $archivoPostulacion->id }}">Motivo de rechazo <span class="text-danger">*</span></label>
+                                        <select id="validacion_motivo_{{ $archivoPostulacion->id }}" name="validaciones[{{ $archivoPostulacion->id }}][motivo_rechazo_id]" class="form-control aitg-motivo-select">
                                             <option value="">Seleccione motivo...</option>
                                             @foreach($motivosRechazo as $motivo)
                                                 <option value="{{ $motivo->id }}">{{ $motivo->nombre }}</option>
@@ -165,8 +161,8 @@
                                         </select>
                                     </div>
                                     <div class="col-md-5 form-group">
-                                        <label>Descripción (opcional)</label>
-                                        <textarea name="validaciones[{{ $archivoPostulacion->id }}][descripcion]" rows="2" class="form-control" placeholder="Indique detalles adicionales..."></textarea>
+                                        <label for="validacion_descripcion_{{ $archivoPostulacion->id }}">Descripción (opcional)</label>
+                                        <textarea id="validacion_descripcion_{{ $archivoPostulacion->id }}" name="validaciones[{{ $archivoPostulacion->id }}][descripcion]" rows="2" class="form-control" placeholder="Indique detalles adicionales..."></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -209,20 +205,4 @@
         @endif
     </div>
 </section>
-@endsection
-
-@section('js')
-<script>
-document.querySelectorAll('.aitg-toggle-rechazo').forEach(function (select) {
-    const toggle = () => {
-        const wrap = select.closest('.aitg-validacion-fila');
-        const motivo = wrap?.querySelector('.aitg-campo-motivo');
-        const motivoSelect = wrap?.querySelector('.aitg-motivo-select');
-        if (motivo) motivo.style.display = select.value === 'rechazado' ? 'block' : 'none';
-        if (motivoSelect) motivoSelect.required = select.value === 'rechazado';
-    };
-    select.addEventListener('change', toggle);
-    toggle();
-});
-</script>
 @endsection

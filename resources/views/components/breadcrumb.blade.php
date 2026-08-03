@@ -1,4 +1,8 @@
-@props(['items' => []])
+@props(['items' => [], 'navigate' => null])
+
+@php
+    $useNavigate = $navigate ?? (bool) config('adminlte.livewire');
+@endphp
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-transparent mb-0 justify-content-end">
@@ -12,7 +16,9 @@
                 </li>
             @else
                 <li class="breadcrumb-item">
-                    <a href="{{ $item['url'] ?? '#' }}" class="link_right_header">
+                    <a href="{{ $item['url'] ?? '#' }}"
+                       class="link_right_header"
+                       @if($useNavigate && !empty($item['url']) && $item['url'] !== '#') wire:navigate @endif>
                         @if(isset($item['icon']))
                             <i class="fas {{ $item['icon'] }}"></i>
                         @endif

@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', ($plan->competencia->nombre ?? 'Plan') . ' - AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => $plan->competencia->nombre ?? 'Plan de contratación',
         'subtitle' => 'Vista detallada · ' . $plan->tipo_registro_perfil_label,
@@ -18,7 +14,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 @php
     $catalogo = app(\App\Services\Aitg\AitgCatalogoService::class);
 @endphp

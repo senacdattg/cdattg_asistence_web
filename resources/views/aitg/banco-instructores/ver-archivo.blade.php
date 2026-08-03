@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Documento - Banco de Talento')
 
@@ -9,7 +9,7 @@
     </style>
 @endsection
 
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => 'Visualizar documento',
         'subtitle' => $archivo->nombre_original,
@@ -20,7 +20,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         <div class="mb-3">

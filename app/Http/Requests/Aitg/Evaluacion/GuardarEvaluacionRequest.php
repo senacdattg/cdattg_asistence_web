@@ -19,7 +19,6 @@ class GuardarEvaluacionRequest extends FormRequest
             'checklist' => ['nullable', 'array'],
             'checklist.*.cumple' => ['nullable', 'in:0,1,true,false'],
             'checklist.*.observaciones' => ['nullable', 'string', 'max:1000'],
-            'checklist.*.solicita_actualizacion' => ['nullable', 'boolean'],
             'puntos' => ['nullable', 'array'],
             'puntos.*.cumple' => ['nullable', 'in:0,1,true,false'],
             'puntos.*.observaciones' => ['nullable', 'string', 'max:1000'],

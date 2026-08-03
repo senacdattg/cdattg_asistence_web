@@ -241,7 +241,8 @@ class AitgEvaluacionService
             $item->update([
                 'cumple' => $cumple,
                 'observaciones' => $row['observaciones'] ?? null,
-                'solicita_actualizacion' => filter_var($row['solicita_actualizacion'] ?? false, FILTER_VALIDATE_BOOLEAN),
+                // Subsanación deshabilitada en el flujo de evaluación/selección.
+                'solicita_actualizacion' => false,
             ]);
         }
 

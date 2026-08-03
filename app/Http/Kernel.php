@@ -78,5 +78,6 @@ class Kernel extends HttpKernel
         'validar.ficha.caracterizacion' => \App\Http\Middleware\ValidarFichaCaracterizacion::class,
         'validate.content.length' => \App\Http\Middleware\ValidateContentLength::class,
         'api.rate.limit' => \App\Http\Middleware\ApiRateLimiter::class,
+        'aitg.menu' => \App\Http\Middleware\EnsureAitgMenuAccess::class,
     ];
 }

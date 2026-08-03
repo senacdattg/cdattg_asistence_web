@@ -54,6 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'status',
+        'aitg_menu_unlocked',
         'persona_id'
     ];
 
@@ -75,6 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'aitg_menu_unlocked' => 'boolean',
     ];
 
     /**

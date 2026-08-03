@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Crear Plan de Contratación - AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @include('aitg.planes-contratacion.partials.layout.page-header', [
         'title' => 'Crear Plan de Contratación',
         'subtitle' => 'AITG - Anexo 2 · Formulario dinámico',
@@ -18,7 +14,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         @if($errors->any())
@@ -37,8 +33,4 @@
         ])
     </div>
 </section>
-@endsection
-
-@section('js')
-    @stack('js')
 @endsection

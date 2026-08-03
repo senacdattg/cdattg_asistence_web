@@ -1,0 +1,106 @@
+/* Navegación SPA entre submódulos AITG */
+.aitg-spa-nav {
+    margin: 0 0 0.85rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f7f9fc 100%);
+    border: 1px solid #e3e8ef;
+    border-radius: 10px;
+    padding: 0.45rem;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.aitg-spa-nav__track {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+}
+
+.aitg-spa-nav__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 0 0 auto;
+    padding: 0.45rem 0.85rem;
+    border-radius: 8px;
+    color: #344054;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.aitg-spa-nav__item i {
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.aitg-spa-nav__item:hover {
+    background: #eef4ff;
+    color: var(--aitg-blue, #1b4f9c);
+}
+
+.aitg-spa-nav__item.is-active {
+    background: var(--aitg-blue, #1b4f9c);
+    color: #fff;
+}
+
+.aitg-spa-nav__item.is-active i {
+    opacity: 1;
+}
+
+#aitg-spa-root,
+.aitg-spa-shell {
+    position: relative;
+    min-height: 12rem;
+}
+
+#aitg-spa-root.is-navigating,
+.aitg-spa-shell.is-navigating {
+    pointer-events: none;
+}
+
+#aitg-spa-root.is-navigating .aitg-spa-shell,
+.aitg-spa-shell.is-navigating > *:not([data-aitg-spa-progress]) {
+    opacity: 0.62;
+    transition: opacity 0.08s linear;
+}
+
+#aitg-spa-root {
+    contain: layout style;
+}
+
+.aitg-spa-progress {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 20;
+    margin: 0 0 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--aitg-blue, #1b4f9c), #39a900, var(--aitg-blue, #1b4f9c));
+    background-size: 200% 100%;
+    animation: aitg-spa-progress 0.9s linear infinite;
+}
+
+.aitg-spa-progress[hidden] {
+    display: none !important;
+}
+
+@keyframes aitg-spa-progress {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+@media (max-width: 767.98px) {
+    .aitg-spa-nav__item span {
+        font-size: 0.8rem;
+    }
+
+    .aitg-spa-nav__item {
+        padding: 0.4rem 0.7rem;
+    }
+}

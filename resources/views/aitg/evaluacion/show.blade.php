@@ -1,12 +1,8 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Evaluar postulación - AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
-@endsection
-
-@section('content_header')
+@section('aitg_header')
     @php
         $persona = $evaluacion->postulacion->user->persona;
         $nombre = trim(($persona->primer_nombre ?? '') . ' ' . ($persona->primer_apellido ?? '')) ?: $evaluacion->postulacion->user->email;
@@ -23,7 +19,7 @@
     ])
 @endsection
 
-@section('content')
+@section('aitg_content')
 <section class="content aitg-content mt-2">
     <div class="container-fluid">
         @if(session('success'))
@@ -70,7 +66,6 @@
                                     <th>Documentos cargados</th>
                                     <th>Resultado</th>
                                     <th>Observaciones</th>
-                                    <th>Subsanación</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -123,18 +118,9 @@
                                                 {{ $item->observaciones ?: '—' }}
                                             @endif
                                         </td>
-                                        <td class="text-center">
-                                            @if($evaluacion->puedeEvaluar())
-                                                <input type="checkbox" name="checklist[{{ $item->id }}][solicita_actualizacion]" value="1" @checked($item->solicita_actualizacion)>
-                                            @elseif($item->solicita_actualizacion)
-                                                <span class="badge badge-warning">Solicitada</span>
-                                            @else
-                                                —
-                                            @endif
-                                        </td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="6" class="text-center text-muted">No hay criterios de checklist en esta postulación.</td></tr>
+                                    <tr><td colspan="5" class="text-center text-muted">No hay criterios de checklist en esta postulación.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -209,18 +195,18 @@
             <div class="aitg-card aitg-card--primary mb-3">
                 <div class="aitg-card__body">
                     <div class="form-group">
-                        <label>Observaciones generales de la evaluación</label>
+                        <label for="observaciones_evaluacion">Observaciones generales de la evaluación</label>
                         @if($evaluacion->puedeEvaluar())
-                            <textarea name="observaciones" rows="3" class="form-control">{{ old('observaciones', $evaluacion->observaciones) }}</textarea>
+                            <textarea id="observaciones_evaluacion" name="observaciones" rows="3" class="form-control">{{ old('observaciones', $evaluacion->observaciones) }}</textarea>
                         @else
-                            <p class="mb-0">{{ $evaluacion->observaciones ?: '—' }}</p>
+                            <p id="observaciones_evaluacion" class="mb-0">{{ $evaluacion->observaciones ?: '—' }}</p>
                         @endif
                     </div>
 
                     @if($evaluacion->puedeEvaluar())
                         <div class="form-group mb-0">
-                            <label>Resultado final (opcional — rechazo explícito)</label>
-                            <select name="resultado" class="form-control col-md-4">
+                            <label for="resultado_evaluacion">Resultado final (opcional — rechazo explícito)</label>
+                            <select id="resultado_evaluacion" name="resultado" class="form-control col-md-4">
                                 <option value="">Determinar por criterios obligatorios</option>
                                 <option value="aprobado">Aprobar evaluación</option>
                                 <option value="rechazado">Rechazar evaluación</option>

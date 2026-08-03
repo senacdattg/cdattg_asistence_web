@@ -1,22 +1,33 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Tipos de archivo AITG')
 
-@section('css')
-    <x-vite-stylesheet paths="resources/css/aitg/planes-contratacion/app.css" />
+@section('aitg_header')
+    @include('aitg.planes-contratacion.partials.layout.page-header', [
+        'title' => 'Tipos de archivo',
+        'subtitle' => 'Catálogo documental del Banco de Instructores',
+        'breadcrumb' => [
+            ['label' => 'Inicio', 'url' => route('verificarLogin'), 'icon' => 'fa-home'],
+            ['label' => 'AITG', 'icon' => 'fa-users-cog'],
+            ['label' => 'Tipos de archivo', 'active' => true],
+        ],
+    ])
 @endsection
 
-@section('content_header')
-    <h1>Tipos de archivo · Banco de Instructores</h1>
-@endsection
-
-@section('content')
+@section('aitg_content')
+<section class="content aitg-content mt-2">
 <div class="container-fluid">
     @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
     @if(session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
-    @can('CREAR TIPO ARCHIVO AITG')
-        <a href="{{ route('aitg.tipos-archivo.create') }}" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Nuevo tipo</a>
-    @endcan
+
+    <div class="mb-3">
+        @can('CREAR TIPO ARCHIVO AITG')
+            <a href="{{ route('aitg.tipos-archivo.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo tipo</a>
+        @endcan
+        @can('VER MOTIVO RECHAZO AITG')
+            <a href="{{ route('aitg.motivos-rechazo.index') }}" class="btn btn-outline-secondary">Motivos de rechazo</a>
+        @endcan
+    </div>
 
     @foreach([
         'inicial' => ['titulo' => 'Documentos de postulación (validación inicial)', 'tipos' => $tiposInicial],
@@ -69,4 +80,5 @@
         </div>
     @endforeach
 </div>
+</section>
 @endsection

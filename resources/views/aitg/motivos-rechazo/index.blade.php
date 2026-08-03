@@ -1,15 +1,33 @@
-@extends('adminlte::page')
+@extends('aitg.layouts.spa')
 
 @section('title', 'Motivos de rechazo AITG')
 
-@section('content_header')<h1>Motivos de rechazo · Banco de Instructores</h1>@endsection
+@section('aitg_header')
+    @include('aitg.planes-contratacion.partials.layout.page-header', [
+        'title' => 'Motivos de rechazo',
+        'subtitle' => 'Catálogo de motivos para validación documental',
+        'breadcrumb' => [
+            ['label' => 'Inicio', 'url' => route('verificarLogin'), 'icon' => 'fa-home'],
+            ['label' => 'AITG', 'icon' => 'fa-users-cog'],
+            ['label' => 'Motivos de rechazo', 'active' => true],
+        ],
+    ])
+@endsection
 
-@section('content')
+@section('aitg_content')
+<section class="content aitg-content mt-2">
 <div class="container-fluid">
     @if(session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
-    @can('CREAR MOTIVO RECHAZO AITG')
-        <a href="{{ route('aitg.motivos-rechazo.create') }}" class="btn btn-primary mb-3"><i class="fas fa-plus"></i> Nuevo motivo</a>
-    @endcan
+
+    <div class="mb-3">
+        @can('CREAR MOTIVO RECHAZO AITG')
+            <a href="{{ route('aitg.motivos-rechazo.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Nuevo motivo</a>
+        @endcan
+        @can('VER TIPO ARCHIVO AITG')
+            <a href="{{ route('aitg.tipos-archivo.index') }}" class="btn btn-outline-secondary">Tipos de archivo</a>
+        @endcan
+    </div>
+
     <div class="card">
         <div class="card-body table-responsive p-0">
             <table class="table table-hover">
@@ -40,4 +58,5 @@
         <div class="card-footer">{{ $motivos->links() }}</div>
     </div>
 </div>
+</section>
 @endsection

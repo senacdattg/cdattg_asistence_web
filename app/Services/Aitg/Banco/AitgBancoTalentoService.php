@@ -13,6 +13,7 @@ use App\Models\Aitg\Postulacion\PostulacionPuntoItem;
 use App\Models\User;
 use App\Services\Aitg\Convocatoria\AitgConvocatoriaReglasService;
 use App\Services\Aitg\Postulacion\AitgPostulacionItemsService;
+use App\Support\Aitg\AitgMenuAccess;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -25,94 +26,11 @@ class AitgBancoTalentoService
     private const STORAGE_FOLDER = 'aitg_banco_talento';
 
     public function __construct(
-        private readonly AitgBancoRequisitosService $requisitosService,
         private readonly AitgConvocatoriaReglasService $convocatoriaReglasService,
-        private readonly AitgPostulacionItemsService $postulacionItemsService
+        private readonly AitgPostulacionItemsService $postulacionItemsService,
+        private readonly AitgBancoEnvioService $envioService,
+        private readonly AitgBancoConsultaService $consultaService
     ) {}
-
-    public function buscarCompetencias(array $filtros): Collection
-    {
-        $query = Competencia::query()
-            ->where('status', true)
-            ->whereHas('aitgPlanes', fn ($q) => $q->whereIn('estado', ['activo', 'borrador']))
-            ->with(['aitgPlanes' => fn ($q) => $q->whereIn('estado', ['activo', 'borrador'])->with('regional')->orderByDesc('created_at')])
-            ->orderBy('nombre');
-
-        if ($nombre = trim((string) ($filtros['competencia'] ?? ''))) {
-            $query->where('nombre', 'like', "%{$nombre}%");
-        }
-
-        if ($regionalId = $filtros['regional_id'] ?? null) {
-            $query->whereHas('aitgPlanes', fn ($q) => $q->where('regional_id', $regionalId));
-        }
-
-        if ($modalidad = $filtros['modalidad'] ?? null) {
-            $query->whereHas('aitgPlanes', fn ($q) => $q->where('modalidad', $modalidad));
-        }
-
-        return $query->limit(20)->get();
-    }
-
-    /** @deprecated Use buscarCompetencias */
-    public function buscarPlanes(array $filtros): Collection
-    {
-        return $this->buscarCompetencias($filtros);
-    }
-
-    public function listarPostulacionesUsuario(User $user): Collection
-    {
-        return $this->queryPostulacionesUsuario($user)->get();
-    }
-
-    public function listarPostulacionesBanco(User $user): Collection
-    {
-        return $this->queryPostulacionesUsuario($user)
-            ->whereNull('convocatoria_id')
-            ->get();
-    }
-
-    public function listarPostulacionesConvocatoria(User $user): Collection
-    {
-        return $this->queryPostulacionesUsuario($user)
-            ->whereNotNull('convocatoria_id')
-            ->get();
-    }
-
-    public function bancoHabilitadoParaCompetencia(User $user, int $competenciaId): ?PostulacionPlan
-    {
-        return PostulacionPlan::where('user_id', $user->id)
-            ->where('competencia_id', $competenciaId)
-            ->whereNull('convocatoria_id')
-            ->where('estado', 'aprobado')
-            ->first();
-    }
-
-    public function bancoHabilitadoParaPlan(User $user, int $planContratacionId): ?PostulacionPlan
-    {
-        $plan = PlanContratacion::find($planContratacionId);
-
-        if (! $plan?->competencia_id) {
-            return null;
-        }
-
-        return $this->bancoHabilitadoParaCompetencia($user, $plan->competencia_id);
-    }
-
-    private function queryPostulacionesUsuario(User $user)
-    {
-        return PostulacionPlan::with([
-            'competencia',
-            'plan.competencia',
-            'plan.regional',
-            'perfilPlan',
-            'convocatoria',
-            'archivos.tipoArchivo',
-            'archivos.puntoAdicional',
-            'archivos.validaciones.motivoRechazo',
-        ])
-            ->where('user_id', $user->id)
-            ->orderByDesc('updated_at');
-    }
 
     public function obtenerPostulacion(User $user, Competencia $competencia): PostulacionPlan
     {
@@ -195,7 +113,7 @@ class AitgBancoTalentoService
 
         $this->convocatoriaReglasService->validarPuedePostularConvocatoria($user, $convocatoria);
 
-        $banco = $this->bancoHabilitadoParaCompetencia($user, $convocatoria->competencia_id);
+        $banco = $this->consultaService->bancoHabilitadoParaCompetencia($user, $convocatoria->competencia_id);
 
         $postulacion = PostulacionPlan::create([
             'user_id' => $user->id,
@@ -256,14 +174,6 @@ class AitgBancoTalentoService
         }
     }
 
-    public function listarPostulacionesDeConvocatoria(\App\Models\Aitg\Convocatoria\Convocatoria $convocatoria): Collection
-    {
-        return PostulacionPlan::with(['user.persona', 'perfilPlan'])
-            ->where('convocatoria_id', $convocatoria->id)
-            ->orderByDesc('updated_at')
-            ->get();
-    }
-
     public function seleccionarPerfil(PostulacionPlan $postulacion, int $perfilPlanId, User $user): PostulacionPlan
     {
         $perfil = $postulacion->plan->perfiles()->where('id', $perfilPlanId)->firstOrFail();
@@ -286,23 +196,26 @@ class AitgBancoTalentoService
         ]);
     }
 
+    /**
+     * @param  array{
+     *     tipo_archivo_id?: int|null,
+     *     punto_adicional_id?: int|null,
+     *     checklist_item_id?: int|null,
+     *     punto_item_id?: int|null,
+     *     perfil_plan_id?: int|null
+     * }  $contexto
+     */
     public function subirArchivo(
         PostulacionPlan $postulacion,
         UploadedFile $archivo,
         User $user,
-        ?int $tipoArchivoId = null,
-        ?int $puntoAdicionalId = null,
-        ?int $checklistItemId = null,
-        ?int $puntoItemId = null,
-        ?int $perfilPlanId = null
+        array $contexto = []
     ): PostulacionArchivo {
-        $postulacion = $this->resolverPostulacionParaCarga(
-            $postulacion,
-            $user,
-            $tipoArchivoId,
-            $checklistItemId,
-            $puntoItemId
-        );
+        $tipoArchivoId = $contexto['tipo_archivo_id'] ?? null;
+        $puntoAdicionalId = $contexto['punto_adicional_id'] ?? null;
+        $checklistItemId = $contexto['checklist_item_id'] ?? null;
+        $puntoItemId = $contexto['punto_item_id'] ?? null;
+        $perfilPlanId = $contexto['perfil_plan_id'] ?? null;
 
         $plan = $postulacion->plan;
         $competenciaId = $postulacion->competencia_id ?? $plan?->competencia_id;
@@ -315,7 +228,7 @@ class AitgBancoTalentoService
                 ->punto_adicional_id;
         }
 
-        $codigo = $tipo?->codigo ?? ($checklistItemId ? 'CHK' : ($perfilPlanId ? 'PERFIL' : 'PUNTO'));
+        $codigo = $this->codigoNombreArchivo($tipo?->codigo, $checklistItemId, $perfilPlanId);
         $nombreAlmacenado = $this->generarNombre($user, $codigo, $archivo);
         $disk = config('filesystems.aitg_banco_disk', 'public');
         $path = Storage::disk($disk)->putFileAs(self::STORAGE_FOLDER, $archivo, $nombreAlmacenado);
@@ -354,6 +267,8 @@ class AitgBancoTalentoService
             $this->postulacionItemsService->vincularArchivoPunto($item, $vinculo);
         }
 
+        app(AitgMenuAccess::class)->persistUnlockAfterDocumentUpload($user);
+
         return $vinculo;
     }
 
@@ -367,34 +282,45 @@ class AitgBancoTalentoService
                 continue;
             }
 
-            $tipoId = null;
-            $puntoId = null;
-            $checklistItemId = null;
-            $puntoItemId = null;
-
-            if (str_starts_with((string) $key, 'tipo_')) {
-                $tipoId = (int) str_replace('tipo_', '', (string) $key);
-            } elseif (str_starts_with((string) $key, 'punto_')) {
-                $puntoId = (int) str_replace('punto_', '', (string) $key);
-            } elseif (str_starts_with((string) $key, 'checklist_')) {
-                $checklistItemId = (int) str_replace('checklist_', '', (string) $key);
-            } elseif (str_starts_with((string) $key, 'puntoitem_')) {
-                $puntoItemId = (int) str_replace('puntoitem_', '', (string) $key);
-            }
-
             $this->subirArchivo(
                 $postulacion,
                 $archivo,
                 $user,
-                $tipoId ?: null,
-                $puntoId ?: null,
-                $checklistItemId ?: null,
-                $puntoItemId ?: null
+                $this->contextoDesdeClaveArchivo((string) $key)
             );
             $subidos++;
         }
 
         return $subidos;
+    }
+
+    /** @return array{tipo_archivo_id?: int, punto_adicional_id?: int, checklist_item_id?: int, punto_item_id?: int} */
+    private function contextoDesdeClaveArchivo(string $key): array
+    {
+        $map = [
+            'tipo_' => 'tipo_archivo_id',
+            'punto_' => 'punto_adicional_id',
+            'checklist_' => 'checklist_item_id',
+            'puntoitem_' => 'punto_item_id',
+        ];
+
+        foreach ($map as $prefix => $campo) {
+            if (str_starts_with($key, $prefix)) {
+                return [$campo => (int) str_replace($prefix, '', $key)];
+            }
+        }
+
+        return [];
+    }
+
+    private function codigoNombreArchivo(?string $codigoTipo, ?int $checklistItemId, ?int $perfilPlanId): string
+    {
+        return match (true) {
+            filled($codigoTipo) => (string) $codigoTipo,
+            $checklistItemId !== null => 'CHK',
+            $perfilPlanId !== null => 'PERFIL',
+            default => 'PUNTO',
+        };
     }
 
     public function reutilizarArchivo(PostulacionPlan $postulacion, ArchivoTalento $archivo, User $user): PostulacionArchivo
@@ -405,16 +331,21 @@ class AitgBancoTalentoService
             $this->desvincularTipoAnterior($postulacion, $archivo->tipo_archivo_id);
         }
 
-        return $this->vincularArchivo(
+        $vinculo = $this->vincularArchivo(
             $postulacion,
             $archivo,
             $archivo->tipo_archivo_id,
             $archivo->punto_adicional_id
         );
+
+        app(AitgMenuAccess::class)->persistUnlockAfterDocumentUpload($user);
+
+        return $vinculo;
     }
 
     public function eliminarDocumentoPostulacion(PostulacionPlan $postulacion, PostulacionArchivo $vinculo, User $user): void
     {
+        abort_unless($postulacion->user_id === $user->id, 403);
         abort_unless($postulacion->puedeEditar(), 403);
         abort_unless($vinculo->postulacion_id === $postulacion->id, 404);
 
@@ -429,139 +360,6 @@ class AitgBancoTalentoService
             }
             $archivo->delete();
         }
-    }
-
-    public function bovedaUsuario(User $user): Collection
-    {
-        return ArchivoTalento::with('tipoArchivo')
-            ->where('user_id', $user->id)
-            ->orderByDesc('created_at')
-            ->get();
-    }
-
-    public function seccionesDocumentales(PostulacionPlan $postulacion, User $user): array
-    {
-        if ($postulacion->requierePerfil() && $postulacion->faseDocumental() === 'inicial') {
-            return [];
-        }
-
-        if ($postulacion->esConvocatoria() && $postulacion->faseDocumental() === 'post_seleccion') {
-            return $this->seccionesTiposArchivo($postulacion, $user);
-        }
-
-        if ($postulacion->esBancoTalento()) {
-            return $this->seccionesTiposArchivo($postulacion, $user);
-        }
-
-        $this->postulacionItemsService->instanciarDesdePlan($postulacion);
-
-        $secciones = [];
-
-        if ($this->requiereDocumentosBaseEnConvocatoria($postulacion, $user)) {
-            $secciones = array_merge($secciones, $this->seccionesTiposArchivo($postulacion, $user));
-        }
-
-        return array_merge($secciones, $this->postulacionItemsService->construirSecciones($postulacion, $user));
-    }
-
-    /** Tipos de archivo del catálogo (HV, RUT, antecedentes, formalización…). */
-    public function seccionesTiposArchivo(PostulacionPlan $postulacion, User $user): array
-    {
-        $secciones = $this->requisitosService->construirSecciones($postulacion, $user);
-
-        return array_values(array_filter(
-            $secciones,
-            fn (array $seccion) => $seccion['key'] !== 'puntos_adicionales'
-        ));
-    }
-
-    public function requiereDocumentosBaseEnConvocatoria(PostulacionPlan $postulacion, User $user): bool
-    {
-        if (! $postulacion->esConvocatoria()) {
-            return false;
-        }
-
-        $competenciaId = $postulacion->competencia_id ?? $postulacion->plan?->competencia_id;
-
-        return $competenciaId
-            && ! $this->bancoHabilitadoParaCompetencia($user, $competenciaId);
-    }
-
-    /** @deprecated El banco ya no usa plan shadow; conservado por compatibilidad interna. */
-    public function obtenerBancoPostulacionEnCurso(User $user, PlanContratacion $plan): PostulacionPlan
-    {
-        abort_unless($plan->competencia_id, 422, 'El plan no tiene competencia asociada.');
-
-        return $this->obtenerPostulacion($user, $plan->competencia);
-    }
-
-    public function puedeEnviar(PostulacionPlan $postulacion, User $user): bool
-    {
-        if ($postulacion->requierePerfil() && $postulacion->faseDocumental() === 'inicial') {
-            return false;
-        }
-
-        if ($postulacion->esConvocatoria() && $postulacion->faseDocumental() === 'post_seleccion') {
-            return $this->puedeEnviarDocumentosBase($postulacion, $user);
-        }
-
-        if (! $this->postulacionItemsService->puedeEnviar($postulacion)) {
-            return false;
-        }
-
-        if ($postulacion->esConvocatoria()) {
-            if ($this->requiereDocumentosBaseEnConvocatoria($postulacion, $user)
-                && ! $this->puedeEnviarDocumentosBase($postulacion, $user)) {
-                return false;
-            }
-
-            return true;
-        }
-
-        return $this->puedeEnviarDocumentosBase($postulacion, $user);
-    }
-
-    public function puedeEnviarDocumentosBase(PostulacionPlan $postulacion, User $user): bool
-    {
-        $secciones = collect($this->seccionesTiposArchivo($postulacion, $user))->all();
-
-        if ($postulacion->estado === 'requiere_correccion') {
-            foreach ($secciones as $seccion) {
-                foreach ($seccion['items'] as $item) {
-                    if (! ($item['requiere_accion'] ?? false)) {
-                        continue;
-                    }
-
-                    $vinculado = $item['vinculado'] ?? null;
-
-                    if (! $vinculado || $vinculado->estado === 'rechazado') {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        foreach ($secciones as $seccion) {
-            foreach ($seccion['items'] as $item) {
-                if ($item['obligatorio'] && empty($item['vinculado'])) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private function resolverPostulacionParaCarga(
-        PostulacionPlan $postulacion,
-        User $user,
-        ?int $tipoArchivoId,
-        ?int $checklistItemId,
-        ?int $puntoItemId
-    ): PostulacionPlan {
-        return $postulacion;
     }
 
     public function enviarRevision(PostulacionPlan $postulacion, User $user): PostulacionPlan
@@ -595,7 +393,7 @@ class AitgBancoTalentoService
         abort_unless(in_array($postulacion->estado, ['seleccionado', 'requiere_correccion'], true), 422, 'Solo el instructor seleccionado puede enviar la formalización.');
         abort_unless($postulacion->fase_actual === 'post_seleccion', 422);
 
-        if (! $this->puedeEnviarDocumentosBase($postulacion, $user)) {
+        if (! $this->envioService->puedeEnviarDocumentosBase($postulacion, $user)) {
             throw new \InvalidArgumentException('Complete todos los documentos obligatorios de formalización.');
         }
 
@@ -641,18 +439,6 @@ class AitgBancoTalentoService
                 $vinculo->update(['estado' => 'en_revision']);
             }
         }
-    }
-
-    private function enviarRevisionDocumentosBase(PostulacionPlan $bancoPost, User $user): void
-    {
-        $bancoPost->update([
-            'estado' => 'pendiente_revision',
-            'fecha_envio' => now(),
-            'observaciones_validador' => null,
-            'user_update_id' => $user->id,
-        ]);
-
-        $this->marcarArchivosEnRevision($bancoPost);
     }
 
     private function vincularArchivo(
